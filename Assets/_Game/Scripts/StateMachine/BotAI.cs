@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BotAI : MonoBehaviour
 {
-    private IState<BotAI> currentState;
 
+    private IState<BotAI> currentState;
+   
     private void Start()
     {
         ChangeState(new IdleState());
@@ -18,6 +19,7 @@ public class BotAI : MonoBehaviour
         {
             currentState.OnExecute(this);
         }
+
     }
 
     public void ChangeState(IState<BotAI> state)
