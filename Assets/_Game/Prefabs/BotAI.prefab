@@ -2173,7 +2173,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
@@ -2215,6 +2215,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee90c4e7e5a3a146aa6bed1abf9ae87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 3020431204387107194}
+  mesh: {fileID: 386442175878308336}
+  colorData: {fileID: 11400000, guid: 4a57f7919a0c91e4e8cf15d98607ad33, type: 2}
+  colorType: 0
 --- !u!1 &8397228602898670547
 GameObject:
   m_ObjectHideFlags: 0

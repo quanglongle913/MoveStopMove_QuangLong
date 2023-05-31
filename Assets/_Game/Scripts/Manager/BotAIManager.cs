@@ -18,6 +18,9 @@ public class BotAIManager : PooledObject
     public List<BotAI> botAIList;  
 
     public static BotAIManager instance;
+
+    public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
+
     private void Awake()
     {
         if(instance==null) 
@@ -68,6 +71,12 @@ public class BotAIManager : PooledObject
             PooledObject botAIObject = Spawner(poolObject, poolMaster);
             botAIObject.transform.position = a_vector3;
             listPoolObjectPosition.Remove(a_vector3);
+
+            int randomColor = UnityEngine.Random.Range(0, 5);
+            ColorType _colorType = (ColorType)randomColor;
+            BotAI botAI = botAIObject.GetComponent<BotAI>();
+            botAI.ColorType = _colorType;
+
             botAIList.Add(botAIObject.GetComponent<BotAI>());
         }
     }

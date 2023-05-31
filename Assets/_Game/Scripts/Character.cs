@@ -5,9 +5,16 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] private Animator anim;
+    [SerializeField] private SkinnedMeshRenderer mesh;
+    [SerializeField] private ColorData colorData;
+    [SerializeField] private ColorType colorType;
 
     protected float rotationSpeed = 1000f;
     private string currentAnimName;
+
+    public ColorData ColorData { get => colorData; set => colorData = value; }
+    public ColorType ColorType { get => colorType; set => colorType = value; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,4 +36,10 @@ public class Character : MonoBehaviour
             anim.SetTrigger(currentAnimName);
         }
     }
+    public void ChangeColor(GameObject a_obj, ColorType colorType)
+    {
+        this.colorType = colorType;
+        a_obj.GetComponent<SkinnedMeshRenderer>().material = colorData.GetMat(colorType);
+    }
+
 }

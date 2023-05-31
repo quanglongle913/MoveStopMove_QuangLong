@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BotAI : MonoBehaviour
+public class BotAI : Character
 {
 
     private IState<BotAI> currentState;
