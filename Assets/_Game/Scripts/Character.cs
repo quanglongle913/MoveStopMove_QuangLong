@@ -5,7 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] private Animator anim;
-    [SerializeField] private SkinnedMeshRenderer mesh;
+    [SerializeField] protected SkinnedMeshRenderer mesh;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
 
@@ -41,5 +41,22 @@ public class Character : MonoBehaviour
         this.colorType = colorType;
         a_obj.GetComponent<SkinnedMeshRenderer>().material = colorData.GetMat(colorType);
     }
-
+    protected bool isWall(LayerMask _layerMask)
+    {
+        RaycastHit hit;
+        bool isWall = false;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Constant.RAYCAST_HIT_RANGE_WALL, _layerMask))
+        {
+            isWall = true;
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
+            //Debug.Log("Did Hit");
+        }
+        else
+        {
+            isWall = false;
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+            //Debug.Log("Did not Hit");
+        }
+        return isWall;
+    }
 }

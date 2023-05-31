@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Constant
 {
+
+
+    public static string LAYOUT_WALL = "Wall";
+    public static float RAYCAST_HIT_RANGE_WALL = 1.0f;
+
+
+
     public static float AngleBetween2Vector2right(Vector2 pos, Vector2 target)
     {
         if (target.y < pos.y)

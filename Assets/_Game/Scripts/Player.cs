@@ -24,8 +24,12 @@ public class Player : Character
             Vector3 _Direction = new Vector3(horizontal * moveSpeed * Time.fixedDeltaTime, rigidbody.velocity.y, vertical * moveSpeed * Time.fixedDeltaTime);
             Vector3 TargetPoint = new Vector3(rigidbody.position.x + _Direction.x, rigidbody.position.y, rigidbody.position.z + _Direction.z);
             RotateTowards(this.gameObject, _Direction);
-            transform.position = TargetPoint;
-            ChangeAnim("Run");
+            if (!isWall(LayerMask.GetMask(Constant.LAYOUT_WALL)))
+            {
+                transform.position = TargetPoint;
+                ChangeAnim("Run");
+            }
+            
         }
         else if (horizontal == 0 || vertical == 0)
         {

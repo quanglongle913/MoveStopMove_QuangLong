@@ -10,6 +10,7 @@ public class BotAI : Character
     private void Start()
     {
         ChangeState(new IdleState());
+        ChangeColor(mesh.gameObject,ColorType);
     }
 
     // Update is called once per frame
