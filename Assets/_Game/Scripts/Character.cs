@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -8,17 +9,52 @@ public class Character : MonoBehaviour
     [SerializeField] protected SkinnedMeshRenderer mesh;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
+    [SerializeField] private float attackRange = 3f;
+
+
 
     protected float rotationSpeed = 1000f;
     private string currentAnimName;
 
+    protected Collider[] CurrentCubes;
+    protected Collider[] cubesInsideZone;
+    protected Collider[] cubesOutsideZone;
+    
     public ColorData ColorData { get => colorData; set => colorData = value; }
     public ColorType ColorType { get => colorType; set => colorType = value; }
+    public float AttackRange { get => attackRange; set => attackRange = value; }
 
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+    public virtual void FixedUpdate()
+    {
+        CurrentCubes = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
+        cubesInsideZone = Physics.OverlapSphere(this.transform.position, AttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
+        cubesOutsideZone = CurrentCubes.Except(cubesInsideZone).ToArray();
+    }
+
+    private void DetectionCharacter(Collider[] colliders)
+    {
+        foreach (Collider hitcollider in colliders)
+        {
+            if (hitcollider.GetComponent<BotAI>() && hitcollider.gameObject != this.gameObject)
+            {
+                Debug.Log(hitcollider.gameObject.name);
+            }
+        }
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(this.transform.position, AttackRange);
+
+    }
+    public virtual void OnInit()
+    { 
+    
     }
     protected void RotateTowards(GameObject gameObject, Vector3 direction)
     {

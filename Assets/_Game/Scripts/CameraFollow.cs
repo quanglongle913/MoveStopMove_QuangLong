@@ -10,7 +10,7 @@ using static UnityEngine.GraphicsBuffer;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    [SerializeField] private float xAxis, yAxis, zAxis, rangeDetection, offsetDetection;
+    [SerializeField] private float xAxis, yAxis, zAxis;
 
     private void FixedUpdate()
     {

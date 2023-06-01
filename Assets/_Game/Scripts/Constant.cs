@@ -6,7 +6,8 @@ public class Constant
 {
 
 
-    public static string LAYOUT_WALL = "Wall";
+    public static string LAYOUT_WALL = "Wall"; 
+        public static string LAYOUT_CHARACTER = "Character";
     public static float RAYCAST_HIT_RANGE_WALL = 1.0f;
 
 

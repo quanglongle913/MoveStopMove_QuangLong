@@ -11,6 +11,7 @@ public class IndicatorManager : PooledObject
     [SerializeField] GameObject poolMaster;
     [SerializeField] int total;
     [SerializeField] private ObjectPool poolObject;
+    [SerializeField] private float rangeDetection;
 
     BotAIManager botAIManager;
     public List<Indicator> indicatorList;
@@ -26,6 +27,11 @@ public class IndicatorManager : PooledObject
     // Update is called once per frame
     void FixedUpdate()
     {
+        Vector3 newPos = new Vector3(0, 0, -rangeDetection);
+        if (radarCam.transform.localPosition != newPos) 
+        {
+            radarCam.transform.localPosition = newPos;
+        }
         if (botAIManager != null && indicatorList.Count>0) 
         {
             GenerateRadar(mainCam, radarCam, indicatorList, botAIManager, player);

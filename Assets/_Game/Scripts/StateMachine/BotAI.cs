@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class BotAI : Character
 {
-
+    [SerializeField] private GameObject circleAttack;
     private IState<BotAI> currentState;
-   
+
+    public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
+
     private void Start()
     {
         ChangeState(new IdleState());
         ChangeColor(mesh.gameObject,ColorType);
+        if (CircleAttack.activeSelf)
+        { 
+            CircleAttack.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -22,7 +28,9 @@ public class BotAI : Character
         }
 
     }
-
+    public override void FixedUpdate() { 
+        base.FixedUpdate();
+    }
     public void ChangeState(IState<BotAI> state)
     {
         if (currentState != null)
