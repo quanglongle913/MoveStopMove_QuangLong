@@ -13,34 +13,51 @@ public class IndicatorManager : PooledObject
     [SerializeField] private ObjectPool poolObject;
     [SerializeField] private float rangeDetection;
 
-    BotAIManager botAIManager;
+    private BotAIManager botAIManager;
     public List<Indicator> indicatorList;
+
+    public static IndicatorManager Instance;
+    private bool isInit;
+
+    public bool IsInit { get => isInit; set => isInit = value; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+       
+    }
     // Start is called before the first frame update
     void Start()
-    {   
+    {
+        IsInit = false;
         indicatorList = new List<Indicator>();
-        botAIManager = BotAIManager.instance;
-        total = botAIManager.TotalBotAI;
-        StartCoroutine(coroutineGenerateDetection(0.5f));
+        botAIManager = BotAIManager.Instance;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 newPos = new Vector3(0, 0, -rangeDetection);
-        if (radarCam.transform.localPosition != newPos) 
+        if (botAIManager.IsInit && !IsInit)
         {
-            radarCam.transform.localPosition = newPos;
+            total = botAIManager.TotalBotAI;
+            GenerateDetection(total);
         }
-        if (botAIManager != null && indicatorList.Count>0) 
+        if (IsInit)
         {
-            GenerateRadar(mainCam, radarCam, indicatorList, botAIManager, player);
+            Vector3 newPos = new Vector3(0, 0, -rangeDetection);
+            if (radarCam.transform.localPosition != newPos)
+            {
+                radarCam.transform.localPosition = newPos;
+            }
+            if (botAIManager != null && indicatorList.Count > 0)
+            {
+                GenerateRadar(mainCam, radarCam, indicatorList, botAIManager, player);
+            }
         }
-    }
-     private IEnumerator coroutineGenerateDetection(float time)
-    { 
-        yield return new WaitForSeconds(time);
-        GenerateDetection(total);
+       
     }
     private void GenerateDetection(int total)
     {
@@ -49,18 +66,19 @@ public class IndicatorManager : PooledObject
             PooledObject DetectionObject = Spawner(poolObject, poolMaster);
             indicatorList.Add(DetectionObject.GetComponent<Indicator>());
         }
+        IsInit = true;
     }
     private void GenerateRadar(Camera mainCam, Camera radarCam, List<Indicator> indicatorList,BotAIManager  botAIManager,GameObject player)
     {
         if (mainCam != null)
         {
-            for (int i = 0; i < botAIManager.botAIList.Count; i++)
+            for (int i = 0; i < botAIManager.BotAIList.Count; i++)
             {
                 Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
-                Vector3 viewPos = mainCam.WorldToViewportPoint(botAIManager.botAIList[i].gameObject.transform.position);
-                Vector3 viewPosRadar = radarCam.WorldToViewportPoint(botAIManager.botAIList[i].gameObject.transform.position);
-                Vector3 viewPosDetection = mainCam.WorldToScreenPoint(botAIManager.botAIList[i].gameObject.transform.position);
-                Vector3 viewPosDetectionRadar = radarCam.WorldToScreenPoint(botAIManager.botAIList[i].gameObject.transform.position);
+                Vector3 viewPos = mainCam.WorldToViewportPoint(botAIManager.BotAIList[i].gameObject.transform.position);
+                Vector3 viewPosRadar = radarCam.WorldToViewportPoint(botAIManager.BotAIList[i].gameObject.transform.position);
+                Vector3 viewPosDetection = mainCam.WorldToScreenPoint(botAIManager.BotAIList[i].gameObject.transform.position);
+                Vector3 viewPosDetectionRadar = radarCam.WorldToScreenPoint(botAIManager.BotAIList[i].gameObject.transform.position);
 
                 //Debug.Log("target is viewPos.x:" + viewPos.x + " viewPos.y:" + viewPos.y + " viewPos.z:" + viewPos.z);
                 if (viewPosRadar.x >= 0 && viewPosRadar.x <= 1 && viewPosRadar.y >= 0 && viewPosRadar.y <= 1 && (viewPosRadar.z > 0))
@@ -122,7 +140,7 @@ public class IndicatorManager : PooledObject
                             }
                         }
                         indicatorList[i].gameObject.transform.position = new Vector2(viewPosDetectionRadar.x, viewPosDetectionRadar.y);
-                        indicatorList[i].ChangeColor(botAIManager.botAIList[i].ColorType);
+                        indicatorList[i].ChangeColor(botAIManager.BotAIList[i].ColorType);
                         indicatorList[i].gameObject.SetActive(true);
                     }
                 }

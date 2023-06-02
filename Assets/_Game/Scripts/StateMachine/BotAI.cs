@@ -9,14 +9,19 @@ public class BotAI : Character
 
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         ChangeState(new IdleState());
         ChangeColor(mesh.gameObject,ColorType);
         if (CircleAttack.activeSelf)
         { 
             CircleAttack.SetActive(false);
         }
+    }
+    public override void OnInit()
+    {
+        base.OnInit();
     }
 
     // Update is called once per frame

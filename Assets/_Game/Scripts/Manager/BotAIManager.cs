@@ -15,32 +15,33 @@ public class BotAIManager : PooledObject
     [SerializeField] private float size_x;
     [SerializeField] private float size_z;
 
-    public List<BotAI> botAIList;  
+    private List<BotAI> botAIList;  
 
-    public static BotAIManager instance;
+    public static BotAIManager Instance;
 
+    private bool isInit;
     public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
+    public List<BotAI> BotAIList { get => botAIList; set => botAIList = value; }
+    public bool IsInit { get => isInit; set => isInit = value; }
 
     private void Awake()
     {
-        if(instance==null) 
-        { 
-            instance = this; 
+        if(Instance == null) 
+        {
+            Instance = this; 
         }
-        
+        isInit = false;
+        botAIList = new List<BotAI>();
     }
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        botAIList=new List<BotAI>();
-        StartCoroutine(coroutineGenerateBotAI(0.5f));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        if (!IsInit)
+        {
+            GenerateBotAI(totalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, totalBotAI));
+        }
 
     }
+
     protected List<Vector3> GeneratePoolObjectPosition(Vector3 a_root, int numCount)
     {
         List<Vector3> listPoolObjectPosition = new List<Vector3>();
@@ -57,11 +58,7 @@ public class BotAIManager : PooledObject
         }
         return listPoolObjectPosition;
     }
-    private IEnumerator coroutineGenerateBotAI(float time)
-    { 
-        yield return new WaitForSeconds(time);
-        GenerateBotAI(totalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, totalBotAI));
-    }
+    
     private void GenerateBotAI(int totalBotAI, List<Vector3> listPoolObjectPosition)
     {
         for (int i=0;i<totalBotAI;i++)
@@ -78,6 +75,7 @@ public class BotAIManager : PooledObject
             botAI.ColorType = _colorType;
 
             botAIList.Add(botAIObject.GetComponent<BotAI>());
+            isInit = true;
         }
     }
     void OnDrawGizmos()

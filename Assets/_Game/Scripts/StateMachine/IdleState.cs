@@ -6,7 +6,7 @@ public class IdleState : IState<BotAI>
 {
     public void OnEnter(BotAI t)
     {
-
+        //Debug.Log("IdleState");
     }
 
     public void OnExecute(BotAI t)
