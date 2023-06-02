@@ -2289,6 +2289,7 @@ GameObject:
   - component: {fileID: 1678857057}
   - component: {fileID: 1678857058}
   - component: {fileID: 1678857059}
+  - component: {fileID: 1678857060}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -2381,11 +2382,31 @@ MonoBehaviour:
   mesh: {fileID: 386442175878308336}
   colorData: {fileID: 11400000, guid: 4a57f7919a0c91e4e8cf15d98607ad33, type: 2}
   colorType: 0
-  attackRange: 3
+  attackRange: 8
+  isTargerInRange: 0
+  Weapon: {fileID: 0}
+  IsHaveWeapon: 0
   floatingJoystick: {fileID: 0}
   moveSpeed: 10
   rigidbody: {fileID: 1678857057}
   cylinder: {fileID: 991997396}
+  target: {fileID: 0}
+  ease: 0
+--- !u!114 &1678857060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8159361664601157139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f63cb7ccf0449d896c90849a307c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolMaster: {fileID: 5331247227342862270}
+  poolObject: {fileID: 0}
+  Character: {fileID: 8159361664601157139}
 --- !u!1 &8397228602898670547
 GameObject:
   m_ObjectHideFlags: 0
@@ -3186,7 +3207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 700678914290373095, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 700678914290601415, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
       propertyPath: m_RootOrder

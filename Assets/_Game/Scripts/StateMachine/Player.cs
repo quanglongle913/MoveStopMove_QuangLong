@@ -12,9 +12,7 @@ public class Player : Character
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private Rigidbody rigidbody;
     [SerializeField] private GameObject cylinder;
-    [SerializeField] private GameObject weaponInHand;
-    [SerializeField] private GameObject weaponAttack;
-
+   
     private IState<Player> currentState;
     
     private float horizontal;
@@ -25,13 +23,15 @@ public class Player : Character
     public Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
+    public WeaponMannager weaponMannager;
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
         ChangeState(new IdleStateP());
-        weaponAttack.SetActive(false);
+        weaponMannager = WeaponMannager.Instance;
+
     }
     public override void OnInit()
     {
@@ -67,23 +67,26 @@ public class Player : Character
         EnableCircleAttack(CharactersInsideZone, true);
         EnableCircleAttack(CharactersOutsideZone, false);
     }
-    public Ease ease;
-    public void Attack() 
+
+    public void Attack()
     {
-        //TODO Attack
-        weaponInHand.SetActive(false);
-        weaponAttack.SetActive(true);
-        weaponAttack.transform.position = weaponInHand.transform.position;
+        ////TODO Attack
+        ChangeAnim("Attack");
+        Weapon.SetActive(false);
+        Weapon weaponAttack = weaponMannager.GenerateWeapon(WeaponMaster, this.gameObject);
         Vector3 newTarget = new Vector3(target.transform.position.x, weaponAttack.transform.position.y, target.transform.position.z);
-        weaponAttack.transform.DOMove(newTarget,0.5f)
-                //.SetEase(Ease.InElastic)
-                .SetEase(ease)
-                .SetLoops(0, LoopType.Yoyo)
-                .OnComplete(() =>
-                {
-                    weaponInHand.SetActive(true);
-                    weaponAttack.SetActive(false);
-                });
+        weaponAttack.isFire = true;
+        weaponAttack.transform.DOMove(newTarget, 1.0f)
+                    .SetEase(Ease.Linear)
+                    .SetLoops(0, LoopType.Yoyo)
+                    .OnComplete(() =>
+                    {
+                        weaponAttack.gameObject.GetComponent<PooledObject>().Release();
+                            //weaponMannager.IsInit = false;
+                            weaponAttack.isFire = false;
+                        Weapon.SetActive(true);
+                    });
+
     }
 
     public void Moving()

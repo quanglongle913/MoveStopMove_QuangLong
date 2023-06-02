@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
 
 
     [SerializeField] private bool isTargerInRange;
+    [SerializeField] private bool isAttacking;
     protected float rotationSpeed = 1000f;
     private string currentAnimName;
 
@@ -21,10 +22,15 @@ public class Character : MonoBehaviour
     protected Collider[] CharactersOutsideZone;
     
     private GameManager gameManager;
+    [SerializeField] public GameObject WeaponMaster;
+    [SerializeField] public GameObject Weapon;
+    [SerializeField] public bool IsHaveWeapon;
+
     public ColorData ColorData { get => colorData; set => colorData = value; }
     public ColorType ColorType { get => colorType; set => colorType = value; }
     public float AttackRange { get => attackRange; set => attackRange = value; }
     public bool IsTargerInRange { get => isTargerInRange; set => isTargerInRange = value; }
+    public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
     public GameManager GameManager { get => gameManager; set => gameManager = value; }
 
     // Start is called before the first frame update
@@ -35,6 +41,7 @@ public class Character : MonoBehaviour
     }
     public virtual void OnInit()
     {
+        IsAttacking = false;
         IsTargerInRange = false;
         //Debug.Log("OK");
     }

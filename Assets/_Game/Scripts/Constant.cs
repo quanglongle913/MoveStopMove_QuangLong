@@ -46,4 +46,10 @@ public class Constant
         }
         return isWall;
     }
+    public static bool IsDes(Vector3 a, Vector3 b, float range)
+    {
+
+        float distance = Vector3.Distance(a, b);
+        return distance < range;
+    }
 }
