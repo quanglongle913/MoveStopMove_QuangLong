@@ -6,7 +6,7 @@ public class PatrolStateP : IState<Player>
 {
     public void OnEnter(Player t)
     {
-        Debug.Log("PatrolStateP");
+        //Debug.Log("PatrolStateP");
         t.ChangeAnim("Run");
     }
 

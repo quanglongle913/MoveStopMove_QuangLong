@@ -11,7 +11,7 @@ public class AttackStateP : IState<Player>
         timer = 0;
         //randomTime = Random.Range(0.5f, 1.0f);
         randomTime = 0.5f;
-        Debug.Log("AttackStateP......");
+        //Debug.Log("AttackStateP......");
         t.ChangeAnim("Attack");
     }
 
@@ -22,24 +22,26 @@ public class AttackStateP : IState<Player>
         {
             t.Attack();
             timer = 0;
-        }
-        if (Mathf.Abs(t.Horizontal) >= 0.03 || Mathf.Abs(t.Vertical) >= 0.03)
-        {
-            t.ChangeState(new PatrolStateP());
-        }
-        else
-        {
-            if (t.IsTargerInRange)
+            Debug.Log("AttackStateP......");
+            if (Mathf.Abs(t.Horizontal) >= 0.03 || Mathf.Abs(t.Vertical) >= 0.03)
             {
-                //Debug.Log("Enemy Detected......");
-                t.ChangeState(new AttackStateP());
+                t.ChangeState(new PatrolStateP());
             }
             else
             {
-                t.ChangeState(new IdleStateP());
-            }
+                if (t.IsTargerInRange)
+                {
+                    //Debug.Log("Enemy Detected......");
+                    t.ChangeState(new AttackStateP());
+                }
+                else
+                {
+                    t.ChangeState(new IdleStateP());
+                }
 
+            }
         }
+        
     }
 
     public void OnExit(Player t)

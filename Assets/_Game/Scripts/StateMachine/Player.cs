@@ -1,7 +1,9 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class Player : Character
@@ -17,7 +19,7 @@ public class Player : Character
     
     private float horizontal;
     private float vertical;
-
+    public GameObject target;
     public FloatingJoystick FloatingJoystick { get => floatingJoystick; set => floatingJoystick = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
@@ -65,11 +67,23 @@ public class Player : Character
         EnableCircleAttack(CharactersInsideZone, true);
         EnableCircleAttack(CharactersOutsideZone, false);
     }
-
+    public Ease ease;
     public void Attack() 
     {
         //TODO Attack
-       
+        weaponInHand.SetActive(false);
+        weaponAttack.SetActive(true);
+        weaponAttack.transform.position = weaponInHand.transform.position;
+        Vector3 newTarget = new Vector3(target.transform.position.x, weaponAttack.transform.position.y, target.transform.position.z);
+        weaponAttack.transform.DOMove(newTarget,0.5f)
+                //.SetEase(Ease.InElastic)
+                .SetEase(ease)
+                .SetLoops(0, LoopType.Yoyo)
+                .OnComplete(() =>
+                {
+                    weaponInHand.SetActive(true);
+                    weaponAttack.SetActive(false);
+                });
     }
 
     public void Moving()
@@ -93,6 +107,7 @@ public class Player : Character
             if (hitcollider.GetComponent<BotAI>())
             {
                 hitcollider.GetComponent<BotAI>().CircleAttack.SetActive(enable);
+                target = hitcollider.gameObject;
             }
         }
     }
