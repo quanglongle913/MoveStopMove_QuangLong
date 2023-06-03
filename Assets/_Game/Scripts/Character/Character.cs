@@ -64,9 +64,11 @@ public class Character : MonoBehaviour
     public virtual void FixedUpdate()
     {
         GenerateZone();
+        DetectionCharacter(CharactersInsideZone);
         if (!IsAttacking)
         {
-            DetectionCharacter(CharactersInsideZone);
+           
+           
         }
         
     }
@@ -78,12 +80,25 @@ public class Character : MonoBehaviour
     }
     private void DetectionCharacter(Collider[] colliders)
     {
-        foreach (Collider hitcollider in colliders)
+        /*foreach (Collider hitcollider in colliders)
         {
             if (hitcollider.GetComponent<Character>() && hitcollider.gameObject != this.gameObject)
             {
                 IsTargerInRange = true;
                 Target= hitcollider.gameObject;
+                break;
+            }
+            else
+            {
+                IsTargerInRange = false;
+            }
+        }*/
+        for (int i = 0; i < colliders.Length; i++) 
+        {
+            if (colliders[i].GetComponent<Character>() && colliders[i].gameObject != this.gameObject)
+            {
+                IsTargerInRange = true;
+                Target = colliders[i].gameObject;
                 break;
             }
             else

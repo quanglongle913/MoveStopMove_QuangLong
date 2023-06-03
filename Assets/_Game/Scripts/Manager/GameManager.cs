@@ -9,27 +9,34 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private GameState gameState;
 
-    private UIManager uIManager;
-    private BotAIManager botAIManager;
-    private IndicatorManager indicatorManager;
-    //public static GameManager Instance;
+    [SerializeField] private UIManager uIManager;
+
+    private List<Indicator> indicatorList;
+    private List<BotAI> botAIList;
+    private bool isInit,isInitIndicator,isInitBotAI;
+
+
+    public List<BotAI> BotAIList { get => botAIList; set => botAIList = value; }
+    public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
-    //public bool IsInit { get => isInit; set => isInit = value; }
+    public List<Indicator> IndicatorList { get => indicatorList; set => indicatorList = value; }
+    public bool IsInitIndicator { get => isInitIndicator; set => isInitIndicator = value; }
+    public bool IsInitBotAI { get => isInitBotAI; set => isInitBotAI = value; }
 
     private void Start()
     {
-        botAIManager = BotAIManager.Instance;
-        indicatorManager = IndicatorManager.Instance;
-        uIManager = UIManager.Instance;
-        //gameState = (GameState)PlayerPrefs.GetInt(Constant.GAME_STATE, 0);
-        //gameState = GameState.Loading;
+        IsInit = false;
+        isInitIndicator=false;
+        IsInitBotAI=false;
+        BotAIList = new List<BotAI>();
+        IndicatorList= new List<Indicator>();
         gameState = GameState.Loading;
         uIManager.Loading();
         Debug.Log("" + gameState);
     }
     private void Update()
     {
-        if (botAIManager.IsInit && gameState == GameState.Loading)
+        if (IsInitBotAI && gameState == GameState.Loading)
         {
             StartCoroutine(SetGameStateMenu());
         }

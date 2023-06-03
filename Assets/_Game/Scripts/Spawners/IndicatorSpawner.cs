@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,48 +15,48 @@ public class IndicatorSpawner : PooledObject
     [SerializeField] private ObjectPool poolObject;
     [SerializeField] private float rangeDetection;
 
-    private BotAIManager botAIManager;
-    private IndicatorManager indicatorManager;
+    private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
-        botAIManager = BotAIManager.Instance;
-        indicatorManager = IndicatorManager.Instance;
+        gameManager = GameManager.Instance;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (botAIManager.IsInit && !indicatorManager.IsInit)
+       
+        if (!gameManager.IsInitIndicator)
         {
-            total = botAIManager.BotAIList.Count;
+            total = gameManager.BotAIList.Count;
+
             GenerateDetection(total);
+            gameManager.IsInitIndicator=true;
+            gameManager.IsInit = true;
         }
-        if (indicatorManager.IsInit)
+        if (gameManager.IsInitIndicator && gameManager.GameState==GameState.InGame)
         {
             Vector3 newPos = new Vector3(0, 0, -rangeDetection);
             if (radarCam.transform.localPosition != newPos)
             {
                 radarCam.transform.localPosition = newPos;
             }
-            if (botAIManager != null && indicatorManager.IndicatorList.Count > 0)
+            if (gameManager != null && gameManager.IndicatorList.Count > 0)
             {
-                GenerateRadar(mainCam, radarCam, indicatorManager.IndicatorList, botAIManager, player);
+                GenerateRadar(mainCam, radarCam, gameManager.IndicatorList, gameManager, player);
             }
         }
-
     }
     private void GenerateDetection(int total)
     {
         for (int i = 0; i < total; i++)
         {
             PooledObject DetectionObject = Spawner(poolObject, poolMaster);
-            indicatorManager.IndicatorList.Add(DetectionObject.GetComponent<Indicator>());
+            gameManager.IndicatorList.Add(DetectionObject.GetComponent<Indicator>());
+            //Debug.Log("Indicator:" + i);
         }
-        indicatorManager.IsInit = true;
-
     }
-    private void GenerateRadar(Camera mainCam, Camera radarCam, List<Indicator> indicatorList, BotAIManager botAIManager, GameObject player)
+    private void GenerateRadar(Camera mainCam, Camera radarCam, List<Indicator> indicatorList, GameManager botAIManager, GameObject player)
     {
         if (mainCam != null)
         {

@@ -12,24 +12,20 @@ public class BotAISpawner : PooledObject
     [SerializeField] private float size_x;
     [SerializeField] private float size_z;
 
-    private BotAIManager botAIManager;
-    private bool isInit;
+    private GameManager gameManager;
     public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
-    public bool IsInit { get => isInit; set => isInit = value; }
 
     private void Start()
     {
-        IsInit = false;
-        botAIManager = BotAIManager.Instance;
+        gameManager = GameManager.Instance;
     }
     private void Update()
     {
-        if (!IsInit)
+        if (gameManager.GameState==GameState.Loading && !gameManager.IsInitBotAI)
         {
             GenerateBotAI(totalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, totalBotAI));
-            IsInit = true;
+            gameManager.IsInitBotAI = true;
         }
-
     }
     protected List<Vector3> GeneratePoolObjectPosition(Vector3 a_root, int numCount)
     {
@@ -52,19 +48,19 @@ public class BotAISpawner : PooledObject
     {
         for (int i = 0; i < totalBotAI; i++)
         {
-            int randomIndex = UnityEngine.Random.Range(0, listPoolObjectPosition.Count);
-            Vector3 a_vector3 = listPoolObjectPosition[randomIndex];
-            PooledObject botAIObject = Spawner(poolObject, poolMaster);
-            botAIObject.transform.position = a_vector3;
-            listPoolObjectPosition.Remove(a_vector3);
+            int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+            PooledObject botAIObject = Spawner(poolObject, poolMaster,false);
+            botAIObject.transform.position = listPoolObjectPosition[randomIndex];
+            listPoolObjectPosition.Remove(listPoolObjectPosition[randomIndex]);
 
-            int randomColor = UnityEngine.Random.Range(0, 5);
+            int randomColor = Random.Range(0, 5);
             ColorType _colorType = (ColorType)randomColor;
             BotAI botAI = botAIObject.GetComponent<BotAI>();
             botAI.ColorType = _colorType;
-            botAIManager.BotAIList.Add(botAIObject.GetComponent<BotAI>());
+            botAIObject.gameObject.SetActive(true);
+            gameManager.BotAIList.Add(botAIObject.GetComponent<BotAI>());
+            //Debug.Log("BotAI:" +i);
         }
-        botAIManager.IsInit = true;
     }
     void OnDrawGizmos()
     {

@@ -8,13 +8,13 @@ public class WeaponSpawner : PooledObject
     [SerializeField] private ObjectPool poolObject;
 
     [SerializeField] public GameObject Character;
-    private  WeaponMannager weaponMannager;
+
 
     private bool isInit;
     public bool IsInit { get => isInit; set => isInit = value; }
     void Start()
     {
-        weaponMannager = WeaponMannager.Instance;
+        //weaponMannager = WeaponMannager.Instance;
     }
     public Weapon GenerateWeapon(GameObject a_root, GameObject character)
     {

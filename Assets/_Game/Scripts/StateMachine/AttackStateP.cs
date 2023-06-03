@@ -22,8 +22,14 @@ public class AttackStateP : IState<Player>
         
         if (timer > timerAttack)
         {
-            //t.IsAttacking = true;
-            t.Attack();
+            if (t.IsTargerInRange)
+            {
+                t.Attack();
+            }
+            else
+            {
+                t.ChangeState(new IdleStateP());
+            }
             timer = 0;
             //Debug.Log("AttackStateP......");
         }
@@ -31,19 +37,6 @@ public class AttackStateP : IState<Player>
         {
             t.ChangeState(new PatrolStateP());
         }
-        //else
-        //{
-        //    //if (!t.IsTargerInRange)
-        //    //{
-        //    //    //Debug.Log("Enemy Detected......");
-        //    //    t.ChangeState(new AttackStateP());
-        //    //}
-        //    //else
-        //    //{
-        //    //    t.ChangeState(new IdleStateP());
-        //    //}
-        //    t.ChangeState(new IdleStateP());
-        //}
     }
 
     public void OnExit(Player t)
