@@ -10,7 +10,6 @@ public class AttackStateP : IState<Player>
     public void OnEnter(Player t)
     {
         timer = 0;
-        //randomTime = Random.Range(0.5f, 1.0f);
         timerAttack = (float)Math.Round(60 / t.AttackSpeed, 1);
         //Debug.Log("AttackStateP......" + timerAttack);
         t.Anim.speed = (float)Math.Round(t.AttackSpeed / 60, 1);

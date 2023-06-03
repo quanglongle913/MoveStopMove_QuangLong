@@ -22,6 +22,7 @@ public class IdleState : IState<BotAI>
             if (t.IsTargerInRange)
             {
                 // Attack
+                t.ChangeState(new AttackState());
             }
             else if (timer > randomTime)
             {

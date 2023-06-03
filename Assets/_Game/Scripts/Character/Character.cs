@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Pool;
+
 [RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviour
 {   
@@ -17,7 +19,9 @@ public class Character : MonoBehaviour
     [SerializeField] private bool isTargerInRange;
     [SerializeField] private bool isAttacking;
     [Header("--------------------------- ")]
-
+    [SerializeField] private GameObject weaponMaster;
+    [SerializeField] private ObjectPool poolObject;
+    [SerializeField] public GameObject Weapon;
     private Animator anim;
     private Rigidbody rb;
     protected float rotationSpeed = 1000f;
@@ -28,9 +32,11 @@ public class Character : MonoBehaviour
     protected Collider[] CharactersOutsideZone;
     
     private GameManager gameManager;
-    [SerializeField] public GameObject WeaponMaster;
-    [SerializeField] public GameObject Weapon;
-    [SerializeField] public bool IsHaveWeapon;
+    private WeaponMannager weaponMannager;
+
+    public bool IsHaveWeapon;
+
+    private List<Weapon> weapons;
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public ColorData ColorData { get => colorData; set => colorData = value; }
@@ -42,6 +48,9 @@ public class Character : MonoBehaviour
     public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public Animator Anim { get => anim; set => anim = value; }
     public GameObject Target { get => target; set => target = value; }
+    public List<Weapon> Weapons { get => weapons; set => weapons = value; }
+    public ObjectPool PoolObject { get => poolObject; set => poolObject = value; }
+    public GameObject WeaponMaster { get => weaponMaster; set => weaponMaster = value; }
 
     // Start is called before the first frame update
     public virtual void Awake()
@@ -53,6 +62,9 @@ public class Character : MonoBehaviour
     public virtual void Start()
     {
         gameManager = GameManager.Instance;
+        weaponMannager = WeaponMannager.Instance;
+        Weapons = new List<Weapon>();
+        poolObject = weaponMannager.PoolObject;
         OnInit();
     }
     public virtual void OnInit()
@@ -117,7 +129,7 @@ public class Character : MonoBehaviour
     {
         //transform.rotation = Quaternion.LookRotation(direction);
         Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
-        gameObject.transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
     public void ChangeAnim(string animName)
     {

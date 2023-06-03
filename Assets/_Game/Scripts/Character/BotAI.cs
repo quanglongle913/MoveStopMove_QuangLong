@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,9 +36,20 @@ public class BotAI : Character
     // Update is called once per frame
     void Update()
     {
-        if (currentState != null)
+        if (this.GameManager.GameState == GameState.InGame)
         {
-            currentState.OnExecute(this);
+            if (currentState != null)
+            {
+                currentState.OnExecute(this);
+            }
+            if (Weapons.Count <= 1)
+            {
+                Weapons.Add(gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(WeaponMaster, this.PoolObject));
+            }
+        }
+        else
+        {
+            ChangeState(new IdleState());
         }
 
     }
@@ -50,10 +63,37 @@ public class BotAI : Character
     }
     public Vector3 generateTargetTransform()
     {
-        float posX = transform.position.x + Random.Range(-AttackRange*2, AttackRange * 2);
-        float posZ = transform.position.z + Random.Range(-AttackRange*2, AttackRange*2);
+        float posX = transform.position.x + UnityEngine.Random.Range(-AttackRange*2, AttackRange * 2);
+        float posZ = transform.position.z + UnityEngine.Random.Range(-AttackRange * 2, AttackRange * 2);
         Vector3 target = new Vector3(posX, transform.position.y,posZ);
         return target;
+    }
+    public void Attack()
+    {
+        ////TODO Attack
+        ChangeAnim("Attack");
+        IsAttacking = true;
+        Weapon.SetActive(false);
+        Weapon weaponAttack = Weapons[0];
+        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
+        Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponMaster.transform.position.z);
+        Target.transform.position = newTarget;
+        RotateTowards(this.gameObject, _Direction);
+        weaponAttack.isFire = true;
+        weaponAttack.gameObject.SetActive(true);
+        weaponAttack.transform.DOMove(Target.transform.position, (float)Math.Round(60 / AttackSpeed, 1))
+                    .SetEase(Ease.InSine)
+                    .SetLoops(0, LoopType.Restart)
+                    .OnComplete(() =>
+                    {
+                        Weapons.Remove(weaponAttack);
+                        weaponAttack.gameObject.SetActive(false);
+                        weaponAttack.gameObject.GetComponent<PooledObject>().Release();
+                        weaponAttack.isFire = false;
+                        Weapon.SetActive(true);
+                        IsAttacking = false;
+                    });
+
     }
     public void ChangeState(IState<BotAI> state)
     {

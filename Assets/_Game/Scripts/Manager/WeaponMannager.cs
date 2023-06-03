@@ -3,14 +3,26 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponMannager : Singleton<WeaponMannager>
+public class WeaponMannager : MonoBehaviour
 {
-    private void Start()
+    public static WeaponMannager Instance;
+    [SerializeField ] private ObjectPool poolObject;
+
+    public ObjectPool PoolObject { get => poolObject; set => poolObject = value; }
+
+    private void Awake()
+    {
+        if (Instance == null) 
+        {
+            Instance = this;
+        }
+    }
+    /*private void Start()
     {
         OnInit();
     }
     private void OnInit()
     {
 
-    }
+    }*/
 }

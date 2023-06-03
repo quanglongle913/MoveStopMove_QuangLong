@@ -15,13 +15,12 @@ public class Player : Character
     
     private float horizontal;
     private float vertical;
-    public List<Weapon> weapons;
 
     public FloatingJoystick FloatingJoystick { get => floatingJoystick; set => floatingJoystick = value; }
    
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
-    public WeaponMannager weaponMannager;
+    
 
     public override void Awake()
     {
@@ -32,8 +31,6 @@ public class Player : Character
     {
         base.Start();
         ChangeState(new IdleStateP());
-        weaponMannager = WeaponMannager.Instance;
-        weapons = new List<Weapon>();
     }
     public override void OnInit()
     {
@@ -48,9 +45,9 @@ public class Player : Character
             {
                 currentState.OnExecute(this);
             }
-            if (weapons.Count <= 1)
+            if (Weapons.Count <= 1)
             {
-                weapons.Add(gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(WeaponMaster, this.gameObject));
+                Weapons.Add(gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(WeaponMaster, this.PoolObject));
             }
         } else
         { 
@@ -74,33 +71,33 @@ public class Player : Character
         EnableCircleAttack(CharactersInsideZone, true);
         EnableCircleAttack(CharactersOutsideZone, false);
     }
-    public Ease ease;
+    //public Ease ease;
     public void Attack()
     {
         ////TODO Attack
         ChangeAnim("Attack");
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
         IsAttacking = true;
         Weapon.SetActive(false);
 
-        Weapon weaponAttack = weapons[0];
+        Weapon weaponAttack = Weapons[0];
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
+        Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z- WeaponMaster.transform.position.z);
         Target.transform.position = newTarget;
+        RotateTowards(this.gameObject,_Direction);
         weaponAttack.isFire = true;
         weaponAttack.gameObject.SetActive(true);
         weaponAttack.transform.DOMove(Target.transform.position, (float)Math.Round(60 / AttackSpeed, 1))
-                    .SetEase(ease)
+                    .SetEase(Ease.InSine)
                     .SetLoops(0, LoopType.Restart)
                     .OnComplete(() =>
                     {
-                        weapons.Remove(weaponAttack);
+                        Weapons.Remove(weaponAttack);
                         weaponAttack.gameObject.SetActive(false);
                         weaponAttack.gameObject.GetComponent<PooledObject>().Release();
-                        //weaponMannager.IsInit = false;
                         weaponAttack.isFire = false;
                         Weapon.SetActive(true);
                         IsAttacking = false;
-
                     });
 
     }
