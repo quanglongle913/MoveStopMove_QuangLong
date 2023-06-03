@@ -13,13 +13,14 @@ GameObject:
   - component: {fileID: 230288051502830492}
   - component: {fileID: -2828006085504420425}
   - component: {fileID: 3481367434845503858}
+  - component: {fileID: 8753661018855770964}
   m_Layer: 0
   m_Name: Candy_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &230288051504599420
 Transform:
   m_ObjectHideFlags: 0
@@ -100,6 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 1547337989, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
+  weaponType: 0
+  _GameObject: {fileID: 0}
   rotationSpeed: 1000
   isFire: 0
 --- !u!114 &3481367434845503858
@@ -114,3 +117,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &8753661018855770964
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230288051504762204}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.011666528, y: 0.026596583, z: 0.011666521}
+  m_Center: {x: -0.0000000018620891, y: -0.002388572, z: 4.656614e-10}

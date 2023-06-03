@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4969340056134058234}
   - component: {fileID: -1762501430142074673}
   - component: {fileID: -525221711748153702}
+  - component: {fileID: 7923371211760783037}
   m_Layer: 0
   m_Name: Axe_1
   m_TagString: Untagged
@@ -100,6 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 1547337989, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
+  weaponType: 0
+  _GameObject: {fileID: 0}
   rotationSpeed: 1000
   isFire: 0
 --- !u!114 &-525221711748153702
@@ -114,3 +117,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &7923371211760783037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4969340056132066874}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.01718859, y: 0.030933008, z: 0.0032165146}
+  m_Center: {x: -0.000048371934, y: -0.00092693185, z: 0}

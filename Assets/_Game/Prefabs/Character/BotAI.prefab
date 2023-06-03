@@ -2528,6 +2528,8 @@ MonoBehaviour:
   poolObject: {fileID: 0}
   weaponType: 0
   attackSpeedAfterbuff: 0
+  characterName: BotAI
+  hp: 0
   IsHaveWeapon: 0
   circleAttack: {fileID: 4197063280569115508}
 --- !u!1 &8397228602898670547

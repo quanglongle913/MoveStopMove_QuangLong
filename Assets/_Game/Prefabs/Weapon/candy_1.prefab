@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7694272088573856891
 Transform:
   m_ObjectHideFlags: 0
@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 1547337989, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
+  weaponType: 0
+  _GameObject: {fileID: 0}
   rotationSpeed: 1000
   isFire: 0
 --- !u!114 &-2532394824414368843

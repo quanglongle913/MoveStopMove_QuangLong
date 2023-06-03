@@ -1,4 +1,5 @@
 using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,5 +85,19 @@ public class BotAI : Character
             currentState.OnEnter(this);
         }
     }
-
+    public override void OnDespawn()
+    {
+        base.OnDespawn();
+        //OnInit();
+    }
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        if (GameManager.BotAIList.Count>0)
+        {
+            GameManager.BotAIList.Remove(gameObject.GetComponent<BotAI>());
+            ChangeState(new DeadState());
+        }
+        
+    }
 }

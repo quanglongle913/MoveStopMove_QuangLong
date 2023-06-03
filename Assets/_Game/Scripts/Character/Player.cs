@@ -114,5 +114,15 @@ public class Player : Character
             currentState.OnEnter(this);
         }
     }
+    public override void OnDespawn()
+    {
+        base.OnDespawn();
+        //OnInit();
+    }
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        ChangeState(new DeadStateP());
+    }
 }
 

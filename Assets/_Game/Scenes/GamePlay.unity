@@ -1469,6 +1469,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 233807988}
     - target: {fileID: 1678857059, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
+      propertyPath: characterName
+      value: You
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678857059, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
       propertyPath: floatingJoystick
       value: 
       objectReference: {fileID: 1125174906}
@@ -1711,8 +1715,10 @@ MonoBehaviour:
   player: {fileID: 1678857054}
   poolMaster: {fileID: 758027350}
   total: 0
-  poolObject: {fileID: 829249251}
   rangeDetection: 60
+  poolObject: {fileID: 829249251}
+  poolObjectCharacterInfo: {fileID: 2037851763}
+  axisY: 200
 --- !u!1 &805236822
 GameObject:
   m_ObjectHideFlags: 0
@@ -3562,6 +3568,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1441782304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1441782305}
+  m_Layer: 0
+  m_Name: PoolMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1441782305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441782304}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2037851762}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1456911211
 GameObject:
   m_ObjectHideFlags: 0
@@ -3926,6 +3963,7 @@ Transform:
   - {fileID: 513529475}
   - {fileID: 829249252}
   - {fileID: 1632870197}
+  - {fileID: 2037851762}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4181,6 +4219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37aa2d88097c3f84c9152796fed5b95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalBotAI_InGame: 1
+  totalBotAI: 2
   gameState: 0
   uIManager: {fileID: 1732760747}
 --- !u!1 &1737939430
@@ -4417,7 +4457,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolMaster: {fileID: 1826131711}
   poolObject: {fileID: 513529474}
-  totalBotAI: 1
   offset: 30
   size_x: 1
   size_z: 1
@@ -5197,6 +5236,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015066278}
   m_CullTransparentMesh: 0
+--- !u!1 &2037851761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2037851762}
+  - component: {fileID: 2037851763}
+  m_Layer: 0
+  m_Name: CharcterInfo Pooling
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2037851762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037851761}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1441782305}
+  m_Father: {fileID: 1663440822}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2037851763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037851761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26fff492ad1c6284391eae5e9634c76a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initPoolSize: 50
+  objectToPool: {fileID: 3417911611483682272, guid: 465f2effba4e3834daeed290f9ae9726, type: 3}
+  PoolMasters: {fileID: 1441782304}
 --- !u!1 &2114585788
 GameObject:
   m_ObjectHideFlags: 0

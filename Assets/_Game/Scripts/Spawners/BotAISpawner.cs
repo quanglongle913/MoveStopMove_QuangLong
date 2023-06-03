@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,13 +8,13 @@ public class BotAISpawner : PooledObject
 {
     [SerializeField] GameObject poolMaster;
     [SerializeField] private ObjectPool poolObject;
-    [SerializeField] int totalBotAI;
+    //[SerializeField] int totalBotAI;
     [SerializeField] float offset;
     [SerializeField] private float size_x;
     [SerializeField] private float size_z;
 
     private GameManager gameManager;
-    public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
+    //public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
 
     private void Start()
     {
@@ -21,10 +22,17 @@ public class BotAISpawner : PooledObject
     }
     private void Update()
     {
-        if (gameManager.GameState==GameState.Loading && !gameManager.IsInitBotAI)
+        if (gameManager.GameState == GameState.Loading && !gameManager.IsInitBotAI)
         {
-            GenerateBotAI(totalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, totalBotAI));
+            GenerateBotAI(gameManager.TotalBotAI_InGame, GeneratePoolObjectPosition(poolMaster.transform.position, gameManager.TotalBotAI_InGame));
             gameManager.IsInitBotAI = true;
+        } else if (gameManager.GameState == GameState.InGame)
+        {
+            if (gameManager.BotAIList.Count < gameManager.TotalBotAI_InGame && gameManager.TotalBotAI>0)
+            {
+                GenerateBotAI(1, GeneratePoolObjectPosition(poolMaster.transform.position, gameManager.TotalBotAI_InGame));
+                gameManager.TotalBotAI--;
+            }
         }
     }
     protected List<Vector3> GeneratePoolObjectPosition(Vector3 a_root, int numCount)
@@ -62,10 +70,10 @@ public class BotAISpawner : PooledObject
             //Debug.Log("BotAI:" +i);
         }
     }
-    void OnDrawGizmos()
+   /* void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        int Row = Mathf.CeilToInt(Mathf.Sqrt(totalBotAI));
+        int Row = Mathf.CeilToInt(Mathf.Sqrt(gameManager.TotalBotAI_InGame));
         int Column = Row;
         for (int i = 0; i < Row; i++)
         {
@@ -92,5 +100,5 @@ public class BotAISpawner : PooledObject
         Gizmos.DrawLine(topR, botR);
         Gizmos.DrawLine(botR, botL);
         Gizmos.DrawLine(botL, topL);
-    }
+    }*/
 }

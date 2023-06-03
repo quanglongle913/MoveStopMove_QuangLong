@@ -7,13 +7,16 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
 
-    [SerializeField] private GameState gameState;
+    [SerializeField] private int totalBotAI_InGame;
+    [SerializeField] private int totalBotAI;
 
+    [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
 
     private List<Indicator> indicatorList;
+    private List<CharacterInfo> characterInfoList;
     private List<BotAI> botAIList;
-    private bool isInit,isInitIndicator,isInitBotAI;
+    private bool isInit, isInitIndicator, isInitBotAI;
 
 
     public List<BotAI> BotAIList { get => botAIList; set => botAIList = value; }
@@ -22,6 +25,9 @@ public class GameManager : Singleton<GameManager>
     public List<Indicator> IndicatorList { get => indicatorList; set => indicatorList = value; }
     public bool IsInitIndicator { get => isInitIndicator; set => isInitIndicator = value; }
     public bool IsInitBotAI { get => isInitBotAI; set => isInitBotAI = value; }
+    public int TotalBotAI_InGame { get => totalBotAI_InGame; set => totalBotAI_InGame = value; }
+    public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
+    public List<CharacterInfo> CharacterInfoList { get => characterInfoList; set => characterInfoList = value; }
 
     private void Start()
     {
@@ -30,6 +36,7 @@ public class GameManager : Singleton<GameManager>
         IsInitBotAI=false;
         BotAIList = new List<BotAI>();
         IndicatorList= new List<Indicator>();
+        CharacterInfoList = new List<CharacterInfo>();
         gameState = GameState.Loading;
         uIManager.Loading();
         Debug.Log("" + gameState);

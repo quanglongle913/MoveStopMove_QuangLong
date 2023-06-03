@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8215108887197778782}
   - component: {fileID: -274191848357511639}
   - component: {fileID: 800744211300424579}
+  - component: {fileID: 3869650702539397731}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -100,6 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 1547337989, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
+  weaponType: 0
+  _GameObject: {fileID: 0}
   rotationSpeed: 1000
   isFire: 0
 --- !u!114 &800744211300424579
@@ -114,3 +117,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &3869650702539397731
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7655336571444803458}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.0049725757, y: 0.02522432, z: 0.0025105476}
+  m_Center: {x: -0.00025516617, y: 0.0021604483, z: 0}

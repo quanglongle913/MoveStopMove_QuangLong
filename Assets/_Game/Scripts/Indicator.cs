@@ -14,18 +14,6 @@ public class Indicator : MonoBehaviour
     public RawImage Image { get => image; set => image = value; }
     public RawImage Image2 { get => image2; set => image2 = value; }
 
-    // Start is called before the first frame update
-    /*   void Start()
-       {
-           ChangeColor(image,colorType);
-           ChangeColor(image2, colorType);
-       }*/
-
-    // Update is called once per frame
-    /* void Update()
-     {
-
-     }*/
     public void ChangeColor( ColorType colorType)
     {
         this.ColorType = colorType;

@@ -30,8 +30,11 @@ public class Character : MonoBehaviour
     [SerializeField] private WeaponType weaponType;
     [SerializeField] private float attackSpeedAfterbuff;
     [Header("--------------------------- ")]
+    public string characterName;
     private Animator anim;
     private Rigidbody rb;
+    public float hp;
+    public bool IsDeath => hp <= 0;
     protected float rotationSpeed = 1000f;
     private string currentAnimName;
     private GameObject target;
@@ -89,6 +92,7 @@ public class Character : MonoBehaviour
     {
         IsAttacking = false;
         IsTargerInRange = false;
+        hp = 1;
         //Debug.Log("OK");
     }
     public virtual void FixedUpdate()
@@ -111,9 +115,9 @@ public class Character : MonoBehaviour
         IsAttacking = true;
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
         Weapons weaponAttack = Weapons[0];
+        weaponAttack._GameObject = gameObject;
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
         Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponMaster.transform.position.z);
-
         RotateTowards(this.gameObject, _Direction);
         weaponAttack.isFire = true;
         weaponAttack.gameObject.SetActive(true);
@@ -152,7 +156,16 @@ public class Character : MonoBehaviour
             }
         }
     }
-    
+    public virtual void OnDespawn()
+    {
+
+    }
+    protected virtual void OnDeath()
+    {
+        //ChangeAnim("Dead");
+        //Invoke(nameof(OnDespawn), 2f);
+       
+    }
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(this.transform.position, AttackRange);
@@ -164,6 +177,7 @@ public class Character : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
         gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
+
     public void ChangeAnim(string animName)
     {
         if (currentAnimName != animName)
@@ -177,5 +191,20 @@ public class Character : MonoBehaviour
     {
         this.colorType = colorType;
         a_obj.GetComponent<SkinnedMeshRenderer>().material = colorData.GetMat(colorType);
+    }
+    public void OnHit(float damage)
+    {
+
+        if (!IsDeath)
+        {
+            hp -= damage;
+
+            if (IsDeath)
+            {
+                hp = 0;
+                OnDeath();
+            }
+        }
+
     }
 }
