@@ -11,6 +11,7 @@ public class BotAI : Character
     private IState<BotAI> currentState;
     private NavMeshAgent agent;
     private Transform targetTransform;
+
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
     public Transform TargetTransform { get => targetTransform; set => targetTransform = value; }
     public override void Awake()
@@ -31,6 +32,7 @@ public class BotAI : Character
     public override void OnInit()
     {
         base.OnInit();
+        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
     }
 
     // Update is called once per frame
@@ -64,32 +66,9 @@ public class BotAI : Character
         Vector3 target = new Vector3(posX, transform.position.y,posZ);
         return target;
     }
-    public void Attack()
+    public override void Attack()
     {
-        ////TODO Attack
-        ChangeAnim("Attack");
-        IsAttacking = true;
-        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
-        Weapons weaponAttack = Weapons[0];
-        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
-        Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponMaster.transform.position.z);
-
-        RotateTowards(this.gameObject, _Direction);
-        weaponAttack.isFire = true;
-        weaponAttack.gameObject.SetActive(true);
-        weaponAttack.transform.DOMove(newTarget, (float)Math.Round(60 / AttackSpeed, 1))
-                    .SetEase(Ease.InSine)
-                    .SetLoops(0, LoopType.Restart)
-                    .OnComplete(() =>
-                    {
-                        Weapons.Remove(weaponAttack);
-                        weaponAttack.gameObject.SetActive(false);
-                        weaponAttack.gameObject.GetComponent<PooledObject>().Release();
-                        weaponAttack.isFire = false;
-                        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-                        IsAttacking = false;
-                    });
-
+        base.Attack();
     }
     public void ChangeState(IState<BotAI> state)
     {

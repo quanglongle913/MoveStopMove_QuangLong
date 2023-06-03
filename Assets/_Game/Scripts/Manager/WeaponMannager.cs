@@ -10,6 +10,7 @@ public class WeaponMannager : MonoBehaviour
     [SerializeField] private WeaponData weaponData;
 
     public ObjectPool[] PoolObject { get => poolObject; set => poolObject = value; }
+    public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
 
     private void Awake()
     {

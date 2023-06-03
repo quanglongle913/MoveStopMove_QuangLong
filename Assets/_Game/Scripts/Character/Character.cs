@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,8 @@ public class Character : MonoBehaviour
     [SerializeField] private ObjectPool poolObject;
     //[SerializeField] private List<Weapons> listWeaponsAttack;
     [Header("--------------------------- ")]
-    private WeaponType weaponType;
+    [SerializeField] private WeaponType weaponType;
+    [SerializeField] private float attackSpeedAfterbuff;
     [Header("--------------------------- ")]
     private Animator anim;
     private Rigidbody rb;
@@ -41,7 +44,6 @@ public class Character : MonoBehaviour
 
     public bool IsHaveWeapon;
 
-    
     private List<Weapons> weapons;
 
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
@@ -60,6 +62,9 @@ public class Character : MonoBehaviour
     public GameObject WeaponMaster { get => weaponMaster; set => weaponMaster = value; }
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public List<Weapons> ListWeaponsInHand { get => listWeaponsInHand; set => listWeaponsInHand = value; }
+    public WeaponMannager WeaponMannager { get => weaponMannager; set => weaponMannager = value; }
+    public float AttackSpeedAfterbuff { get => attackSpeedAfterbuff; set => attackSpeedAfterbuff = value; }
+
     //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
 
     // Start is called before the first frame update
@@ -100,6 +105,31 @@ public class Character : MonoBehaviour
             }
         }
     }
+    public virtual void Attack() 
+    {
+        ChangeAnim("Attack");
+        IsAttacking = true;
+        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
+        Weapons weaponAttack = Weapons[0];
+        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
+        Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponMaster.transform.position.z);
+
+        RotateTowards(this.gameObject, _Direction);
+        weaponAttack.isFire = true;
+        weaponAttack.gameObject.SetActive(true);
+        weaponAttack.transform.DOMove(newTarget, (float)Math.Round(60 / AttackSpeedAfterbuff, 1))
+                    .SetEase(Ease.InSine)
+                    .SetLoops(0, LoopType.Restart)
+                    .OnComplete(() =>
+                    {
+                        Weapons.Remove(weaponAttack);
+                        weaponAttack.gameObject.SetActive(false);
+                        weaponAttack.gameObject.GetComponent<PooledObject>().Release();
+                        weaponAttack.isFire = false;
+                        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+                        IsAttacking = false;
+                    });
+    }
     private void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
@@ -108,19 +138,6 @@ public class Character : MonoBehaviour
     }
     private void DetectionCharacter(Collider[] colliders)
     {
-        /*foreach (Collider hitcollider in colliders)
-        {
-            if (hitcollider.GetComponent<Character>() && hitcollider.gameObject != this.gameObject)
-            {
-                IsTargerInRange = true;
-                Target= hitcollider.gameObject;
-                break;
-            }
-            else
-            {
-                IsTargerInRange = false;
-            }
-        }*/
         for (int i = 0; i < colliders.Length; i++) 
         {
             if (colliders[i].GetComponent<Character>() && colliders[i].gameObject != this.gameObject)

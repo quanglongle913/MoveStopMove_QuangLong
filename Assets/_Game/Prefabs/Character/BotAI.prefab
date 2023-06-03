@@ -2368,7 +2368,7 @@ GameObject:
   - component: {fileID: 5088578861743276337}
   - component: {fileID: 3085465713246740360}
   m_Layer: 6
-  m_Name: BotAI 2
+  m_Name: BotAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2476,7 +2476,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.3
+  m_BaseOffset: 0.15
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &5088578861743276337
@@ -2526,6 +2526,8 @@ MonoBehaviour:
   isAttacking: 0
   weaponMaster: {fileID: 1779045564}
   poolObject: {fileID: 0}
+  weaponType: 0
+  attackSpeedAfterbuff: 0
   IsHaveWeapon: 0
   circleAttack: {fileID: 4197063280569115508}
 --- !u!1 &8397228602898670547

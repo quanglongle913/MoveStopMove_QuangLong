@@ -36,7 +36,8 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
-        
+
+        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
     }
     void Update()
     {
@@ -69,34 +70,9 @@ public class Player : Character
         EnableCircleAttack(CharactersOutsideZone, false);
     }
     //public Ease ease;
-    public void Attack()
+    public override void Attack()
     {
-        ////TODO Attack
-        ChangeAnim("Attack");
-        //Debug.Log("Attack");
-        IsAttacking = true;
-        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
-
-        Weapons weaponAttack = Weapons[0];
-        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
-        Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z- WeaponMaster.transform.position.z);
-
-        RotateTowards(this.gameObject,_Direction);
-        weaponAttack.isFire = true;
-        weaponAttack.gameObject.SetActive(true);
-        weaponAttack.transform.DOMove(newTarget, (float)Math.Round(60 / AttackSpeed, 1))
-                    .SetEase(Ease.InSine)
-                    .SetLoops(0, LoopType.Restart)
-                    .OnComplete(() =>
-                    {
-                        Weapons.Remove(weaponAttack);
-                        weaponAttack.gameObject.SetActive(false);
-                        weaponAttack.gameObject.GetComponent<PooledObject>().Release();
-                        weaponAttack.isFire = false;
-                        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-                        IsAttacking = false;
-                    });
-
+       base.Attack();
     }
 
     public void Moving()
