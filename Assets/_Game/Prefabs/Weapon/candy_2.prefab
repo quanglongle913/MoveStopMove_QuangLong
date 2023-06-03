@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6959027798836013085}
   - component: {fileID: 224249625357132273}
   m_Layer: 0
-  m_Name: candy_2
+  m_Name: Candy_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

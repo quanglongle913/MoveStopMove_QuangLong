@@ -6,11 +6,13 @@ using UnityEngine.Pool;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviour
-{   
-    
+{
+    [Header("Character: ")]
     [SerializeField] protected SkinnedMeshRenderer mesh;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
+    //[SerializeField] private GameObject weaponMasterHand;
+    [SerializeField] private List<Weapons> listWeaponsInHand;
     [Header("--------------------------- ")]
     [SerializeField] private float attackRange = 3f;
     [SerializeField] private float attackSpeed = 3f;
@@ -21,7 +23,10 @@ public class Character : MonoBehaviour
     [Header("--------------------------- ")]
     [SerializeField] private GameObject weaponMaster;
     [SerializeField] private ObjectPool poolObject;
-    [SerializeField] public GameObject Weapon;
+    //[SerializeField] private List<Weapons> listWeaponsAttack;
+    [Header("--------------------------- ")]
+    private WeaponType weaponType;
+    [Header("--------------------------- ")]
     private Animator anim;
     private Rigidbody rb;
     protected float rotationSpeed = 1000f;
@@ -36,7 +41,9 @@ public class Character : MonoBehaviour
 
     public bool IsHaveWeapon;
 
-    private List<Weapon> weapons;
+    
+    private List<Weapons> weapons;
+
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public ColorData ColorData { get => colorData; set => colorData = value; }
@@ -48,9 +55,12 @@ public class Character : MonoBehaviour
     public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public Animator Anim { get => anim; set => anim = value; }
     public GameObject Target { get => target; set => target = value; }
-    public List<Weapon> Weapons { get => weapons; set => weapons = value; }
+    public List<Weapons> Weapons { get => weapons; set => weapons = value; }
     public ObjectPool PoolObject { get => poolObject; set => poolObject = value; }
     public GameObject WeaponMaster { get => weaponMaster; set => weaponMaster = value; }
+    public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
+    public List<Weapons> ListWeaponsInHand { get => listWeaponsInHand; set => listWeaponsInHand = value; }
+    //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
 
     // Start is called before the first frame update
     public virtual void Awake()
@@ -63,8 +73,11 @@ public class Character : MonoBehaviour
     {
         gameManager = GameManager.Instance;
         weaponMannager = WeaponMannager.Instance;
-        Weapons = new List<Weapon>();
-        poolObject = weaponMannager.PoolObject;
+        Weapons = new List<Weapons>();
+        //Init Weapons....................
+        WeaponType = WeaponType.Arrow;
+        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+        poolObject = weaponMannager.PoolObject[(int)WeaponType];
         OnInit();
     }
     public virtual void OnInit()
@@ -77,12 +90,15 @@ public class Character : MonoBehaviour
     {
         GenerateZone();
         DetectionCharacter(CharactersInsideZone);
-        if (!IsAttacking)
+        if (this.GameManager.GameState == GameState.InGame)
         {
-           
-           
+            if (Weapons.Count <= 1)
+            {
+                Weapons a_weapon = gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(WeaponMaster, PoolObject);
+                a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
+                Weapons.Add(a_weapon);
+            }
         }
-        
     }
     private void GenerateZone()
     {

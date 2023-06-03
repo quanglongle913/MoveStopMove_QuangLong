@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Player : Character
 {
@@ -45,10 +46,6 @@ public class Player : Character
             {
                 currentState.OnExecute(this);
             }
-            if (Weapons.Count <= 1)
-            {
-                Weapons.Add(gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(WeaponMaster, this.PoolObject));
-            }
         } else
         { 
             ChangeState(new IdleStateP());
@@ -78,16 +75,16 @@ public class Player : Character
         ChangeAnim("Attack");
         //Debug.Log("Attack");
         IsAttacking = true;
-        Weapon.SetActive(false);
+        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
 
-        Weapon weaponAttack = Weapons[0];
+        Weapons weaponAttack = Weapons[0];
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
         Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z- WeaponMaster.transform.position.z);
-        Target.transform.position = newTarget;
+
         RotateTowards(this.gameObject,_Direction);
         weaponAttack.isFire = true;
         weaponAttack.gameObject.SetActive(true);
-        weaponAttack.transform.DOMove(Target.transform.position, (float)Math.Round(60 / AttackSpeed, 1))
+        weaponAttack.transform.DOMove(newTarget, (float)Math.Round(60 / AttackSpeed, 1))
                     .SetEase(Ease.InSine)
                     .SetLoops(0, LoopType.Restart)
                     .OnComplete(() =>
@@ -96,7 +93,7 @@ public class Player : Character
                         weaponAttack.gameObject.SetActive(false);
                         weaponAttack.gameObject.GetComponent<PooledObject>().Release();
                         weaponAttack.isFire = false;
-                        Weapon.SetActive(true);
+                        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
                         IsAttacking = false;
                     });
 

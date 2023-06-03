@@ -11,13 +11,13 @@ public class WeaponSpawner : PooledObject
 
     private bool isInit;
     public bool IsInit { get => isInit; set => isInit = value; }
-    public Weapon GenerateWeapon(GameObject a_root, ObjectPool poolObject)
+    public Weapons GenerateWeapon(GameObject a_root, ObjectPool poolObject)
     {
         PooledObject weaponObject = Spawner(poolObject, a_root, false);
         weaponObject.transform.localPosition = Vector3.zero;
         weaponObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        weaponObject.GetComponent<Weapon>().isFire = false;
-        return weaponObject.GetComponent<Weapon>();
+        weaponObject.GetComponent<Weapons>().isFire = false;
+        return weaponObject.GetComponent<Weapons>();
     }
 
 }

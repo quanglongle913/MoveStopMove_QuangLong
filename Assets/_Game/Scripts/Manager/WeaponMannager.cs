@@ -6,9 +6,10 @@ using UnityEngine;
 public class WeaponMannager : MonoBehaviour
 {
     public static WeaponMannager Instance;
-    [SerializeField ] private ObjectPool poolObject;
+    [SerializeField ] private ObjectPool[] poolObject;
+    [SerializeField] private WeaponData weaponData;
 
-    public ObjectPool PoolObject { get => poolObject; set => poolObject = value; }
+    public ObjectPool[] PoolObject { get => poolObject; set => poolObject = value; }
 
     private void Awake()
     {
