@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
     [Header("Layout: ")]
     [SerializeField] private GameObject loading;
@@ -12,39 +12,11 @@ public class UIManager : MonoBehaviour
     [Header("InGame: ")]
     [SerializeField] private GameObject popup_Setting;
 
-
-    public static UIManager Instance;
-
     GameManager gameManager;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
+    
     private void Start()
     {
        gameManager = GameManager.Instance;
-    }
-    private void Update()
-    {
-        /*if (gameManager.GameState == GameState.Loading)
-        {
-            Loading();
-        }
-        else if (gameManager.GameState == GameState.GameMenu)
-        { 
-            GameMenu();
-        }
-        else if (gameManager.GameState == GameState.InGame)
-        {
-            InGame();
-        }
-        else if (gameManager.GameState == GameState.EndGame)
-        {
-            EndGame();
-        }*/
     }
     public void setLoading()
     {

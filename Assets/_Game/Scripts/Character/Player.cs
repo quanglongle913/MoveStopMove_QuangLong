@@ -9,33 +9,36 @@ using UnityEngine;
 public class Player : Character
 {
     [SerializeField] private FloatingJoystick floatingJoystick;
-    [SerializeField] private float moveSpeed = 5.0f;
-    [SerializeField] private Rigidbody rigidbody;
     [SerializeField] private GameObject cylinder;
    
     private IState<Player> currentState;
     
     private float horizontal;
     private float vertical;
-    public GameObject target;
+    public List<Weapon> weapons;
+
     public FloatingJoystick FloatingJoystick { get => floatingJoystick; set => floatingJoystick = value; }
-    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
-    public Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
+   
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
     public WeaponMannager weaponMannager;
 
+    public override void Awake()
+    {
+        base.Awake();
+    }
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
         ChangeState(new IdleStateP());
         weaponMannager = WeaponMannager.Instance;
-
+        weapons = new List<Weapon>();
     }
     public override void OnInit()
     {
         base.OnInit();
+        
     }
     void Update()
     {
@@ -44,6 +47,10 @@ public class Player : Character
             if (currentState != null)
             {
                 currentState.OnExecute(this);
+            }
+            if (weapons.Count <= 1)
+            {
+                weapons.Add(gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(WeaponMaster, this.gameObject));
             }
         } else
         { 
@@ -67,24 +74,33 @@ public class Player : Character
         EnableCircleAttack(CharactersInsideZone, true);
         EnableCircleAttack(CharactersOutsideZone, false);
     }
-
+    public Ease ease;
     public void Attack()
     {
         ////TODO Attack
         ChangeAnim("Attack");
+        Debug.Log("Attack");
+        IsAttacking = true;
         Weapon.SetActive(false);
-        Weapon weaponAttack = weaponMannager.GenerateWeapon(WeaponMaster, this.gameObject);
-        Vector3 newTarget = new Vector3(target.transform.position.x, weaponAttack.transform.position.y, target.transform.position.z);
+
+        Weapon weaponAttack = weapons[0];
+        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
+        Target.transform.position = newTarget;
         weaponAttack.isFire = true;
-        weaponAttack.transform.DOMove(newTarget, 1.0f)
-                    .SetEase(Ease.Linear)
-                    .SetLoops(0, LoopType.Yoyo)
+        weaponAttack.gameObject.SetActive(true);
+        weaponAttack.transform.DOMove(Target.transform.position, (float)Math.Round(60 / AttackSpeed, 1))
+                    .SetEase(ease)
+                    .SetLoops(0, LoopType.Restart)
                     .OnComplete(() =>
                     {
+                        weapons.Remove(weaponAttack);
+                        weaponAttack.gameObject.SetActive(false);
                         weaponAttack.gameObject.GetComponent<PooledObject>().Release();
-                            //weaponMannager.IsInit = false;
-                            weaponAttack.isFire = false;
+                        //weaponMannager.IsInit = false;
+                        weaponAttack.isFire = false;
                         Weapon.SetActive(true);
+                        IsAttacking = false;
+
                     });
 
     }
@@ -93,8 +109,8 @@ public class Player : Character
     {
         if (Mathf.Abs(horizontal) >= 0.03 || Mathf.Abs(vertical) >= 0.03)
         {
-            Vector3 _Direction = new Vector3(horizontal * MoveSpeed * Time.fixedDeltaTime, rigidbody.velocity.y, vertical * MoveSpeed * Time.fixedDeltaTime);
-            Vector3 TargetPoint = new Vector3(rigidbody.position.x + _Direction.x, rigidbody.position.y, rigidbody.position.z + _Direction.z);
+            Vector3 _Direction = new Vector3(horizontal * MoveSpeed * Time.fixedDeltaTime, _Rigidbody.velocity.y, vertical * MoveSpeed * Time.fixedDeltaTime);
+            Vector3 TargetPoint = new Vector3(_Rigidbody.position.x + _Direction.x, _Rigidbody.position.y, _Rigidbody.position.z + _Direction.z);
             RotateTowards(this.gameObject, _Direction);
             if (!Constant.isWall(this.gameObject,LayerMask.GetMask(Constant.LAYOUT_WALL)))
             {
@@ -110,7 +126,7 @@ public class Player : Character
             if (hitcollider.GetComponent<BotAI>())
             {
                 hitcollider.GetComponent<BotAI>().CircleAttack.SetActive(enable);
-                target = hitcollider.gameObject;
+                //target = hitcollider.gameObject;
             }
         }
     }

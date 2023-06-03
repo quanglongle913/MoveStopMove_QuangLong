@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviour
-{
-    [SerializeField] private Animator anim;
+{   
+    
     [SerializeField] protected SkinnedMeshRenderer mesh;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
+    [Header("--------------------------- ")]
     [SerializeField] private float attackRange = 3f;
-
-
+    [SerializeField] private float attackSpeed = 3f;
+    [SerializeField] private float moveSpeed = 5.0f;
+    [Header("--------------------------- ")]
     [SerializeField] private bool isTargerInRange;
     [SerializeField] private bool isAttacking;
+    [Header("--------------------------- ")]
+
+    private Animator anim;
+    private Rigidbody rb;
     protected float rotationSpeed = 1000f;
     private string currentAnimName;
-
+    private GameObject target;
     protected Collider[] CurrentCharacters;
     protected Collider[] CharactersInsideZone;
     protected Collider[] CharactersOutsideZone;
@@ -25,15 +31,25 @@ public class Character : MonoBehaviour
     [SerializeField] public GameObject WeaponMaster;
     [SerializeField] public GameObject Weapon;
     [SerializeField] public bool IsHaveWeapon;
-
+    public Rigidbody _Rigidbody { get => rb; set => rb = value; }
+    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public ColorData ColorData { get => colorData; set => colorData = value; }
     public ColorType ColorType { get => colorType; set => colorType = value; }
     public float AttackRange { get => attackRange; set => attackRange = value; }
     public bool IsTargerInRange { get => isTargerInRange; set => isTargerInRange = value; }
     public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
     public GameManager GameManager { get => gameManager; set => gameManager = value; }
+    public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
+    public Animator Anim { get => anim; set => anim = value; }
+    public GameObject Target { get => target; set => target = value; }
 
     // Start is called before the first frame update
+    public virtual void Awake()
+    {
+        
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+    }
     public virtual void Start()
     {
         gameManager = GameManager.Instance;
@@ -48,7 +64,11 @@ public class Character : MonoBehaviour
     public virtual void FixedUpdate()
     {
         GenerateZone();
-        DetectionCharacter(CharactersInsideZone);
+        if (!IsAttacking)
+        {
+            DetectionCharacter(CharactersInsideZone);
+        }
+        
     }
     private void GenerateZone()
     {
@@ -62,8 +82,8 @@ public class Character : MonoBehaviour
         {
             if (hitcollider.GetComponent<Character>() && hitcollider.gameObject != this.gameObject)
             {
-                //Debug.Log(hitcollider.gameObject.name + " : Team: " + hitcollider.gameObject.GetComponent<Character>().ColorType);
                 IsTargerInRange = true;
+                Target= hitcollider.gameObject;
                 break;
             }
             else
@@ -98,20 +118,4 @@ public class Character : MonoBehaviour
         this.colorType = colorType;
         a_obj.GetComponent<SkinnedMeshRenderer>().material = colorData.GetMat(colorType);
     }
-    /*protected bool isWall(LayerMask _layerMask)
-    {
-        RaycastHit hit;
-        bool isWall = false;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Constant.RAYCAST_HIT_RANGE_WALL, _layerMask))
-        {
-            isWall = true;
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
-        }
-        else
-        {
-            isWall = false;
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-        }
-        return isWall;
-    }*/
 }

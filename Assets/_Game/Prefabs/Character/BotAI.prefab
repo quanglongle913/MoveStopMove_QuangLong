@@ -2159,7 +2159,8 @@ GameObject:
   - component: {fileID: 1678857057}
   - component: {fileID: 1678857058}
   - component: {fileID: -3626075191461274860}
-  - component: {fileID: 8194872540122809426}
+  - component: {fileID: 3223120064515277211}
+  - component: {fileID: -7668803661211673494}
   m_Layer: 6
   m_Name: BotAI
   m_TagString: Untagged
@@ -2248,7 +2249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8194872540122809426
+--- !u!114 &3223120064515277211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2257,16 +2258,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 8159361664601157139}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ee90c4e7e5a3a146aa6bed1abf9ae87, type: 3}
+  m_Script: {fileID: 11500000, guid: 193c1f0f9c99af84ba50cfa363584675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 3020431204387107194}
   mesh: {fileID: 386442175878308336}
   colorData: {fileID: 11400000, guid: 4a57f7919a0c91e4e8cf15d98607ad33, type: 2}
   colorType: 0
   attackRange: 3
-  CurrentCubes: []
+  attackSpeed: 3
+  moveSpeed: 5
+  isTargerInRange: 0
+  isAttacking: 0
+  WeaponMaster: {fileID: 4258096310204231993}
+  Weapon: {fileID: 1918942615516032993}
+  IsHaveWeapon: 0
   circleAttack: {fileID: 484496014471862543}
+--- !u!195 &-7668803661211673494
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8159361664601157139}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0.3
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8397228602898670547
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,6 +2465,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: boomerang
       objectReference: {fileID: 0}
+    - target: {fileID: 700678914290373095, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 700678914290601415, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2483,6 +2515,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
+--- !u!1 &1918942615516032993 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 700678914290373095, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
+  m_PrefabInstance: {fileID: 1375915548777610758}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1918942615516394433 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 700678914290601415, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
@@ -2501,7 +2538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2172847985556714816, guid: 6bf6d240f51d8fc44afa4a41df6ceb9c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5929056908437362326, guid: 6bf6d240f51d8fc44afa4a41df6ceb9c, type: 3}
       propertyPath: m_Color.a
@@ -2946,7 +2983,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4969340056132066874, guid: 84306d706270748be8e5643b8dd7e7ea, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84306d706270748be8e5643b8dd7e7ea, type: 3}

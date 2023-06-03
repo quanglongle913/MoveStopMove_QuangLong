@@ -4,41 +4,32 @@ using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance;
 
     [SerializeField] private GameState gameState;
 
     private UIManager uIManager;
     private BotAIManager botAIManager;
     private IndicatorManager indicatorManager;
-    //private bool isInit;
-
+    //public static GameManager Instance;
     public GameState GameState { get => gameState; set => gameState = value; }
     //public bool IsInit { get => isInit; set => isInit = value; }
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-
-    }
     private void Start()
     {
         botAIManager = BotAIManager.Instance;
         indicatorManager = IndicatorManager.Instance;
         uIManager = UIManager.Instance;
         //gameState = (GameState)PlayerPrefs.GetInt(Constant.GAME_STATE, 0);
+        //gameState = GameState.Loading;
         gameState = GameState.Loading;
         uIManager.Loading();
         Debug.Log("" + gameState);
     }
     private void Update()
     {
-        if (botAIManager.IsInit && gameState==GameState.Loading)
+        if (botAIManager.IsInit && gameState == GameState.Loading)
         {
             StartCoroutine(SetGameStateMenu());
         }

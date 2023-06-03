@@ -14,6 +14,13 @@ public class PooledObject : MonoBehaviour
         pool.ReturnToPool(this);
     }
 
+    public PooledObject Spawner(ObjectPool a_obj, GameObject a_root,bool enable)
+    {
+        PooledObject _pooledObject = a_obj.GetPooledObject();
+        _pooledObject.transform.SetParent(a_root.transform);
+        _pooledObject.gameObject.SetActive(enable);
+        return _pooledObject;
+    }
     public PooledObject Spawner(ObjectPool a_obj, GameObject a_root)
     {
         PooledObject _pooledObject = a_obj.GetPooledObject();
