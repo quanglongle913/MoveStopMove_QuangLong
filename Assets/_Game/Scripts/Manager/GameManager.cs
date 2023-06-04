@@ -15,11 +15,13 @@ public class GameManager : Singleton<GameManager>
 
     private List<Indicator> indicatorList;
     private List<CharacterInfo> characterInfoList;
-    private List<BotAI> botAIList;
+    private List<BotAI> botAIListEnable;
+    private List<BotAI> botAIListStack;
+
     private bool isInit, isInitIndicator, isInitBotAI;
 
 
-    public List<BotAI> BotAIList { get => botAIList; set => botAIList = value; }
+    public List<BotAI> BotAIListEnable { get => botAIListEnable; set => botAIListEnable = value; }
     public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
     public List<Indicator> IndicatorList { get => indicatorList; set => indicatorList = value; }
@@ -28,13 +30,15 @@ public class GameManager : Singleton<GameManager>
     public int TotalBotAI_InGame { get => totalBotAI_InGame; set => totalBotAI_InGame = value; }
     public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
     public List<CharacterInfo> CharacterInfoList { get => characterInfoList; set => characterInfoList = value; }
+    public List<BotAI> BotAIListStack { get => botAIListStack; set => botAIListStack = value; }
 
     private void Start()
     {
         IsInit = false;
         isInitIndicator=false;
         IsInitBotAI=false;
-        BotAIList = new List<BotAI>();
+        botAIListStack =new List<BotAI>();
+        BotAIListEnable = new List<BotAI>();
         IndicatorList= new List<Indicator>();
         CharacterInfoList = new List<CharacterInfo>();
         gameState = GameState.Loading;

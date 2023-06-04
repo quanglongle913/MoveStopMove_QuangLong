@@ -93,11 +93,11 @@ public class BotAI : Character
     protected override void OnDeath()
     {
         base.OnDeath();
-        if (GameManager.BotAIList.Count>0)
+        if (GameManager.BotAIListEnable.Count > 0)
         {
-            GameManager.BotAIList.Remove(gameObject.GetComponent<BotAI>());
+            GameManager.BotAIListEnable.Remove(gameObject.GetComponent<BotAI>());
+            //GameManager.TotalBotAI_InGame--;
             ChangeState(new DeadState());
-        }
-        
+        } 
     }
 }

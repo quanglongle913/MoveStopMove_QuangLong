@@ -11,12 +11,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject endGame;
     [Header("InGame: ")]
     [SerializeField] private GameObject popup_Setting;
-
+    [SerializeField] private TMPro.TextMeshProUGUI textAlive;
     GameManager gameManager;
     
     private void Start()
     {
        gameManager = GameManager.Instance;
+    }
+    private void Update()
+    {
+        int total = gameManager.TotalBotAI + gameManager.BotAIListEnable.Count;
+        textAlive.text = ("Alive: "+ total);
     }
     public void setLoading()
     {
