@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
 
-    [SerializeField] private int 0;
+    [SerializeField] private int numberOfBotsOnMap;
     [SerializeField] private int numberOfBotsInGameLvel;
 
     [SerializeField] private GameState gameState;
