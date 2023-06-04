@@ -86,43 +86,50 @@ public class IndicatorSpawner : PooledObject
     {
         if (mainCam != null)
         {
-            Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.transform.position);
-            Vector3 viewPosCharacterInfo = mainCam.WorldToScreenPoint(player.transform.position);
+            showCharacterInfoPlayer(mainCam, gameManager, player);
+            showCharacterInfoEnemy(mainCam, gameManager);
+        }
+    }
+    private void showCharacterInfoPlayer(Camera mainCam, GameManager gameManager, GameObject player)
+    {
+        Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.transform.position);
+        Vector3 viewPosCharacterInfo = mainCam.WorldToScreenPoint(player.transform.position);
+        // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
+        if (viewPosPlayer.x >= 0 && viewPosPlayer.x <= 1 && viewPosPlayer.y >= 0 && viewPosPlayer.y <= 1 && (viewPosPlayer.z > 0))
+        {
+            // Your object is in the range of the camera, you can apply your behaviour (.)
+            gameManager.CharacterInfoList[0].gameObject.GetComponent<CharacterInfo>().setCharacterName(player.GetComponent<Character>().characterName);
+            gameManager.CharacterInfoList[0].gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
+            gameManager.CharacterInfoList[0].gameObject.SetActive(true);
 
+        }
+        else
+        {
+            gameManager.CharacterInfoList[0].gameObject.SetActive(false);
+        }
+    }
+    private void showCharacterInfoEnemy(Camera mainCam, GameManager gameManager)
+    {
+
+        for (int i = 0; i < gameManager.BotAIListEnable.Count; i++)
+        {
+
+            Vector3 viewPos = mainCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
+            Vector3 viewPosCharacterInfoBotAI = mainCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
             // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
-            if (viewPosPlayer.x >= 0 && viewPosPlayer.x <= 1 && viewPosPlayer.y >= 0 && viewPosPlayer.y <= 1 && (viewPosPlayer.z > 0))
+            if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && (viewPos.z > 0))
             {
                 // Your object is in the range of the camera, you can apply your behaviour (.)
-                gameManager.CharacterInfoList[0].gameObject.GetComponent<CharacterInfo>().setCharacterName(player.GetComponent<Character>().characterName);
-                gameManager.CharacterInfoList[0].gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
-                gameManager.CharacterInfoList[0].gameObject.SetActive(true);
+                gameManager.CharacterInfoList[i + 1].gameObject.GetComponent<CharacterInfo>().setCharacterName(gameManager.BotAIListEnable[i].GetComponent<Character>().characterName);
+                gameManager.CharacterInfoList[i + 1].gameObject.transform.position = new Vector2(viewPosCharacterInfoBotAI.x, viewPosCharacterInfoBotAI.y + 1.4f * Screen.height / 10);
+                gameManager.CharacterInfoList[i + 1].gameObject.SetActive(true);
 
+                //TODO  CharacterInfo set active true
             }
             else
             {
-                gameManager.CharacterInfoList[0].gameObject.SetActive(false);
-            }
+                gameManager.CharacterInfoList[i + 1].gameObject.SetActive(false);
 
-            for (int i = 0; i < gameManager.BotAIListEnable.Count; i++)
-            {
-
-                Vector3 viewPos = mainCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
-                Vector3 viewPosCharacterInfoBotAI = mainCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
-                // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
-                if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && (viewPos.z > 0))
-                {
-                    // Your object is in the range of the camera, you can apply your behaviour (.)
-                    gameManager.CharacterInfoList[i + 1].gameObject.GetComponent<CharacterInfo>().setCharacterName(gameManager.BotAIListEnable[i].GetComponent<Character>().characterName);
-                    gameManager.CharacterInfoList[i + 1].gameObject.transform.position = new Vector2(viewPosCharacterInfoBotAI.x, viewPosCharacterInfoBotAI.y + 1.4f * Screen.height / 10);
-                    gameManager.CharacterInfoList[i + 1].gameObject.SetActive(true);
-
-                    //TODO  CharacterInfo set active true
-                }
-                else
-                {
-                    gameManager.CharacterInfoList[i + 1].gameObject.SetActive(false);
-
-                }
             }
         }
     }

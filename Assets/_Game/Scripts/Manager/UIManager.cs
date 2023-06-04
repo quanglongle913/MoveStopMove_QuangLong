@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [Header("EndGame: ")]
     [SerializeField] private GameObject popup_Countine;
     [SerializeField] private GameObject popup_TryAgain;
+    [SerializeField] private TMPro.TextMeshProUGUI text_CountDown;
 
     GameManager gameManager;
 
@@ -140,8 +141,8 @@ public class UIManager : MonoBehaviour
     }
     public void Show_Popup_Countine()
     {
-        popup_Countine.SetActive(true);
-       
+        popup_TryAgain.SetActive(false);
+        popup_Countine.SetActive(true);    
     }
     public void Hide_Popup_Countine()
     {
@@ -152,6 +153,7 @@ public class UIManager : MonoBehaviour
     {
         popup_Countine.SetActive(false);
         popup_TryAgain.SetActive(true);
+        StartCoroutine(Waiter(text_CountDown));
 
     }
     public void Hide_Popup_Tryagain()
@@ -159,12 +161,26 @@ public class UIManager : MonoBehaviour
         if (popup_TryAgain.activeSelf)
         {
             popup_TryAgain.SetActive(false);
-            Show_Popup_Countine();
         }
     }
     public void EndGame_RevieNow()
     {
-        //UNDONE Test TODO
+        //UNDONE Test TODO Loading and auto go play
         setLoading();
+    }
+    IEnumerator Waiter(TMPro.TextMeshProUGUI text_CountDown)
+    {
+        text_CountDown.text = "5";
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "4";
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "3";
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "2";
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "1";
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "0";
+        Show_Popup_Countine();
     }
 }

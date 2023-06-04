@@ -31,12 +31,12 @@ public class Player : Character
     public override void Start()
     {
         base.Start();
-        ChangeState(new IdleStateP());
+        
     }
     public override void OnInit()
     {
         base.OnInit();
-
+        ChangeState(new IdleStateP());
         AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
     }
     void Update()

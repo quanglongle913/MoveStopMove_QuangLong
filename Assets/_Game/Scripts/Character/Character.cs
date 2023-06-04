@@ -83,9 +83,6 @@ public class Character : MonoBehaviour
         weaponMannager = WeaponMannager.Instance;
         Weapons = new List<Weapons>();
         //Init Weapons....................
-        WeaponType = WeaponType.Arrow;
-        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-        poolObject = weaponMannager.PoolObject[(int)WeaponType];
         OnInit();
     }
     public virtual void OnInit()
@@ -93,6 +90,9 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
+        WeaponType = WeaponType.Arrow;
+        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+        poolObject = weaponMannager.PoolObject[(int)WeaponType];
         //Debug.Log("OK");
     }
     public virtual void FixedUpdate()

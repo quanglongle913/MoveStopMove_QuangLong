@@ -7,8 +7,8 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
 
-    [SerializeField] private int totalBotAI_InGame;
-    [SerializeField] private int totalBotAI;
+    [SerializeField] private int numberOfBotsOnMap;
+    [SerializeField] private int numberOfBotsInGameLvel;
 
     [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
@@ -20,7 +20,8 @@ public class GameManager : Singleton<GameManager>
 
     private bool isInit, isInitIndicator, isInitBotAI;
 
-
+    private int totalBotAI_InGame;
+    private int totalBotAI;
     public List<BotAI> BotAIListEnable { get => botAIListEnable; set => botAIListEnable = value; }
     public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
@@ -44,33 +45,15 @@ public class GameManager : Singleton<GameManager>
     }
     public void OnInit()
     {
-        if (botAIListEnable.Count > 0)
-        { 
-           for(int i=0; i< botAIListEnable.Count;i++) 
-            {
-                botAIListEnable[i].GetComponent<PooledObject>().Release();
-            }
-        }
-
-        botAIListStack.Clear();
-        botAIListEnable.Clear();
-        indicatorList.Clear();
-        characterInfoList.Clear();
-        IsInit = false;
-        isInitIndicator = false;
-        IsInitBotAI = false;
-        totalBotAI = 4;
-        totalBotAI_InGame = 2;
-        gameState = GameState.Loading;
-        uIManager.Loading();
-        Debug.Log("" + gameState);
+        StartCoroutine(loading());
+        //Debug.Log("" + gameState);
     }
     private void Update()
     {
-        if (gameState == GameState.Loading)
+        /*if (gameState == GameState.Loading)
         {
             Debug.Log("Loading.....");
-        }
+        }*/
         if (IsInitBotAI && gameState == GameState.Loading)
         {
             
@@ -87,5 +70,41 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(1.5f);
         gameState = GameState.GameMenu;
         uIManager.GameMenu();
+    }
+    IEnumerator loading()
+    {
+        if (botAIListEnable.Count > 0)
+        {
+            for (int i = 0; i < botAIListEnable.Count; i++)
+            {
+                botAIListEnable[i].GetComponent<PooledObject>().Release();
+            }
+        }
+        if (characterInfoList.Count > 0)
+        {
+            for (int i = 0; i < characterInfoList.Count; i++)
+            {
+                characterInfoList[i].GetComponent<PooledObject>().Release();
+            }
+        }
+        if (indicatorList.Count > 0)
+        {
+            for (int i = 0; i < indicatorList.Count; i++)
+            {
+                indicatorList[i].GetComponent<PooledObject>().Release();
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        botAIListStack.Clear();
+        botAIListEnable.Clear();
+        indicatorList.Clear();
+        characterInfoList.Clear();
+        IsInit = false;
+        isInitIndicator = false;
+        IsInitBotAI = false;
+        totalBotAI = numberOfBotsInGameLvel;
+        totalBotAI_InGame = numberOfBotsOnMap;
+        gameState = GameState.Loading;
+        uIManager.Loading();
     }
 }
