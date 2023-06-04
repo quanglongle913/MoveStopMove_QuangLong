@@ -74,7 +74,6 @@ public class BotAISpawner : PooledObject
             PooledObject botAIObject = Spawner(poolObject, poolMaster,false);
             botAIObject.transform.position = listPoolObjectPosition[randomIndex];
             listPoolObjectPosition.Remove(listPoolObjectPosition[randomIndex]);
-
             int randomColor = Random.Range(0, 5);
             ColorType _colorType = (ColorType)randomColor;
             BotAI botAI = botAIObject.GetComponent<BotAI>();

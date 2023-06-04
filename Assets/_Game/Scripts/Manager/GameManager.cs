@@ -59,7 +59,7 @@ public class GameManager : Singleton<GameManager>
         IsInit = false;
         isInitIndicator = false;
         IsInitBotAI = false;
-        totalBotAI = 2;
+        totalBotAI = 4;
         totalBotAI_InGame = 2;
         gameState = GameState.Loading;
         uIManager.Loading();

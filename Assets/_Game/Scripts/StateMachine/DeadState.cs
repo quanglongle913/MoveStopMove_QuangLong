@@ -16,7 +16,8 @@ public class DeadState : IState<BotAI>
         timer += Time.deltaTime;
         if (timer > 2f)
         { 
-            t.GetComponent<PooledObject>().Release();
+            //t.GetComponent<PooledObject>().OnDespawn();
+            t.OnDespawn();
         }
     }
 

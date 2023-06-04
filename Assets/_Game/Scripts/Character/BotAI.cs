@@ -33,6 +33,7 @@ public class BotAI : Character
     public override void OnInit()
     {
         base.OnInit();
+        ChangeState(new IdleState());
         AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
     }
 
@@ -97,7 +98,8 @@ public class BotAI : Character
     public override void OnDespawn()
     {
         base.OnDespawn();
-        //OnInit();
+        OnInit();
+        gameObject.GetComponent<PooledObject>().Release();
     }
     protected override void OnDeath()
     {

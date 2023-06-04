@@ -13,6 +13,10 @@ public class PooledObject : MonoBehaviour
     {
         pool.ReturnToPool(this);
     }
+    public void OnDespawn()
+    {
+        Destroy(pool);
+    }
 
     public PooledObject Spawner(ObjectPool a_obj, GameObject a_root,bool enable)
     {
