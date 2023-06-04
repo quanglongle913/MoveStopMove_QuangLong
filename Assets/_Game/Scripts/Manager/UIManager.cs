@@ -1,5 +1,7 @@
+using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -12,8 +14,12 @@ public class UIManager : MonoBehaviour
     [Header("InGame: ")]
     [SerializeField] private GameObject popup_Setting;
     [SerializeField] private TMPro.TextMeshProUGUI textAlive;
+    [Header("EndGame: ")]
+    [SerializeField] private GameObject popup_Countine;
+    [SerializeField] private GameObject popup_TryAgain;
+
     GameManager gameManager;
-    
+
     private void Start()
     {
        gameManager = GameManager.Instance;
@@ -25,8 +31,7 @@ public class UIManager : MonoBehaviour
     }
     public void setLoading()
     {
-        Loading();
-        gameManager.GameState = GameState.Loading;
+        gameManager.OnInit();
     }
     public void setGameMenu()
     {
@@ -82,7 +87,7 @@ public class UIManager : MonoBehaviour
         }
         Hide_Popup_Setting();
     }
-    public void InGame() 
+    public void InGame()
     {
         if (loading.activeSelf)
         {
@@ -101,7 +106,7 @@ public class UIManager : MonoBehaviour
             endGame.SetActive(false);
         }
     }
-    public void EndGame() 
+    public void EndGame()
     {
         if (loading.activeSelf)
         {
@@ -118,6 +123,7 @@ public class UIManager : MonoBehaviour
         if (!endGame.activeSelf)
         {
             endGame.SetActive(true);
+            Show_Popup_Tryagain();
         }
     }
 
@@ -132,5 +138,33 @@ public class UIManager : MonoBehaviour
             popup_Setting.SetActive(false);
         }
     }
+    public void Show_Popup_Countine()
+    {
+        popup_Countine.SetActive(true);
+       
+    }
+    public void Hide_Popup_Countine()
+    {
+        popup_Countine.SetActive(false);
+        setLoading();
+    }
+    public void Show_Popup_Tryagain()
+    {
+        popup_Countine.SetActive(false);
+        popup_TryAgain.SetActive(true);
 
+    }
+    public void Hide_Popup_Tryagain()
+    {
+        if (popup_TryAgain.activeSelf)
+        {
+            popup_TryAgain.SetActive(false);
+            Show_Popup_Countine();
+        }
+    }
+    public void EndGame_RevieNow()
+    {
+        //UNDONE Test TODO
+        setLoading();
+    }
 }

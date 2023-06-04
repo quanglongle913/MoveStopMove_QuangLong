@@ -39,7 +39,7 @@ public class BotAI : Character
     // Update is called once per frame
     void Update()
     {
-        if (this.GameManager.GameState == GameState.InGame)
+        if (IsDeath)
         {
             if (currentState != null)
             {
@@ -48,9 +48,18 @@ public class BotAI : Character
         }
         else
         {
-            ChangeState(new IdleState());
+            if (this.GameManager.GameState == GameState.InGame)
+            {
+                if (currentState != null)
+                {
+                    currentState.OnExecute(this);
+                }
+            }
+            else
+            {
+                ChangeState(new IdleState());
+            }
         }
-
     }
     public override void FixedUpdate() { 
         base.FixedUpdate();

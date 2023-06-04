@@ -24,10 +24,11 @@ public class BotAISpawner : PooledObject
     {
         if (gameManager.GameState == GameState.Loading && !gameManager.IsInitBotAI)
         {
+            Debug.Log("GenerateBotAI.....");
             GenerateBotAI(gameManager.TotalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, gameManager.TotalBotAI));
             gameManager.IsInitBotAI = true;
         }
-        else if (gameManager.GameState == GameState.InGame && gameManager.BotAIListEnable.Count < gameManager.TotalBotAI_InGame)
+        else if (gameManager.GameState == GameState.InGame && gameManager.BotAIListEnable.Count < gameManager.TotalBotAI_InGame && gameManager.IsInitBotAI)
         {
             if (gameManager.BotAIListStack.Count > 0)
             {

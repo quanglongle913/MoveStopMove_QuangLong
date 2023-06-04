@@ -34,22 +34,51 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        IsInit = false;
-        isInitIndicator=false;
-        IsInitBotAI=false;
-        botAIListStack =new List<BotAI>();
+        botAIListStack = new List<BotAI>();
         BotAIListEnable = new List<BotAI>();
-        IndicatorList= new List<Indicator>();
+        IndicatorList = new List<Indicator>();
         CharacterInfoList = new List<CharacterInfo>();
+        OnInit();
+       
+        //Debug.Log("" + gameState);
+    }
+    public void OnInit()
+    {
+        if (botAIListEnable.Count > 0)
+        { 
+           for(int i=0; i< botAIListEnable.Count;i++) 
+            {
+                botAIListEnable[i].GetComponent<PooledObject>().Release();
+            }
+        }
+
+        botAIListStack.Clear();
+        botAIListEnable.Clear();
+        indicatorList.Clear();
+        characterInfoList.Clear();
+        IsInit = false;
+        isInitIndicator = false;
+        IsInitBotAI = false;
+        totalBotAI = 2;
+        totalBotAI_InGame = 2;
         gameState = GameState.Loading;
         uIManager.Loading();
         Debug.Log("" + gameState);
     }
     private void Update()
     {
+        if (gameState == GameState.Loading)
+        {
+            Debug.Log("Loading.....");
+        }
         if (IsInitBotAI && gameState == GameState.Loading)
         {
+            
             StartCoroutine(SetGameStateMenu());
+        }
+        if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit)
+        {
+            uIManager.setEndGame(); 
         }
     }
     IEnumerator SetGameStateMenu()

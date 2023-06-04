@@ -37,7 +37,7 @@ public class IndicatorSpawner : PooledObject
             GenerateDetection(total);
             GenerateCharacterInfo(total+1);
             gameManager.IsInitIndicator=true;
-            gameManager.IsInit = true;
+            gameManager.IsInit = true; //hoan tat IsInit
         }
         if (gameManager.IsInitIndicator && gameManager.GameState==GameState.InGame)
         {
