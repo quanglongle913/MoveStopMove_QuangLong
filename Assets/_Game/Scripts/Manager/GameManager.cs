@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
 
-    [SerializeField] private int numberOfBotsOnMap;
+    [SerializeField] private int 0;
     [SerializeField] private int numberOfBotsInGameLvel;
 
     [SerializeField] private GameState gameState;
@@ -73,6 +73,9 @@ public class GameManager : Singleton<GameManager>
     }
     IEnumerator loading()
     {
+        /*Debug.Log("botAIListEnable " + botAIListEnable.Count);
+        Debug.Log("characterInfoList " + characterInfoList.Count);
+        Debug.Log("indicatorList " + indicatorList.Count);*/
         if (botAIListEnable.Count > 0)
         {
             for (int i = 0; i < botAIListEnable.Count; i++)

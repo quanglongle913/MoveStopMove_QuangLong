@@ -437,10 +437,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37aa2d88097c3f84c9152796fed5b95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalBotAI_InGame: 1
-  totalBotAI: 1
+  numberOfBotsOnMap: 2
+  numberOfBotsInGameLvel: 3
   gameState: 0
   uIManager: {fileID: 1732760747}
+  totalBotAI_InGame: 0
+  totalBotAI: 0
 --- !u!1 &111574149
 GameObject:
   m_ObjectHideFlags: 0

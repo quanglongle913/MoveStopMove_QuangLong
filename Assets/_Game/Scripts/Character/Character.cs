@@ -10,7 +10,7 @@ using UnityEngine.Pool;
 public class Character : MonoBehaviour
 {
     [Header("Character: ")]
-    [SerializeField] protected SkinnedMeshRenderer mesh;
+    [SerializeField] private SkinnedMeshRenderer mesh;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
     //[SerializeField] private GameObject weaponMasterHand;
@@ -90,6 +90,10 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
+
+        ChangeColor(gameObject, ColorType);
+
+        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
         WeaponType = WeaponType.Arrow;
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
         poolObject = weaponMannager.PoolObject[(int)WeaponType];
@@ -189,9 +193,11 @@ public class Character : MonoBehaviour
     }
     public void ChangeColor(GameObject a_obj, ColorType colorType)
     {
+        Debug.Log(gameObject.name+":"+colorType.ToString());
         this.colorType = colorType;
-        a_obj.GetComponent<SkinnedMeshRenderer>().material = colorData.GetMat(colorType);
+        a_obj.GetComponent<Character>().mesh.material = colorData.GetMat(colorType);
     }
+
     public void OnHit(float damage)
     {
 

@@ -2507,7 +2507,7 @@ MonoBehaviour:
   - {fileID: 2672214180688388299}
   - {fileID: 1514042921295202428}
   - {fileID: 7452771387275547495}
-  attackRange: 8
+  attackRange: 7
   attackSpeed: 90
   moveSpeed: 5
   isTargerInRange: 0
@@ -2517,7 +2517,7 @@ MonoBehaviour:
   weaponType: 0
   attackSpeedAfterbuff: 0
   characterName: BotAI
-  hp: 0
+  hp: 1
   IsHaveWeapon: 0
   circleAttack: {fileID: 4197063280569115508}
 --- !u!1 &8397228602898670547

@@ -201,7 +201,7 @@ MonoBehaviour:
   image: {fileID: 8299214383970047017}
   image2: {fileID: 9028506384029467560}
   colorData: {fileID: 11400000, guid: 4a57f7919a0c91e4e8cf15d98607ad33, type: 2}
-  colorType: 0
+  colorType: 1
 --- !u!114 &5770508606783101504
 MonoBehaviour:
   m_ObjectHideFlags: 0

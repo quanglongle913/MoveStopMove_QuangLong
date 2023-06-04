@@ -78,8 +78,8 @@ public class BotAISpawner : PooledObject
             ColorType _colorType = (ColorType)randomColor;
             BotAI botAI = botAIObject.GetComponent<BotAI>();
             botAI.ColorType = _colorType;
-            //botAIObject.gameObject.SetActive(true);
-            gameManager.BotAIListStack.Add(botAIObject.GetComponent<BotAI>());
+            botAI.ChangeColor(botAI.gameObject, _colorType);
+            gameManager.BotAIListStack.Add(botAI);
             //Debug.Log("BotAI:" +i);
         }
     }

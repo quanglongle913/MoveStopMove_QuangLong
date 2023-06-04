@@ -33,7 +33,6 @@ public class IndicatorSpawner : PooledObject
         if (!gameManager.IsInitIndicator && gameManager.TotalBotAI_InGame>0)
         {
             total = gameManager.TotalBotAI_InGame;
-
             GenerateDetection(total);
             GenerateCharacterInfo(total+1);
             gameManager.IsInitIndicator=true;
@@ -53,6 +52,20 @@ public class IndicatorSpawner : PooledObject
                     GenerateRadar(mainCam, radarCam, gameManager, player);
                     GenerateCharacterInfoPlayer(mainCam, gameManager, player);
                 }
+                if (gameManager.CharacterInfoList.Count+1 > gameManager.BotAIListEnable.Count)
+                { 
+                    for (int i = gameManager.BotAIListEnable.Count+1; i < gameManager.CharacterInfoList.Count; i++) 
+                    {
+                        gameManager.CharacterInfoList[i].gameObject.SetActive(false);
+                    }
+                }
+                if (gameManager.IndicatorList.Count  > gameManager.BotAIListEnable.Count)
+                {
+                    for (int i = gameManager.BotAIListEnable.Count; i < gameManager.IndicatorList.Count; i++)
+                    {
+                        gameManager.IndicatorList[i].gameObject.SetActive(false);
+                    }
+                }
             }
             else
             {
@@ -66,6 +79,7 @@ public class IndicatorSpawner : PooledObject
     }
     private void GenerateDetection(int total)
     {
+        ClearnDetection();
         for (int i = 0; i < total; i++)
         {
             PooledObject DetectionObject = Spawner(poolObject, poolMaster);
@@ -73,13 +87,27 @@ public class IndicatorSpawner : PooledObject
             //Debug.Log("Indicator:" + i);
         }
     }
+    private void ClearnDetection()
+    {
+        for (int i = 0; i < gameManager.IndicatorList.Count; i++)
+        {
+            gameManager.IndicatorList[i].GetComponent<PooledObject>().Release();
+        }
+    }
     private void GenerateCharacterInfo(int total)
     {
+        ClearnCharacterInfo();
         for (int i = 0; i < total; i++)
         {
             PooledObject CharacterInfoObject = Spawner(poolObjectCharacterInfo, poolMaster);
             gameManager.CharacterInfoList.Add(CharacterInfoObject.GetComponent<CharacterInfo>());
-            //Debug.Log("Indicator:" + i);
+        }
+    }
+    private void ClearnCharacterInfo()
+    {
+        for (int i = 0; i < gameManager.CharacterInfoList.Count; i++)
+        {
+            gameManager.CharacterInfoList[i].GetComponent<PooledObject>().Release();
         }
     }
     private void GenerateCharacterInfoPlayer(Camera mainCam, GameManager gameManager, GameObject player)
@@ -141,8 +169,10 @@ public class IndicatorSpawner : PooledObject
             for (int i = 0; i < gameManager.BotAIListEnable.Count; i++)
             {
                 Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
+
                 Vector3 viewPos = mainCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
                 Vector3 viewPosRadar = radarCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
+
                 Vector3 viewPosDetection = mainCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
                 Vector3 viewPosDetectionRadar = radarCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
 

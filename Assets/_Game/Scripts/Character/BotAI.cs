@@ -27,13 +27,13 @@ public class BotAI : Character
     public override void OnInit()
     {
         base.OnInit();
-        ChangeColor(mesh.gameObject, ColorType);
+        
         if (CircleAttack.activeSelf)
         {
             CircleAttack.SetActive(false);
         }
         ChangeState(new IdleState());
-        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
+       
     }
 
     // Update is called once per frame
@@ -106,15 +106,15 @@ public class BotAI : Character
         base.OnDeath();
         if (GameManager.BotAIListEnable.Count > 0)
         {
-            /*for (int i = 0; i < GameManager.BotAIListEnable.Count; i++) 
+            /*for (int i = 0; i < GameManager.BotAIListEnable.Count; i++)
             {
-                if (GameManager.BotAIListEnable[i].gameObject == gameObject) 
+                if (GameManager.BotAIListEnable[i].gameObject == gameObject)
                 {
-                    GameManager.CharacterInfoList[i+1].GetComponent<PooledObject>().Release();
+                    GameManager.CharacterInfoList[i + 1].GetComponent<PooledObject>().Release();
                     GameManager.IndicatorList[i].GetComponent<PooledObject>().Release();
                 }
             }*/
-            GameManager.BotAIListEnable.Remove(gameObject.GetComponent<BotAI>());
+            GameManager.BotAIListEnable.Remove(this.gameObject.GetComponent<BotAI>());
             //GameManager.TotalBotAI_InGame--;
             ChangeState(new DeadState());
         } 

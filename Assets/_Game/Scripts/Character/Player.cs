@@ -37,7 +37,6 @@ public class Player : Character
     {
         base.OnInit();
         ChangeState(new IdleStateP());
-        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
     }
     void Update()
     {
