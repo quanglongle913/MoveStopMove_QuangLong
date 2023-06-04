@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 public class Weapons : MonoBehaviour
 {
-    [SerializeField] Rigidbody _rigidbody;
+    //[SerializeField] Rigidbody _rigidbody;
     [SerializeField] private WeaponType weaponType;
     public GameObject _GameObject;
     public float rotationSpeed;

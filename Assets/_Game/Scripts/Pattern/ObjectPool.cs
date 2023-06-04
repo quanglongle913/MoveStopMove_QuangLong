@@ -7,18 +7,16 @@ public class ObjectPool : MonoBehaviour
 {
     // initial number of cloned objects
     [SerializeField] private uint initPoolSize;
-    public uint InitPoolSize => initPoolSize;
-
+   
     // PooledObject prefab
     [SerializeField] private PooledObject objectToPool;
-
     // store the pooled objects in stack
     private Stack<PooledObject> stack;
-
     // Pool Masters objects
     [SerializeField] private GameObject PoolMasters;
 
-
+    public PooledObject ObjectToPool { get => objectToPool; set => objectToPool = value; }
+    public uint InitPoolSize => initPoolSize;
     private void Start()
     {
 

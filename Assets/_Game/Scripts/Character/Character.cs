@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -26,8 +27,9 @@ public class Character : MonoBehaviour
     [SerializeField] private GameObject weaponMaster;
     [SerializeField] private ObjectPool poolObject;
     //[SerializeField] private List<Weapons> listWeaponsAttack;
-    [Header("--------------------------- ")]
-    [SerializeField] private WeaponType weaponType;
+    [Header("-------------Weapon-------------- ")]
+    private WeaponType weaponType;
+    private WeaponData weaponData;
     [SerializeField] private float attackSpeedAfterbuff;
     [Header("--------------------------- ")]
     public string characterName;
@@ -48,7 +50,7 @@ public class Character : MonoBehaviour
     public bool IsHaveWeapon;
 
     private List<Weapons> weapons;
-
+    int weaponIndex;
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public ColorData ColorData { get => colorData; set => colorData = value; }
@@ -67,6 +69,7 @@ public class Character : MonoBehaviour
     public List<Weapons> ListWeaponsInHand { get => listWeaponsInHand; set => listWeaponsInHand = value; }
     public WeaponMannager WeaponMannager { get => weaponMannager; set => weaponMannager = value; }
     public float AttackSpeedAfterbuff { get => attackSpeedAfterbuff; set => attackSpeedAfterbuff = value; }
+    public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
 
     //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
 
@@ -90,15 +93,34 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
-
+        
         ChangeColor(gameObject, ColorType);
+        //Get Weapon info buff.... etc
+        this.WeaponData = weaponMannager.WeaponData;
+        this.weaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 3);
+        this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
+        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
+        
+        Debug.Log("index:"+weaponIndex);
+        Debug.Log("Type:"+ WeaponData.Weapon[weaponIndex].WeaponType);
+        //Set Material for Prefabs  when null Material
+        var newMaterials = new Material[ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials.Count()];
 
-        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[(int)WeaponType].AttackSpeed / 100);
-        WeaponType = WeaponType.Arrow;
+        for (int i = 0; i < newMaterials.Count(); i++)
+        {
+            newMaterials[i] = WeaponData.Weapon[weaponIndex].Mat;
+
+        }
+        ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials = newMaterials;
+        //endset 
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-        poolObject = weaponMannager.PoolObject[(int)WeaponType];
+        PoolObject = weaponMannager.PoolObject[(int)WeaponType];
+        PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
         //Debug.Log("OK");
     }
+    //TEST
+   
+    //ENDTEST
     public virtual void FixedUpdate()
     {
         GenerateZone();
@@ -193,7 +215,7 @@ public class Character : MonoBehaviour
     }
     public void ChangeColor(GameObject a_obj, ColorType colorType)
     {
-        Debug.Log(gameObject.name+":"+colorType.ToString());
+        //Debug.Log(gameObject.name+":"+colorType.ToString());
         this.colorType = colorType;
         a_obj.GetComponent<Character>().mesh.material = colorData.GetMat(colorType);
     }

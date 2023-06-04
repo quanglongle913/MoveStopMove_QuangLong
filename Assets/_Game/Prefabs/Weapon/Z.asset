@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d6a9857b03acd46adc68eba53b3393, type: 3}
   m_Name: Z
   m_EditorClassIdentifier: 
-  weaponPrefab: {fileID: 1379036478506113609, guid: 3540bb870eabe47d1844cf2898666316, type: 3}
   weaponName: Z
+  weaponType: 0
+  mat: {fileID: 2100000, guid: 2ce0dcb094b08314cabbfcd4fafdbbc8, type: 2}
   attackSpeed: 10
   range: 0
   moveSpeed: 0

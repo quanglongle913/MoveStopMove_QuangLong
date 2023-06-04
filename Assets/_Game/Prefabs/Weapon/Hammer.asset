@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d6a9857b03acd46adc68eba53b3393, type: 3}
   m_Name: Hammer
   m_EditorClassIdentifier: 
-  weaponPrefab: {fileID: 8905014065852737048, guid: 89a030089dc3e495ba42858ef318b544, type: 3}
   weaponName: Hammer
+  weaponType: 0
+  mat: {fileID: 2100000, guid: 6a9f5f30ceefdeb4aab0f2cd87db1e13, type: 2}
   attackSpeed: 10
   range: 0
   moveSpeed: 0

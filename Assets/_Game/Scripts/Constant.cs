@@ -8,6 +8,7 @@ public class Constant
     public static string GAME_STATE = "GameState";
     public static string LAYOUT_WALL = "Wall";
     public static string LAYOUT_CHARACTER = "Character";
+    public static string WEAPONS = "Weapons";
 
 
 

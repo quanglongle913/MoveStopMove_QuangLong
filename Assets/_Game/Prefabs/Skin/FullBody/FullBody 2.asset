@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a0d79cfa9658d4b809663f20e40cf5, type: 3}
   m_Name: FullBody 2
   m_EditorClassIdentifier: 
-  accessoriesName: 
-  mat: {fileID: 0}
-  buffData: {fileID: 0}
+  accessoriesName: 2
+  mat: {fileID: 2100000, guid: 99d3c69af8986b3408f8fb1bbf34e40b, type: 2}
+  buffData: {fileID: 11400000, guid: 87d51d786464d274db2e4c33eb5579f6, type: 2}

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d6a9857b03acd46adc68eba53b3393, type: 3}
   m_Name: Knife
   m_EditorClassIdentifier: 
-  weaponPrefab: {fileID: 8138720543356001358, guid: 7e1c68b7ecef9408eb7ad445b50a2d84, type: 3}
   weaponName: Knife
+  weaponType: 0
+  mat: {fileID: 2100000, guid: 060e77e02d3879c47acba0d19902285d, type: 2}
   attackSpeed: 10
   range: 0
   moveSpeed: 0
