@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Axe_0
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 5816362601838254168, guid: 8b696554301f5417b89e73ed12de66f6, type: 3}
-  name: Axe_0
+  weaponName: Axe 0
   attackSpeed: 10
   range: 0
   moveSpeed: 0

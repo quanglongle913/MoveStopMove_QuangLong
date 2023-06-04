@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Z
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 1379036478506113609, guid: 3540bb870eabe47d1844cf2898666316, type: 3}
-  name: Z
+  weaponName: Z
   attackSpeed: 10
   range: 0
   moveSpeed: 0

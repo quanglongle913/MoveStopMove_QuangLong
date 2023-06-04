@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5483744ec67557b478431260bdcd4e3f, type: 3}
   m_Name: FullBodysData
   m_EditorClassIdentifier: 
-  skinType: 0
+  skinType: 3
   accessories: []

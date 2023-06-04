@@ -6,7 +6,7 @@ using UnityEngine;
 public class Weapon : ScriptableObject
 {
     [SerializeField] GameObject weaponPrefab;
-    [SerializeField] string name;
+    [SerializeField] string weaponName;
     [SerializeField] int attackSpeed;
     [SerializeField] int range;
     [SerializeField] int moveSpeed;
@@ -15,4 +15,5 @@ public class Weapon : ScriptableObject
     public int AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public int Range { get => range; set => range = value; }
     public int MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+    public string WeaponName { get => weaponName; set => weaponName = value; }
 }

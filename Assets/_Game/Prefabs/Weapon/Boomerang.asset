@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boomerang
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 700678914290373095, guid: 958b42e34b05948aca16aa9db25e2b33, type: 3}
-  name: Boomerang
+  weaponName: Boomerang
   attackSpeed: 10
   range: 0
   moveSpeed: 0

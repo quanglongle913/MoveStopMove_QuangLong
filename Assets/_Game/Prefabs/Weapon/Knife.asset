@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Knife
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 8138720543356001358, guid: 7e1c68b7ecef9408eb7ad445b50a2d84, type: 3}
-  name: Knife
+  weaponName: Knife
   attackSpeed: 10
   range: 0
   moveSpeed: 0

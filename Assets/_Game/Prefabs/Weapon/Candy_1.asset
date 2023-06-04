@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Candy_1
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 7694272088573628507, guid: f08ccbc5b904542f8908fc58dac2f7eb, type: 3}
-  name: Candy_1
+  weaponName: Candy 1
   attackSpeed: 10
   range: 0
   moveSpeed: 0
