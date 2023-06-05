@@ -77,9 +77,17 @@ public class BotAISpawner : PooledObject
             BotAI botAI = botAIObject.GetComponent<BotAI>();
             botAI.ColorType = _colorType;
             botAI.ChangeColor(botAI.gameObject, _colorType);
+            //Bot weapon = random (.) weapon List Have
+            int weaponRandom = Random.Range(0, gameManager.SaveData.BotAIData.botAIInfo[i].weapon); //weapon power (bot have)
+            //Debug.Log("BotAI:" + weapon);
+            botAI.WeaponIndex = weaponRandom;
+            //set paint= _characterSkin[1] skin with inde =random 0->index
+            int paintRandom = Random.Range(0, gameManager.SaveData.BotAIData.botAIInfo[i]._characterSkin[1].index);
+            botAI.setAccessorisSkinMat(botAI.PaintSkin, gameManager.PantsData, paintRandom); 
+
             botAI.CharacterName = gameManager.SaveData.BotAIData.botAIInfo[i].botAI_name;
             gameManager.BotAIListStack.Add(botAI);
-            //Debug.Log("BotAI:" +i);
+            //Debug.Log("BotAI:" +weapon);
         }
     }
     void OnDrawGizmos()

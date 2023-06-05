@@ -12,6 +12,7 @@ public class Character : MonoBehaviour
 {
     [Header("Character: ")]
     [SerializeField] private SkinnedMeshRenderer mesh;
+    [SerializeField] private SkinnedMeshRenderer paintSkin;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
     [SerializeField] private List<Weapons> listWeaponsInHand;
@@ -47,7 +48,7 @@ public class Character : MonoBehaviour
     public bool IsHaveWeapon;
 
     private List<Weapons> weapons;
-    int weaponIndex;
+    private int weaponIndex;
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public ColorData ColorData { get => colorData; set => colorData = value; }
@@ -67,6 +68,8 @@ public class Character : MonoBehaviour
     public float AttackSpeedAfterbuff { get => attackSpeedAfterbuff; set => attackSpeedAfterbuff = value; }
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public string CharacterName { get => characterName; set => characterName = value; }
+    public int WeaponIndex { get => weaponIndex; set => weaponIndex = value; }
+    public SkinnedMeshRenderer PaintSkin { get => paintSkin; set => paintSkin = value; }
 
     //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
 
@@ -76,6 +79,7 @@ public class Character : MonoBehaviour
         
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 0);
     }
     public virtual void Start()
     {
@@ -93,14 +97,13 @@ public class Character : MonoBehaviour
         ChangeColor(gameObject, ColorType);
         //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;
-        this.weaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 3);
         this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
         AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
-        
+
         //Debug.Log("index:"+weaponIndex);
         //Debug.Log("Type:"+ WeaponData.Weapon[weaponIndex].WeaponType);
         //Set Material for Prefabs  when null Material
-        var newMaterials = new Material[ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials.Count()];
+        /*var newMaterials = new Material[ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials.Count()];
 
         for (int i = 0; i < newMaterials.Count(); i++)
         {
@@ -108,6 +111,9 @@ public class Character : MonoBehaviour
 
         }
         ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials = newMaterials;
+        */
+        setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
+
         //endset 
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
         PoolObject = _GameManager.PoolObject[(int)WeaponType];
@@ -115,7 +121,30 @@ public class Character : MonoBehaviour
         //Debug.Log("OK");
     }
     //TEST
-   
+    public void setWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index) 
+    {
+        //Set Material for Prefabs  when null Material
+        var newMaterials = new Material[renderer.materials.Count()];
+
+        for (int i = 0; i < newMaterials.Count(); i++)
+        {
+            newMaterials[i] = weaponData.Weapon[index].Mat;
+
+        }
+        renderer.materials = newMaterials;
+    }
+    public void setAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
+    {
+        //Set Material for Prefabs  when null Material
+        var newMaterials = new Material[renderer.materials.Count()];
+
+        for (int i = 0; i < newMaterials.Count(); i++)
+        {
+            newMaterials[i] = accessoriesData.Accessories[index].Mat;
+
+        }
+        renderer.materials = newMaterials;
+    }
     //ENDTEST
     public virtual void FixedUpdate()
     {
@@ -159,6 +188,7 @@ public class Character : MonoBehaviour
     private void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
+        //Debug.Log(CurrentCharacters.Length);
         CharactersInsideZone = Physics.OverlapSphere(this.transform.position, AttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersOutsideZone = CurrentCharacters.Except(CharactersInsideZone).ToArray();
     }

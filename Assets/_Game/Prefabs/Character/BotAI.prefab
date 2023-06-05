@@ -2492,6 +2492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mesh: {fileID: 386442175878308336}
+  paintSkin: {fileID: 8844496353971283091}
   colorData: {fileID: 11400000, guid: 4a57f7919a0c91e4e8cf15d98607ad33, type: 2}
   colorType: 0
   listWeaponsInHand:

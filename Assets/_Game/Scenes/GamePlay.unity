@@ -1255,6 +1255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab130260c31de640ab5f5030e77e2e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  botAIData:
+    botAIInfo: []
   BotAIGenerate: 0
   numberOfWeapon: 0
   _characterSkin: []

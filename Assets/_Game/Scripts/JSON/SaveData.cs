@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +36,7 @@ public class SaveData : MonoBehaviour
 
             //Debug.Log("BotAIData._botAIInfo:" + botAIData.botAIInfo.Count);
             //Debug.Log("BotAIData._botAIInfo 1:" + botAIData.botAIInfo[1].botAI_name);
+            //SaveData.BotAIData.botAIInfo[i]._characterSkin[1].index
         }
     }
     public void SaveIntoJson()
@@ -46,8 +47,11 @@ public class SaveData : MonoBehaviour
         //System.IO.File.WriteAllText(Application.streamingAssetsPath + "/BotAIData.json", potion);
         File.WriteAllText(saveFile, potion);
     }
+   
     public void GenerateData()
     {
+        //Tạo data và kiểu BotAIInfo.weapon là số weapon có trong game
+        //CharacterSkin[i].index là số skin loại 'i' có trong game
         List<BotAIInfo> _botAIInfo = new List<BotAIInfo>();
         for (int i = 0; i < BotAIGenerate; i++)
         {

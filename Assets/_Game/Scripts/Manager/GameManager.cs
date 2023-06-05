@@ -61,7 +61,7 @@ public class GameManager : Singleton<GameManager>
         BotAIListEnable = new List<BotAI>();
         IndicatorList = new List<Indicator>();
         CharacterInfoList = new List<CharacterInfo>();
-        saveData.ReadJsonFile();
+        SaveData.ReadJsonFile(); // read Json Data Bot
         OnInit();
        
         //Debug.Log("" + gameState);

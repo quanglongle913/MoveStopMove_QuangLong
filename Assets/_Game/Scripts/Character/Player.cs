@@ -38,6 +38,8 @@ public class Player : Character
     {
         base.OnInit();
         ChangeState(new IdleStateP());
+        setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
+        setAccessorisSkinMat(PaintSkin, this._GameManager.PantsData, 1); //set paint skin with inde =xx
     }
     void Update()
     {
