@@ -6,6 +6,7 @@ public class Weapons : MonoBehaviour
 {
     //[SerializeField] Rigidbody _rigidbody;
     [SerializeField] private WeaponType weaponType;
+    //Character =_GameObject
     public GameObject _GameObject;
     public float rotationSpeed;
     public bool isFire;
@@ -26,7 +27,9 @@ public class Weapons : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<Character>() && other.gameObject != _GameObject)
+        Character character = other.GetComponent<Character>();
+        Character characterRoot = _GameObject.GetComponent<Character>();
+        if (character && other.gameObject != _GameObject && character.ColorType != characterRoot.ColorType)
         {
             if (other.gameObject.GetComponent<Player>())
             {

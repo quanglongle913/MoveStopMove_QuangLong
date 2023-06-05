@@ -17,4 +17,8 @@ public class CharacterInfo : MonoBehaviour
     {
         CharacterName.text = _name;
     }
+    public void setCharacterLevel(string _level)
+    {
+        CharacterLevel.text = _level;
+    }
 }

@@ -107,16 +107,7 @@ public class BotAI : Character
         base.OnDeath();
         if (_GameManager.BotAIListEnable.Count > 0)
         {
-            /*for (int i = 0; i < GameManager.BotAIListEnable.Count; i++)
-            {
-                if (GameManager.BotAIListEnable[i].gameObject == gameObject)
-                {
-                    GameManager.CharacterInfoList[i + 1].GetComponent<PooledObject>().Release();
-                    GameManager.IndicatorList[i].GetComponent<PooledObject>().Release();
-                }
-            }*/
             _GameManager.BotAIListEnable.Remove(this.gameObject.GetComponent<BotAI>());
-            //GameManager.TotalBotAI_InGame--;
             ChangeState(new DeadState());
         } 
     }

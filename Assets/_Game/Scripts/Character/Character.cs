@@ -31,6 +31,8 @@ public class Character : MonoBehaviour
     [SerializeField] private float attackSpeedAfterbuff;
     [Header("--------------------------- ")]
     [SerializeField] private string characterName;
+    [SerializeField] private int characterLevel;
+    
     public float hp;
     public bool IsDeath => hp <= 0;
 
@@ -70,6 +72,7 @@ public class Character : MonoBehaviour
     public string CharacterName { get => characterName; set => characterName = value; }
     public int WeaponIndex { get => weaponIndex; set => weaponIndex = value; }
     public SkinnedMeshRenderer PaintSkin { get => paintSkin; set => paintSkin = value; }
+    public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
 
     //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
 
@@ -80,6 +83,7 @@ public class Character : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 0);
+        CharacterLevel = 1;
     }
     public virtual void Start()
     {
@@ -100,27 +104,15 @@ public class Character : MonoBehaviour
         this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
         AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
 
-        //Debug.Log("index:"+weaponIndex);
-        //Debug.Log("Type:"+ WeaponData.Weapon[weaponIndex].WeaponType);
         //Set Material for Prefabs  when null Material
-        /*var newMaterials = new Material[ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials.Count()];
-
-        for (int i = 0; i < newMaterials.Count(); i++)
-        {
-            newMaterials[i] = WeaponData.Weapon[weaponIndex].Mat;
-
-        }
-        ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials = newMaterials;
-        */
         setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
-
         //endset 
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
         PoolObject = _GameManager.PoolObject[(int)WeaponType];
         PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
         //Debug.Log("OK");
     }
-    //TEST
+    //Set Material for Prefabs  when null Material
     public void setWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index) 
     {
         //Set Material for Prefabs  when null Material
@@ -133,6 +125,7 @@ public class Character : MonoBehaviour
         }
         renderer.materials = newMaterials;
     }
+    //Set Material for Prefabs  when null Material
     public void setAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
     {
         //Set Material for Prefabs  when null Material
@@ -145,7 +138,7 @@ public class Character : MonoBehaviour
         }
         renderer.materials = newMaterials;
     }
-    //ENDTEST
+   
     public virtual void FixedUpdate()
     {
         GenerateZone();
@@ -188,7 +181,6 @@ public class Character : MonoBehaviour
     private void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
-        //Debug.Log(CurrentCharacters.Length);
         CharactersInsideZone = Physics.OverlapSphere(this.transform.position, AttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersOutsideZone = CurrentCharacters.Except(CharactersInsideZone).ToArray();
     }
