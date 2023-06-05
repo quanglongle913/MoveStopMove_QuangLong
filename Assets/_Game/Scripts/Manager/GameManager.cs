@@ -6,12 +6,24 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-
-    [SerializeField] private int numberOfBotsOnMap;
-    [SerializeField] private int numberOfBotsInGameLvel;
-
     [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
+    [Header("BotAI: ")]
+    [Tooltip("Number Bot in Map < Bot in Game")]
+    [SerializeField] private int numberOfBotsOnMap;
+    [Tooltip("Number Bot in Game > Bot in Map")]
+    [SerializeField] private int numberOfBotsInGameLvel;
+    [Header("Character Skins Data: ")]
+    [SerializeField] private AccessoriesData hatsData;
+    [SerializeField] private AccessoriesData pantsData;
+    [SerializeField] private AccessoriesData setfullData;
+    [SerializeField] private AccessoriesData shieldData;
+    
+    [Header("Weapon Manager: ")]
+    [SerializeField] private ObjectPool[] poolObject;
+    [SerializeField] private WeaponData weaponData;
+    [Header("Data Manager: ")]
+    [SerializeField] private SaveData saveData;
 
     private List<Indicator> indicatorList;
     private List<CharacterInfo> characterInfoList;
@@ -25,6 +37,7 @@ public class GameManager : Singleton<GameManager>
     public List<BotAI> BotAIListEnable { get => botAIListEnable; set => botAIListEnable = value; }
     public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
+
     public List<Indicator> IndicatorList { get => indicatorList; set => indicatorList = value; }
     public bool IsInitIndicator { get => isInitIndicator; set => isInitIndicator = value; }
     public bool IsInitBotAI { get => isInitBotAI; set => isInitBotAI = value; }
@@ -33,12 +46,22 @@ public class GameManager : Singleton<GameManager>
     public List<CharacterInfo> CharacterInfoList { get => characterInfoList; set => characterInfoList = value; }
     public List<BotAI> BotAIListStack { get => botAIListStack; set => botAIListStack = value; }
 
+    public AccessoriesData PantsData { get => pantsData; set => pantsData = value; }
+    public AccessoriesData SetfullData { get => setfullData; set => setfullData = value; }
+    public AccessoriesData ShieldData { get => shieldData; set => shieldData = value; }
+    public AccessoriesData HatsData { get => hatsData; set => hatsData = value; }
+
+    public ObjectPool[] PoolObject { get => poolObject; set => poolObject = value; }
+    public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
+    public SaveData SaveData { get => saveData; set => saveData = value; }
+
     private void Start()
     {
         botAIListStack = new List<BotAI>();
         BotAIListEnable = new List<BotAI>();
         IndicatorList = new List<Indicator>();
         CharacterInfoList = new List<CharacterInfo>();
+        saveData.ReadJsonFile();
         OnInit();
        
         //Debug.Log("" + gameState);
@@ -50,10 +73,6 @@ public class GameManager : Singleton<GameManager>
     }
     private void Update()
     {
-        /*if (gameState == GameState.Loading)
-        {
-            Debug.Log("Loading.....");
-        }*/
         if (IsInitBotAI && gameState == GameState.Loading)
         {
             
@@ -73,9 +92,6 @@ public class GameManager : Singleton<GameManager>
     }
     IEnumerator loading()
     {
-        /*Debug.Log("botAIListEnable " + botAIListEnable.Count);
-        Debug.Log("characterInfoList " + characterInfoList.Count);
-        Debug.Log("indicatorList " + indicatorList.Count);*/
         if (botAIListEnable.Count > 0)
         {
             for (int i = 0; i < botAIListEnable.Count; i++)

@@ -32,9 +32,7 @@ public class BotAISpawner : PooledObject
         {
             if (gameManager.BotAIListStack.Count > 0)
             {
-                //Debug.Log("BotAI:" + gameManager.BotAIListStack.Count);
                 int randomIndex = Random.Range(0, gameManager.BotAIListStack.Count);
-                //Debug.Log(randomIndex+"BotAI:" + gameManager.BotAIListStack.Count);
                 gameManager.BotAIListStack[randomIndex].gameObject.SetActive(true);
                 gameManager.BotAIListEnable.Add(gameManager.BotAIListStack[randomIndex]);
                 gameManager.BotAIListStack.Remove(gameManager.BotAIListStack[randomIndex]);
@@ -79,6 +77,7 @@ public class BotAISpawner : PooledObject
             BotAI botAI = botAIObject.GetComponent<BotAI>();
             botAI.ColorType = _colorType;
             botAI.ChangeColor(botAI.gameObject, _colorType);
+            botAI.CharacterName = gameManager.SaveData.BotAIData.botAIInfo[i].botAI_name;
             gameManager.BotAIListStack.Add(botAI);
             //Debug.Log("BotAI:" +i);
         }

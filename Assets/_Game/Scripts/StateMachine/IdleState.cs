@@ -16,7 +16,7 @@ public class IdleState : IState<BotAI>
 
     public void OnExecute(BotAI t)
     {
-        if (t.GameManager.GameState == GameState.InGame)
+        if (t._GameManager.GameState == GameState.InGame)
         {
             timer += Time.deltaTime;
             if (t.IsTargerInRange)

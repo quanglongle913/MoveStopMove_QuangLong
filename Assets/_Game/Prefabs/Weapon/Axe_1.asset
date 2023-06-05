@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Axe 1
   weaponType: 2
+  texture: {fileID: 2800000, guid: 6835be0985836ae4db64042d014cc64c, type: 3}
   mat: {fileID: 2100000, guid: 2c838b1120b424324a5805bfe633f317, type: 2}
   attackSpeed: 10
   range: 0

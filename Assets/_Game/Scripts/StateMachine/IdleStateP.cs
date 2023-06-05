@@ -12,7 +12,7 @@ public class IdleStateP : IState<Player>
 
     public void OnExecute(Player t)
     {
-        if (t.GameManager.GameState == GameState.InGame)
+        if (t._GameManager.GameState == GameState.InGame)
         {
             if (Mathf.Abs(t.Horizontal) >= 0.03 || Mathf.Abs(t.Vertical) >= 0.03)
             {

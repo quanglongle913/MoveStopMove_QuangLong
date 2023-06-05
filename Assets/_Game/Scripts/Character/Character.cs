@@ -14,29 +14,27 @@ public class Character : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer mesh;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
-    //[SerializeField] private GameObject weaponMasterHand;
     [SerializeField] private List<Weapons> listWeaponsInHand;
     [Header("--------------------------- ")]
     [SerializeField] private float attackRange = 3f;
     [SerializeField] private float attackSpeed = 3f;
     [SerializeField] private float moveSpeed = 5.0f;
-    [Header("--------------------------- ")]
     [SerializeField] private bool isTargerInRange;
     [SerializeField] private bool isAttacking;
     [Header("--------------------------- ")]
     [SerializeField] private GameObject weaponMaster;
     [SerializeField] private ObjectPool poolObject;
-    //[SerializeField] private List<Weapons> listWeaponsAttack;
     [Header("-------------Weapon-------------- ")]
     private WeaponType weaponType;
     private WeaponData weaponData;
     [SerializeField] private float attackSpeedAfterbuff;
     [Header("--------------------------- ")]
-    public string characterName;
-    private Animator anim;
-    private Rigidbody rb;
+    [SerializeField] private string characterName;
     public float hp;
     public bool IsDeath => hp <= 0;
+
+    private Animator anim;
+    private Rigidbody rb;
     protected float rotationSpeed = 1000f;
     private string currentAnimName;
     private GameObject target;
@@ -45,7 +43,6 @@ public class Character : MonoBehaviour
     protected Collider[] CharactersOutsideZone;
     
     private GameManager gameManager;
-    private WeaponMannager weaponMannager;
 
     public bool IsHaveWeapon;
 
@@ -58,7 +55,7 @@ public class Character : MonoBehaviour
     public float AttackRange { get => attackRange; set => attackRange = value; }
     public bool IsTargerInRange { get => isTargerInRange; set => isTargerInRange = value; }
     public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
-    public GameManager GameManager { get => gameManager; set => gameManager = value; }
+    public GameManager _GameManager { get => gameManager; set => gameManager = value; }
     public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public Animator Anim { get => anim; set => anim = value; }
     public GameObject Target { get => target; set => target = value; }
@@ -67,9 +64,9 @@ public class Character : MonoBehaviour
     public GameObject WeaponMaster { get => weaponMaster; set => weaponMaster = value; }
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public List<Weapons> ListWeaponsInHand { get => listWeaponsInHand; set => listWeaponsInHand = value; }
-    public WeaponMannager WeaponMannager { get => weaponMannager; set => weaponMannager = value; }
     public float AttackSpeedAfterbuff { get => attackSpeedAfterbuff; set => attackSpeedAfterbuff = value; }
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
+    public string CharacterName { get => characterName; set => characterName = value; }
 
     //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
 
@@ -82,8 +79,7 @@ public class Character : MonoBehaviour
     }
     public virtual void Start()
     {
-        gameManager = GameManager.Instance;
-        weaponMannager = WeaponMannager.Instance;
+        _GameManager = GameManager.Instance;
         Weapons = new List<Weapons>();
         //Init Weapons....................
         OnInit();
@@ -96,13 +92,13 @@ public class Character : MonoBehaviour
         
         ChangeColor(gameObject, ColorType);
         //Get Weapon info buff.... etc
-        this.WeaponData = weaponMannager.WeaponData;
+        this.WeaponData = _GameManager.WeaponData;
         this.weaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 3);
         this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
-        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * WeaponMannager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
+        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
         
-        Debug.Log("index:"+weaponIndex);
-        Debug.Log("Type:"+ WeaponData.Weapon[weaponIndex].WeaponType);
+        //Debug.Log("index:"+weaponIndex);
+        //Debug.Log("Type:"+ WeaponData.Weapon[weaponIndex].WeaponType);
         //Set Material for Prefabs  when null Material
         var newMaterials = new Material[ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials.Count()];
 
@@ -114,7 +110,7 @@ public class Character : MonoBehaviour
         ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>().materials = newMaterials;
         //endset 
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-        PoolObject = weaponMannager.PoolObject[(int)WeaponType];
+        PoolObject = _GameManager.PoolObject[(int)WeaponType];
         PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
         //Debug.Log("OK");
     }
@@ -125,7 +121,7 @@ public class Character : MonoBehaviour
     {
         GenerateZone();
         DetectionCharacter(CharactersInsideZone);
-        if (this.GameManager.GameState == GameState.InGame)
+        if (this._GameManager.GameState == GameState.InGame)
         {
             if (Weapons.Count <= 1)
             {

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Z
   m_EditorClassIdentifier: 
   weaponName: Z
-  weaponType: 0
+  weaponType: 11
+  texture: {fileID: 2800000, guid: 6835be0985836ae4db64042d014cc64c, type: 3}
   mat: {fileID: 2100000, guid: 2ce0dcb094b08314cabbfcd4fafdbbc8, type: 2}
   attackSpeed: 10
   range: 0

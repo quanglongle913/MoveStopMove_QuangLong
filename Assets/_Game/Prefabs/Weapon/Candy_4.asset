@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Candy_4
   m_EditorClassIdentifier: 
   weaponName: Candy 4
-  weaponType: 0
+  weaponType: 7
+  texture: {fileID: 2800000, guid: 7a594c63f9302444a8ac52408791a2ca, type: 3}
   mat: {fileID: 2100000, guid: 7c23bf848306e76449eb58a1ee8be5a5, type: 2}
   attackSpeed: 10
   range: 0

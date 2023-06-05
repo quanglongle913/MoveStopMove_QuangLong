@@ -8,6 +8,7 @@ using UnityEngine.AI;
 
 public class BotAI : Character
 {
+    [Header("------------BotAI--------------- ")]
     [SerializeField] private GameObject circleAttack;
     private IState<BotAI> currentState;
     private NavMeshAgent agent;
@@ -48,7 +49,7 @@ public class BotAI : Character
         }
         else
         {
-            if (this.GameManager.GameState == GameState.InGame)
+            if (this._GameManager.GameState == GameState.InGame)
             {
                 if (currentState != null)
                 {
@@ -104,7 +105,7 @@ public class BotAI : Character
     protected override void OnDeath()
     {
         base.OnDeath();
-        if (GameManager.BotAIListEnable.Count > 0)
+        if (_GameManager.BotAIListEnable.Count > 0)
         {
             /*for (int i = 0; i < GameManager.BotAIListEnable.Count; i++)
             {
@@ -114,7 +115,7 @@ public class BotAI : Character
                     GameManager.IndicatorList[i].GetComponent<PooledObject>().Release();
                 }
             }*/
-            GameManager.BotAIListEnable.Remove(this.gameObject.GetComponent<BotAI>());
+            _GameManager.BotAIListEnable.Remove(this.gameObject.GetComponent<BotAI>());
             //GameManager.TotalBotAI_InGame--;
             ChangeState(new DeadState());
         } 

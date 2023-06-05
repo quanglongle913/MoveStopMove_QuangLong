@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Knife
   m_EditorClassIdentifier: 
   weaponName: Knife
-  weaponType: 0
+  weaponType: 9
+  texture: {fileID: 2800000, guid: 9d5c7d4f9131293459a437534a878e9e, type: 3}
   mat: {fileID: 2100000, guid: 060e77e02d3879c47acba0d19902285d, type: 2}
   attackSpeed: 10
   range: 0

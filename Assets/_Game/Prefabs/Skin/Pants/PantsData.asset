@@ -13,4 +13,13 @@ MonoBehaviour:
   m_Name: PantsData
   m_EditorClassIdentifier: 
   skinType: 0
-  accessories: []
+  accessories:
+  - {fileID: 11400000, guid: b7d5999688ff2e34587416c230b67aa3, type: 2}
+  - {fileID: 11400000, guid: 25a90737958b6b74fa6226637344dbf7, type: 2}
+  - {fileID: 11400000, guid: db1bd64ed181ce04da047fa7fe4f8281, type: 2}
+  - {fileID: 11400000, guid: a276dfd2472eb2e4880aca0206f14430, type: 2}
+  - {fileID: 11400000, guid: 87cb13a698322a84e9e88dfbbaf1c3f6, type: 2}
+  - {fileID: 11400000, guid: 6ecd258e3c374da42819d0a937bb0d8e, type: 2}
+  - {fileID: 11400000, guid: e62cc4655772836419d87d4063218c28, type: 2}
+  - {fileID: 11400000, guid: d840491425d32ff42bcf5ec448fe1328, type: 2}
+  - {fileID: 11400000, guid: 7f1b6df348089fa4492239909a6fb143, type: 2}

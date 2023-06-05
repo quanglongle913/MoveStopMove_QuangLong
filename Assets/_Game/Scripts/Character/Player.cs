@@ -9,6 +9,7 @@ using UnityEngine.Pool;
 
 public class Player : Character
 {
+    [Header("------------Player--------------- ")]
     [SerializeField] private FloatingJoystick floatingJoystick;
     [SerializeField] private GameObject cylinder;
    
@@ -40,7 +41,7 @@ public class Player : Character
     }
     void Update()
     {
-        if (this.GameManager.GameState == GameState.InGame)
+        if (this._GameManager.GameState == GameState.InGame)
         {
             if (currentState != null)
             {

@@ -5,12 +5,15 @@ using UnityEngine;
 public class Constant
 {
 
+    public static string PLAYER_EXP = "PlayerExp";
+    public static string WEAPONS = "Weapons";
+    public static string PLAYER_MAP = "PlayerMap";
+    public static string ZOMBIEDAYS = "ZombieDays";
+
+
     public static string GAME_STATE = "GameState";
     public static string LAYOUT_WALL = "Wall";
     public static string LAYOUT_CHARACTER = "Character";
-    public static string WEAPONS = "Weapons";
-
-
 
 
     public static float RAYCAST_HIT_RANGE_WALL = 1.0f;

@@ -8,7 +8,7 @@ public class Weapon : ScriptableObject
     //[SerializeField] GameObject weaponPrefabs;
     [SerializeField] string weaponName;
     [SerializeField] WeaponType weaponType;
-    [SerializeField] Texture texture;
+    //[SerializeField] Texture texture;
     [SerializeField] private Material mat;
     [SerializeField] int attackSpeed;
     [SerializeField] int range;
@@ -20,6 +20,6 @@ public class Weapon : ScriptableObject
     public string WeaponName { get => weaponName; set => weaponName = value; }
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public Material Mat { get => mat; set => mat = value; }
-    public Texture Texture { get => texture; set => texture = value; }
+    //public Texture Texture { get => texture; set => texture = value; }
     //public GameObject WeaponPrefabs { get => weaponPrefabs; set => weaponPrefabs = value; }
 }

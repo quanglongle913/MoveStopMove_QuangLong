@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d6a9857b03acd46adc68eba53b3393, type: 3}
   m_Name: Boomerang
   m_EditorClassIdentifier: 
-  weaponName: Boomerang
-  weaponType: 0
+  weaponName: Boomerang 1
+  weaponType: 3
+  texture: {fileID: 2800000, guid: fe0aeaaa4a8fa9a419a4d9fa374e314b, type: 3}
   mat: {fileID: 2100000, guid: 6802632f690cf6e48a94c8f69d6b8a29, type: 2}
   attackSpeed: 10
   range: 0
