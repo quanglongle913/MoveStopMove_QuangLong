@@ -55,14 +55,35 @@ public class SaveData : MonoBehaviour
         List<BotAIInfo> _botAIInfo = new List<BotAIInfo>();
         for (int i = 0; i < BotAIGenerate; i++)
         {
-            //int random = UnityEngine.Random.Range(0, Enum.GetNames(typeof(BotAINameType)).Length);
             BotAIInfo botAIInfo = new BotAIInfo();
             botAIInfo.botAI_name = "" + (BotAINameType)i;
             botAIInfo.weapon = numberOfWeapon;
-            botAIInfo._characterSkin= _characterSkin;
+            botAIInfo._characterSkin = _characterSkin;
             _botAIInfo.Add(botAIInfo);
         }
         botAIData.botAIInfo = _botAIInfo;
+    }
+    public void GenerateDataSetIndex()
+    {
+        List<BotAIInfo> _botAIInfo = new List<BotAIInfo>();
+        for (int i = 0; i < BotAIGenerate; i++)
+        {
+            BotAIInfo botAIInfo = new BotAIInfo();
+            botAIInfo.botAI_name = "" + (BotAINameType)i;
+            int randomWeapon = UnityEngine.Random.Range(0, numberOfWeapon);
+            botAIInfo.weapon = randomWeapon;
+            List<CharacterSkin> characterSkin = _characterSkin;
+            for (int j = 0; j < characterSkin.Count; j++)
+            {
+                int randomSkin = UnityEngine.Random.Range(0, characterSkin[j].index);
+                characterSkin[j].index = randomSkin;
+            }
+
+            botAIInfo._characterSkin = characterSkin;
+            _botAIInfo.Add(botAIInfo);
+        }
+        botAIData.botAIInfo = _botAIInfo;
+        
     }
 }
 
@@ -76,7 +97,7 @@ public class BotAIData
 public class BotAIInfo
 {
     public string botAI_name;
-    public int weapon;
+    public int weapon;//là số weapon có trong game
     public List<CharacterSkin> _characterSkin = new List<CharacterSkin>();
 }
 
@@ -84,7 +105,7 @@ public class BotAIInfo
 public class CharacterSkin
 {
     public string skin_name;
-    public int index;
+    public int index; //số skin loại 'i' có trong game
     //public List<BotAIAccessories> _botAIAccessories = new List<BotAIAccessories>();
 }
 /*[System.Serializable]
