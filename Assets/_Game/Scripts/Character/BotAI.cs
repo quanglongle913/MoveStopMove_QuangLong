@@ -72,8 +72,8 @@ public class BotAI : Character
     }
     public Vector3 generateTargetTransform()
     {
-        float posX = transform.position.x + UnityEngine.Random.Range(-AttackRange*2, AttackRange * 2);
-        float posZ = transform.position.z + UnityEngine.Random.Range(-AttackRange * 2, AttackRange * 2);
+        float posX = transform.position.x + UnityEngine.Random.Range(-InGamneAttackRange*2, InGamneAttackRange * 2);
+        float posZ = transform.position.z + UnityEngine.Random.Range(-InGamneAttackRange * 2, InGamneAttackRange * 2);
         Vector3 target = new Vector3(posX, transform.position.y,posZ);
         return target;
     }

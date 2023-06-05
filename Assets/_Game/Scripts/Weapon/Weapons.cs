@@ -11,14 +11,21 @@ public class Weapons : MonoBehaviour
     public float rotationSpeed;
     public bool isFire;
     float rotY;
-    
+    public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     // Update is called once per frame
     void Update()
     {
         if (isFire)
         {
-            rotY += Time.deltaTime * rotationSpeed;
-            transform.rotation = Quaternion.Euler(90, rotY, 0);
+            if (weaponType == WeaponType.Knife)
+            {
+
+            }
+            else
+            {
+                rotY += Time.deltaTime * rotationSpeed;
+                transform.rotation = Quaternion.Euler(90, rotY, 0);
+            } 
         }
     }
     public void OnDespawn()
@@ -27,17 +34,19 @@ public class Weapons : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Character character = other.GetComponent<Character>();
+        Character enemy = other.GetComponent<Character>();
         Character characterRoot = _GameObject.GetComponent<Character>();
-        if (character && other.gameObject != _GameObject && character.ColorType != characterRoot.ColorType)
+        if (enemy && other.gameObject != _GameObject && enemy.ColorType != characterRoot.ColorType)
         {
             if (other.gameObject.GetComponent<Player>())
             {
-                other.gameObject.GetComponent<Character>().OnHit(0f);
+                enemy.OnHit(0f);
+                characterRoot.setExp(enemy.InGamneExp);
             }
             else
             {
-                other.gameObject.GetComponent<Character>().OnHit(2f);
+                enemy.OnHit(2f);
+                characterRoot.setExp(enemy.InGamneExp);
             }
             gameObject.SetActive(false);
             //OnDespawn();

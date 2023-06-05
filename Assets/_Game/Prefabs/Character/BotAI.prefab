@@ -2513,10 +2513,11 @@ MonoBehaviour:
   moveSpeed: 5
   isTargerInRange: 0
   isAttacking: 0
-  weaponMaster: {fileID: 6487059317820175710}
+  weaponMaster: {fileID: 1779045564}
   poolObject: {fileID: 0}
   attackSpeedAfterbuff: 0
   characterName: BotAI
+  characterLevel: 0
   hp: 1
   IsHaveWeapon: 0
   circleAttack: {fileID: 4197063280569115508}
@@ -2935,6 +2936,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5481673363043075407}
     m_Modifications:
+    - target: {fileID: 5171342215847457513, guid: d3f15efd48073244c96548973baadace, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8138760410302766844, guid: d3f15efd48073244c96548973baadace, type: 3}
       propertyPath: m_Name
       value: Candy_4

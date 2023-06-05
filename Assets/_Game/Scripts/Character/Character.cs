@@ -16,10 +16,19 @@ public class Character : MonoBehaviour
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
     [SerializeField] private List<Weapons> listWeaponsInHand;
-    [Header("--------------------------- ")]
-    [SerializeField] private float attackRange = 3f;
-    [SerializeField] private float attackSpeed = 3f;
-    [SerializeField] private float moveSpeed = 5.0f;
+    [Header("---------------BASE------------ ")]
+    [SerializeField] private int inGamneExp = 100;
+    [SerializeField] private float baseSizeCharacter = 1f;
+    [SerializeField] private float baseAttackRange = 7f;
+    [SerializeField] private float baseAttackSpeed = 60f;
+    [SerializeField] private float baseMoveSpeed = 5.0f;
+    [Header("--------------INGANE------------- ")]
+    [SerializeField] private float inGamneSizeCharacter = 1.0f;
+    [SerializeField] private float inGamneAttackRange = 7.0f;
+    [SerializeField] private float inGamneAttackSpeed = 60f;
+    [SerializeField] private float inGameMoveSpeed = 5.0f;
+    [SerializeField] private float inGamneGold = 50f;
+
     [SerializeField] private bool isTargerInRange;
     [SerializeField] private bool isAttacking;
     [Header("--------------------------- ")]
@@ -52,14 +61,20 @@ public class Character : MonoBehaviour
     private List<Weapons> weapons;
     private int weaponIndex;
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
-    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public ColorData ColorData { get => colorData; set => colorData = value; }
     public ColorType ColorType { get => colorType; set => colorType = value; }
-    public float AttackRange { get => attackRange; set => attackRange = value; }
+
+    public int InGamneExp { get => inGamneExp; set => inGamneExp = value; }
+    public float InGamneSizeCharacter { get => inGamneSizeCharacter; set => inGamneSizeCharacter = value; }
+    public float InGamneAttackRange { get => inGamneAttackRange; set => inGamneAttackRange = value; }
+    public float InGamneAttackSpeed { get => inGamneAttackSpeed; set => inGamneAttackSpeed = value; }
+    public float InGameMoveSpeed { get => inGameMoveSpeed; set => inGameMoveSpeed = value; }
+    public float InGamneGold { get => inGamneGold; set => inGamneGold = value; }
+
     public bool IsTargerInRange { get => isTargerInRange; set => isTargerInRange = value; }
     public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
+
     public GameManager _GameManager { get => gameManager; set => gameManager = value; }
-    public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public Animator Anim { get => anim; set => anim = value; }
     public GameObject Target { get => target; set => target = value; }
     public List<Weapons> Weapons { get => weapons; set => weapons = value; }
@@ -73,6 +88,7 @@ public class Character : MonoBehaviour
     public int WeaponIndex { get => weaponIndex; set => weaponIndex = value; }
     public SkinnedMeshRenderer PaintSkin { get => paintSkin; set => paintSkin = value; }
     public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
+    
 
     //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
 
@@ -82,8 +98,7 @@ public class Character : MonoBehaviour
         
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 0);
-        CharacterLevel = 1;
+        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 14);
     }
     public virtual void Start()
     {
@@ -97,12 +112,12 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
-        
+        updateCharacter();
         ChangeColor(gameObject, ColorType);
         //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;
         this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
-        AttackSpeedAfterbuff = AttackSpeed + (AttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
+        
 
         //Set Material for Prefabs  when null Material
         setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
@@ -160,6 +175,7 @@ public class Character : MonoBehaviour
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
         Weapons weaponAttack = Weapons[0];
         weaponAttack._GameObject = gameObject;
+        weaponAttack.WeaponType = this.WeaponType;
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
         Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponMaster.transform.position.z);
         RotateTowards(this.gameObject, _Direction);
@@ -181,14 +197,15 @@ public class Character : MonoBehaviour
     private void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
-        CharactersInsideZone = Physics.OverlapSphere(this.transform.position, AttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
+        CharactersInsideZone = Physics.OverlapSphere(this.transform.position, InGamneAttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersOutsideZone = CurrentCharacters.Except(CharactersInsideZone).ToArray();
     }
     private void DetectionCharacter(Collider[] colliders)
     {
         for (int i = 0; i < colliders.Length; i++) 
         {
-            if (!colliders[i].GetComponent<Character>().IsDeath && colliders[i].gameObject != this.gameObject)
+
+            if (!colliders[i].GetComponent<Character>().IsDeath && colliders[i].gameObject != this.gameObject && colorType != colliders[i].GetComponent<Character>().colorType)
             {
                 IsTargerInRange = true;
                 Target = colliders[i].gameObject;
@@ -212,7 +229,7 @@ public class Character : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(this.transform.position, AttackRange);
+        Gizmos.DrawWireSphere(this.transform.position, InGamneAttackRange);
 
     }
     public void RotateTowards(GameObject gameObject, Vector3 direction)
@@ -252,5 +269,43 @@ public class Character : MonoBehaviour
             }
         }
 
+    }
+    //Set EXP when killed other character
+    public void setExp(int exp)
+    {
+        InGamneExp += exp / CharacterLevel + 40;
+        InGamneGold += 50;
+        updateCharacter();
+    }
+    public void updateCharacter()
+    {
+        CharacterLevel = InGamneExp / 100; //tinh level character
+        float offsetSize = 0.02f;
+        float offsetAttackSpeed = 0.04f;
+        float offsetMoveSpeed = 0.3f;
+
+        if (characterLevel == 1)
+        {
+            inGamneSizeCharacter = baseSizeCharacter;
+            inGamneAttackRange = baseAttackRange;
+            inGamneAttackSpeed = baseAttackSpeed;
+            inGameMoveSpeed = baseMoveSpeed;
+        }
+        else if (characterLevel <= 10)
+        {
+            inGamneSizeCharacter = baseSizeCharacter + offsetSize * characterLevel;
+            //inGamneAttackRange = baseAttackRange + offset * characterLevel;
+            inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * characterLevel;
+            inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * characterLevel;
+        }
+        else
+        {
+            inGamneSizeCharacter = baseSizeCharacter + offsetSize * 10;
+            //inGamneAttackRange = baseAttackRange + offset * 10;
+            inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * 10;
+            inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * 10;
+        }
+        AttackSpeedAfterbuff = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
+        transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
     }
 }

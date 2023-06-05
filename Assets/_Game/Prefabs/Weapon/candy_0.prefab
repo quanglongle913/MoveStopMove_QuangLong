@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3481367434845503858}
   - component: {fileID: 8753661018855770964}
   m_Layer: 0
-  m_Name: Candy_0
+  m_Name: candy_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 230288051504762204}
   m_LocalRotation: {x: -0.00000021606681, y: -0.0000001634471, z: -0.7058941, w: 0.70831746}
   m_LocalPosition: {x: -0.045, y: 0.066, z: 0}
-  m_LocalScale: {x: 25, y: 25, z: 25}
+  m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

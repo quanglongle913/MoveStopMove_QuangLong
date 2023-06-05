@@ -76,6 +76,7 @@ public class BotAISpawner : PooledObject
             ColorType _colorType = (ColorType)randomColor;
             BotAI botAI = botAIObject.GetComponent<BotAI>();
             botAI.ColorType = _colorType;
+            botAI.InGamneExp = 100;
             botAI.ChangeColor(botAI.gameObject, _colorType);
             //Bot weapon = random (.) weapon List Have
             int weaponRandom = Random.Range(0, gameManager.SaveData.BotAIData.botAIInfo[i].weapon); //weapon power (bot have)

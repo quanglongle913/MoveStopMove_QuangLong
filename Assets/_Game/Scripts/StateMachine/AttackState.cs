@@ -9,8 +9,9 @@ public class AttackState : IState<BotAI>
     float timerAttack;
     public void OnEnter(BotAI t)
     {
-        timer = 0;
+        //timer = 0;
         timerAttack = (float)Math.Round(60 / t.AttackSpeedAfterbuff, 1);
+        timer = timerAttack + 1;
         //Debug.Log("AttackStateP......" + timerAttack);
         t.Anim.speed = (float)Math.Round(t.AttackSpeedAfterbuff / 60, 1);
     }

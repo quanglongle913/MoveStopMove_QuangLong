@@ -1762,7 +1762,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 511313b6847864649be9c6732956fcc4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2468,6 +2468,7 @@ MonoBehaviour:
   poolObject: {fileID: 0}
   attackSpeedAfterbuff: 0
   characterName: You
+  characterLevel: 0
   hp: 0
   IsHaveWeapon: 0
   floatingJoystick: {fileID: 0}

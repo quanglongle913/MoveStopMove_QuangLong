@@ -9,7 +9,7 @@ public class PatrolStateP : IState<Player>
     {
         //Debug.Log("PatrolStateP");
         t.ChangeAnim("Run");
-        t.Anim.speed = (float)Math.Round(t.MoveSpeed / 10, 1);
+        t.Anim.speed = (float)Math.Round(t.InGameMoveSpeed / 10, 1);
        
     }
 

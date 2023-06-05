@@ -59,7 +59,7 @@ public class Player : Character
         base.FixedUpdate();
         if (cylinder != null)
         {
-            cylinder.transform.localScale = new Vector3(AttackRange * 2, 0.001f, AttackRange * 2);
+            cylinder.transform.localScale = new Vector3(InGamneAttackRange * 2, 0.001f, InGamneAttackRange * 2);
         }
         Horizontal = FloatingJoystick.Horizontal;
         Vertical = FloatingJoystick.Vertical;
@@ -81,7 +81,7 @@ public class Player : Character
     {
         if (Mathf.Abs(horizontal) >= 0.03 || Mathf.Abs(vertical) >= 0.03)
         {
-            Vector3 _Direction = new Vector3(horizontal * MoveSpeed * Time.fixedDeltaTime, _Rigidbody.velocity.y, vertical * MoveSpeed * Time.fixedDeltaTime);
+            Vector3 _Direction = new Vector3(horizontal * InGameMoveSpeed * Time.fixedDeltaTime, _Rigidbody.velocity.y, vertical * InGameMoveSpeed * Time.fixedDeltaTime);
             Vector3 TargetPoint = new Vector3(_Rigidbody.position.x + _Direction.x, _Rigidbody.position.y, _Rigidbody.position.z + _Direction.z);
             RotateTowards(this.gameObject, _Direction);
             if (!Constant.isWall(this.gameObject,LayerMask.GetMask(Constant.LAYOUT_WALL)))
