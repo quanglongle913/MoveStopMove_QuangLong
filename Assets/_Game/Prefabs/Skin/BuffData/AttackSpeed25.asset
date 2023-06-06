@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AttackSpeed25
   m_EditorClassIdentifier: 
   buffType: 1
-  buffIndex: 15
+  buffIndex: 25

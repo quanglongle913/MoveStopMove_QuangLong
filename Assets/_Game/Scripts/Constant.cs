@@ -6,10 +6,13 @@ public class Constant
 {
 
    
-    public static string WEAPONS = "Weapons";
+    public static string WEAPONS_USE = "WeaponsUse";
+    /// 
+    /// </summary>
     public static string PLAYER_MAP = "PlayerMap";
     public static string ZOMBIEDAYS = "ZombieDays";
 
+    public static string PLAYER_WEAPONS_HAVE = "PlayerWeaponsHave"; 
     public static string PLAYER_EXP = "PlayerExp";
     public static string PLAYER_ZONE = "PlayerZone";
     public static string PLAYER_BEST = "PlayerBest";

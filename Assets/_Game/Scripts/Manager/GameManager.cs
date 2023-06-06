@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
+    [SerializeField] private GameObject player;
     [Header("BotAI: ")]
     [Tooltip("Number Bot in Map < Bot in Game")]
     [SerializeField] private int numberOfBotsOnMap;
@@ -57,6 +58,7 @@ public class GameManager : Singleton<GameManager>
     public SaveData SaveData { get => saveData; set => saveData = value; }
     public GameObject WeaponManager { get => weaponManager; set => weaponManager = value; }
     public UIManager UIManager { get => uIManager; set => uIManager = value; }
+    public GameObject Player { get => player; set => player = value; }
 
     private void Start()
     {

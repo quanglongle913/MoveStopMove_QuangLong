@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Uzi
   weaponType: 10
+  weaponPrice: 2000
   mat: {fileID: 2100000, guid: 0c1e24389a7442e419c193bacbf59e60, type: 2}
-  buffData: {fileID: 11400000, guid: 90f1507e56f9c8d4b88ac476cf13e9c8, type: 2}
+  buffData: {fileID: 11400000, guid: 16c5188a26f35cc4e99e5c1e5b4f5d93, type: 2}

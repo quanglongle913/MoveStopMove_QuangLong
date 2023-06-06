@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Candy 1
   weaponType: 5
+  weaponPrice: 1300
   mat: {fileID: 2100000, guid: 96ab4aa0fdaa7b9449c4de777e261fa7, type: 2}
-  buffData: {fileID: 11400000, guid: 90f1507e56f9c8d4b88ac476cf13e9c8, type: 2}
+  buffData: {fileID: 11400000, guid: 22bbddb165cf13d4daaaeddb5611f5c8, type: 2}

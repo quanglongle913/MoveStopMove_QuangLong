@@ -95,7 +95,7 @@ public class Character : MonoBehaviour
         
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS, 14);
+        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 14);
     }
     public virtual void Start()
     {
@@ -108,7 +108,7 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
-        updateCharacter();
+        
         ChangeColor(gameObject, ColorType);
         //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;
@@ -118,7 +118,7 @@ public class Character : MonoBehaviour
 
         PoolObject = _GameManager.PoolObject[(int)WeaponType];
         PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
-
+        updateCharacter();
     }
     //Set Material for Prefabs 
     public void setWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index) 
@@ -163,7 +163,7 @@ public class Character : MonoBehaviour
     {
         ChangeAnim("Attack");
         IsAttacking = true;
-        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
+        HideAllWeaponsInHand();
         Weapons weaponAttack = Weapons[0];
         weaponAttack.transform.position = WeaponRoot.transform.position;
         weaponAttack._GameObject = gameObject;
@@ -187,7 +187,7 @@ public class Character : MonoBehaviour
                         .OnComplete(() =>
                         {
                             _character.Weapons.Remove(_weapons);
-                            _character.ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+                            _character.ShowWeaponIndex((int)WeaponType);
                             _character.IsAttacking = false;
                             _weapons.gameObject.SetActive(false);
                             _weapons.gameObject.GetComponent<PooledObject>().Release();
@@ -269,6 +269,18 @@ public class Character : MonoBehaviour
         }
 
     }
+    public void HideAllWeaponsInHand()
+    {
+        for (int i = 0; i < ListWeaponsInHand.Count; i++)
+        {
+            listWeaponsInHand[i].gameObject.SetActive(false);
+        }
+    }
+    public void ShowWeaponIndex(int index)
+    {
+        HideAllWeaponsInHand();
+        listWeaponsInHand[index].gameObject.SetActive(true);
+    }
     //Set EXP when killed other character
     public void setExp(int exp)
     {
@@ -304,6 +316,7 @@ public class Character : MonoBehaviour
             inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * 10;
             inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * 10;
         }
+        //Debug.Log(""+ _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType);
         if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
         {
             AttackSpeedAfterbuff = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
@@ -312,6 +325,7 @@ public class Character : MonoBehaviour
         {
             AttackSpeedAfterbuff = InGamneAttackSpeed;
         }
+        //AttackSpeedAfterbuff = InGamneAttackSpeed;
         transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
     }
 }

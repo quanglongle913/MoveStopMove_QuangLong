@@ -55,7 +55,7 @@ public class Weapons : MonoBehaviour
             {
                 //Debug.Log("sss");
                 character.Weapons.Remove(this);
-                character.ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+                character.ShowWeaponIndex((int)WeaponType);
                 character.IsAttacking = false;
                 this.gameObject.SetActive(false);
                 this.isFire = false;

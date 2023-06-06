@@ -8,7 +8,7 @@ public class Weapon : ScriptableObject
     //[SerializeField] GameObject weaponPrefabs;
     [SerializeField] string weaponName;
     [SerializeField] WeaponType weaponType;
-    //[SerializeField] Texture texture;
+    [SerializeField] int weaponPrice;
     [SerializeField] private Material mat;
     [SerializeField] private BuffData buffData;
 
@@ -17,4 +17,5 @@ public class Weapon : ScriptableObject
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public Material Mat { get => mat; set => mat = value; }
     public BuffData BuffData { get => buffData; set => buffData = value; }
+    public int WeaponPrice { get => weaponPrice; set => weaponPrice = value; }
 }

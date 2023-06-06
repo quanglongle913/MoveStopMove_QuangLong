@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Hammer
   weaponType: 8
+  weaponPrice: 2000
   mat: {fileID: 2100000, guid: 6a9f5f30ceefdeb4aab0f2cd87db1e13, type: 2}
-  buffData: {fileID: 11400000, guid: 90f1507e56f9c8d4b88ac476cf13e9c8, type: 2}
+  buffData: {fileID: 11400000, guid: 366883472e4a9ba4e9fba9ef52ef7e00, type: 2}

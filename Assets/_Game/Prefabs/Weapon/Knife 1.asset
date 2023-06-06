@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Knife
   weaponType: 9
+  weaponPrice: 2000
   mat: {fileID: 2100000, guid: 060e77e02d3879c47acba0d19902285d, type: 2}
-  buffData: {fileID: 11400000, guid: 90f1507e56f9c8d4b88ac476cf13e9c8, type: 2}
+  buffData: {fileID: 11400000, guid: 091e21001a4a4eb4a8f8380f5f79ddb7, type: 2}

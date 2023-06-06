@@ -23,12 +23,17 @@ public class UIManager : MonoBehaviour
     [Header("WeaponShop: ")]
     [SerializeField] private GameObject popup_WeaponShop;
     [SerializeField] private TMPro.TextMeshProUGUI textWeaponBuffInfo; //GameManager. WeaponData.Weapon[i].BuffType & BuffInfo
+    [SerializeField] private TMPro.TextMeshProUGUI textWeaponType;
+    [SerializeField] private TMPro.TextMeshProUGUI textWeaponStatus; 
+    [SerializeField] private TMPro.TextMeshProUGUI textWeaponPriceBtnBuy;
+    [SerializeField] private TMPro.TextMeshProUGUI textWeaponPriceBtnUnBuy;
     [SerializeField] private List<GameObject> listWeaponPreview;
 
     [SerializeField] private GameObject btn_Selelect;
     [SerializeField] private GameObject btn_Equipped;
     [SerializeField] private GameObject btn_Buy;
     [SerializeField] private GameObject btn_UnBuy;
+    int itemSelelected=0;
 
     [Header("SkinShop: ")]
     [SerializeField] private GameObject popup_SkinShop;
@@ -41,7 +46,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI text_CountDown;
 
     GameManager gameManager;
-
+    
     private void Start()
     {
        gameManager = GameManager.Instance;
@@ -50,10 +55,15 @@ public class UIManager : MonoBehaviour
     {
         if (gameManager.GameState == GameState.GameMenu)
         {
-            //Debug.Log(PlayerPrefs.GetInt(Constant.PLAYER_COIN, -1));
             if (PlayerPrefs.GetInt(Constant.PLAYER_COIN,-1)==-1)
             { 
                 PlayerPrefs.SetInt(Constant.PLAYER_COIN,10000);
+                PlayerPrefs.Save();
+            }
+            if (PlayerPrefs.GetInt(Constant.PLAYER_WEAPONS_HAVE, -1) == -1) 
+            {
+                PlayerPrefs.SetInt(Constant.PLAYER_WEAPONS_HAVE, 0);
+                PlayerPrefs.SetInt(Constant.WEAPONS_USE, 0);
                 PlayerPrefs.Save();
             }
             var score = PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
@@ -256,11 +266,123 @@ public class UIManager : MonoBehaviour
         //TODO
         popup_GameMenuChild.SetActive(false);
         popup_WeaponShop.SetActive(true);
+        itemSelelected = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0);
+        //UNDONE
+        upDateWeaponShopUI();
+        listWeaponPreview[itemSelelected].SetActive(true);
+        gameManager.Player.GetComponent<Character>().ShowWeaponIndex(itemSelelected);
+        BtnUpdate();
     }
     public void Hide_Popup_WeaponShop()
     {
-        //TODO
         popup_GameMenuChild.SetActive(true);
+        gameManager.Player.GetComponent<Character>().ShowWeaponIndex(PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0));
         popup_WeaponShop.SetActive(false);
+    }
+    public void upDateWeaponShopUI()
+    {
+        HideAllWeaponsInWeaponShopUI();
+        
+    }
+    public void HideAllWeaponsInWeaponShopUI()
+    {
+        for (int i=0; i< listWeaponPreview.Count;i++)
+        {
+            listWeaponPreview[i].SetActive(true);
+        }
+    }
+    public void BtnUpdate()
+    {
+        Character character = gameManager.Player.GetComponent<Character>();
+        character.ShowWeaponIndex(itemSelelected);
+        character.setWeaponSkinMat(character.ListWeaponsInHand[itemSelelected].gameObject.GetComponent<Renderer>(), gameManager.WeaponData, itemSelelected);
+        btn_Buy.SetActive(false);
+        btn_Equipped.SetActive(false);
+        btn_Selelect.SetActive(false);
+        btn_UnBuy.SetActive(false);
+        Weapon weapon = gameManager.WeaponData.Weapon[itemSelelected];
+        textWeaponType.text = "" + weapon.WeaponName;
+        textWeaponPriceBtnBuy.text = "" + weapon.WeaponPrice;
+        textWeaponPriceBtnUnBuy.text = "" + weapon.WeaponPrice;
+        textWeaponBuffInfo.text = "+" + weapon.BuffData.BuffIndex+ " "+ weapon.BuffData.BuffType; //GameManager. WeaponData.Weapon[i].BuffType & BuffInfo
+
+        if (itemSelelected == PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0))
+        {
+            btn_Equipped.SetActive(true);
+            textWeaponType.color = Color.white;
+            textWeaponStatus.gameObject.SetActive(false);
+        }
+        else if (itemSelelected <= PlayerPrefs.GetInt(Constant.PLAYER_WEAPONS_HAVE, 0))
+        {
+            btn_Selelect.SetActive(true);
+            textWeaponType.color = Color.white;
+            textWeaponStatus.gameObject.SetActive(false);
+        }
+        else if (itemSelelected == PlayerPrefs.GetInt(Constant.PLAYER_WEAPONS_HAVE, 0) + 1)
+        {
+            btn_Buy.SetActive(true);
+            textWeaponType.color = Color.black;
+            textWeaponStatus.text = "(Lock)";
+            textWeaponStatus.gameObject.SetActive(true);
+        }
+        else {
+            btn_UnBuy.SetActive(true);
+            textWeaponType.color = Color.black;
+            if (itemSelelected > 0)
+            {
+                textWeaponStatus.text = "UnLock " + gameManager.WeaponData.Weapon[itemSelelected - 1].WeaponName + " First";
+            }
+            
+            textWeaponStatus.gameObject.SetActive(true);
+        }
+    }
+    public void NextWeapon() 
+    {
+        if (itemSelelected < listWeaponPreview.Count-1)
+        {
+            itemSelelected++;
+            Debug.Log(itemSelelected);
+            HideAllWeaponsInWeaponShopUI();
+            listWeaponPreview[itemSelelected].SetActive(true);
+            BtnUpdate();
+
+        }
+   
+    }
+    public void PrevWeapon() 
+    {
+        Debug.Log(itemSelelected);
+        if (itemSelelected > 0)
+        {
+            Debug.Log(itemSelelected);
+            itemSelelected--;
+            HideAllWeaponsInWeaponShopUI();
+            listWeaponPreview[itemSelelected].SetActive(true);
+            BtnUpdate();
+        }
+        
+    }
+    //btn Selelect and btn Equipped Onclick
+    public void OnClickBtnSelelect_Equipped()
+    {
+        PlayerPrefs.SetInt(Constant.WEAPONS_USE, itemSelelected);
+        PlayerPrefs.Save();
+        Hide_Popup_WeaponShop();
+    }
+    public void OnClickBtnBuy()
+    {
+        if (PlayerPrefs.GetInt(Constant.PLAYER_COIN) >= gameManager.WeaponData.Weapon[itemSelelected].WeaponPrice)
+        {
+            int coin = PlayerPrefs.GetInt(Constant.PLAYER_COIN) - gameManager.WeaponData.Weapon[itemSelelected].WeaponPrice;
+            PlayerPrefs.SetInt(Constant.PLAYER_COIN, coin);
+            PlayerPrefs.SetInt(Constant.PLAYER_WEAPONS_HAVE, itemSelelected);
+            PlayerPrefs.SetInt(Constant.WEAPONS_USE, itemSelelected);
+            PlayerPrefs.Save();
+            Hide_Popup_WeaponShop();
+        }
+        else
+        {
+            Debug.Log("You don't have enough coins to make this");
+        }
     }
 }

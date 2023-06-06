@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Axe 0
   weaponType: 1
+  weaponPrice: 50
   mat: {fileID: 2100000, guid: 615727cbf9ad21547bb06a0b1775ae5a, type: 2}
-  buffData: {fileID: 11400000, guid: 90f1507e56f9c8d4b88ac476cf13e9c8, type: 2}
+  buffData: {fileID: 11400000, guid: 366883472e4a9ba4e9fba9ef52ef7e00, type: 2}
