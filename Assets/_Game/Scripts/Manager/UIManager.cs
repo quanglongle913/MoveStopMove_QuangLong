@@ -11,6 +11,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inGame;
     [SerializeField] private GameObject gameMenu;
     [SerializeField] private GameObject endGame;
+    [Header("GameMenu: ")]
+    [SerializeField] private TMPro.TextMeshProUGUI textCoin;
+    [SerializeField] private TMPro.TextMeshProUGUI textName;
+    [SerializeField] private TMPro.TextMeshProUGUI textZone;
+    [SerializeField] private TMPro.TextMeshProUGUI textZoneBTN;
+    [SerializeField] private TMPro.TextMeshProUGUI textBestBTN;
+    [SerializeField] private TMPro.TextMeshProUGUI textZombieDay;
+    [SerializeField] private TMPro.TextMeshProUGUI textZoneExp;
     [Header("InGame: ")]
     [SerializeField] private GameObject popup_Setting;
     [SerializeField] private TMPro.TextMeshProUGUI textAlive;
@@ -27,8 +35,33 @@ public class UIManager : MonoBehaviour
     }
     private void Update()
     {
-        int total = gameManager.TotalBotAI + gameManager.BotAIListEnable.Count;
-        textAlive.text = ("Alive: "+ total);
+        if (gameManager.GameState == GameState.GameMenu)
+        {
+            //Debug.Log(PlayerPrefs.GetInt(Constant.PLAYER_COIN, -1));
+            if (PlayerPrefs.GetInt(Constant.PLAYER_COIN,-1)==-1)
+            { 
+                PlayerPrefs.SetInt(Constant.PLAYER_COIN,10000);
+                PlayerPrefs.Save();
+            }
+            var score = PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
+            string.Format("Score: {0:#,#}", score);
+            score.ToString("#,#");
+            textCoin.text = (score.ToString("#,#"));
+            textName.text = PlayerPrefs.GetString(Constant.PLAYER_NAME, "You");
+            textZone.text = ("" + PlayerPrefs.GetInt(Constant.PLAYER_ZONE, 1));
+            textZoneBTN.text = ("ZONE: " + PlayerPrefs.GetInt(Constant.PLAYER_ZONE, 1));
+            textBestBTN.text = ("BEST: #" + PlayerPrefs.GetInt(Constant.PLAYER_BEST, 99));
+            textZombieDay.text = ("" + PlayerPrefs.GetInt(Constant.PLAYER_ZOMBIEDAY, 0));
+            int maxExpZone = PlayerPrefs.GetInt(Constant.PLAYER_ZONE, 1) * 200;
+            textZoneExp.text = (PlayerPrefs.GetInt(Constant.PLAYER_EXP, 0)+"/"+ maxExpZone);
+
+        }
+        else if (gameManager.GameState == GameState.InGame)
+        {
+            int total = gameManager.TotalBotAI + gameManager.BotAIListEnable.Count;
+            textAlive.text = ("Alive: " + total);
+        }
+        
     }
     public void setLoading()
     {
@@ -44,9 +77,9 @@ public class UIManager : MonoBehaviour
         InGame();
         gameManager.GameState = GameState.InGame;
     }
-    public void setEndGame()
+    public void setEndGame(bool isPlayerWon)
     {   
-        EndGame();
+        EndGame(isPlayerWon);
         gameManager.GameState = GameState.EndGame;
     }
     public void Loading()
@@ -107,7 +140,7 @@ public class UIManager : MonoBehaviour
             endGame.SetActive(false);
         }
     }
-    public void EndGame()
+    public void EndGame(bool isPlayerWon)
     {
         if (loading.activeSelf)
         {
@@ -124,7 +157,15 @@ public class UIManager : MonoBehaviour
         if (!endGame.activeSelf)
         {
             endGame.SetActive(true);
-            Show_Popup_Tryagain();
+            if (isPlayerWon)
+            {
+                Show_Popup_PlayerWon();
+            }
+            else
+            {
+                Show_Popup_Tryagain();
+            }
+                
         }
     }
 
@@ -148,6 +189,14 @@ public class UIManager : MonoBehaviour
     {
         popup_Countine.SetActive(false);
         setLoading();
+    }
+    public void Show_Popup_PlayerWon()
+    {
+        //TODO
+    }
+    public void Hide_Popup_PlayerWon()
+    {
+        //TODO
     }
     public void Show_Popup_Tryagain()
     {

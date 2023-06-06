@@ -56,6 +56,7 @@ public class GameManager : Singleton<GameManager>
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public SaveData SaveData { get => saveData; set => saveData = value; }
     public GameObject WeaponManager { get => weaponManager; set => weaponManager = value; }
+    public UIManager UIManager { get => uIManager; set => uIManager = value; }
 
     private void Start()
     {
@@ -82,7 +83,7 @@ public class GameManager : Singleton<GameManager>
         }
         if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit)
         {
-            uIManager.setEndGame();
+            uIManager.setEndGame(true);
         }
     }
     IEnumerator SetGameStateMenu()

@@ -5,11 +5,17 @@ using UnityEngine;
 public class Constant
 {
 
-    public static string PLAYER_EXP = "PlayerExp";
+   
     public static string WEAPONS = "Weapons";
     public static string PLAYER_MAP = "PlayerMap";
     public static string ZOMBIEDAYS = "ZombieDays";
 
+    public static string PLAYER_EXP = "PlayerExp";
+    public static string PLAYER_ZONE = "PlayerZone";
+    public static string PLAYER_BEST = "PlayerBest";
+    public static string PLAYER_COIN = "PlayerCoin";
+    public static string PLAYER_NAME = "PlayerName";
+    public static string PLAYER_ZOMBIEDAY = "PlayerZombieDay";
 
     public static string GAME_STATE = "GameState";
     public static string LAYOUT_WALL = "Wall";

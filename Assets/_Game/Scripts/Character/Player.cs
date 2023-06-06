@@ -119,6 +119,7 @@ public class Player : Character
     public override void OnDespawn()
     {
         base.OnDespawn();
+        _GameManager.UIManager.setEndGame(false);
         //OnInit();
     }
     protected override void OnDeath()
