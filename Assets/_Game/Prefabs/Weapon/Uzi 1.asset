@@ -14,8 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Uzi
   weaponType: 10
-  texture: {fileID: 2800000, guid: cc6f719348ea18d48a502fe594def27a, type: 3}
   mat: {fileID: 2100000, guid: 0c1e24389a7442e419c193bacbf59e60, type: 2}
-  attackSpeed: 10
-  range: 0
-  moveSpeed: 0
+  buffData: {fileID: 11400000, guid: 90f1507e56f9c8d4b88ac476cf13e9c8, type: 2}

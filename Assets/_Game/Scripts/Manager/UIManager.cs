@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameMenu;
     [SerializeField] private GameObject endGame;
     [Header("GameMenu: ")]
+    [SerializeField] private GameObject popup_GameMenuChild;
     [SerializeField] private TMPro.TextMeshProUGUI textCoin;
     [SerializeField] private TMPro.TextMeshProUGUI textName;
     [SerializeField] private TMPro.TextMeshProUGUI textZone;
@@ -19,6 +20,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI textBestBTN;
     [SerializeField] private TMPro.TextMeshProUGUI textZombieDay;
     [SerializeField] private TMPro.TextMeshProUGUI textZoneExp;
+    [Header("WeaponShop: ")]
+    [SerializeField] private GameObject popup_WeaponShop;
+    [SerializeField] private TMPro.TextMeshProUGUI textWeaponBuffInfo; //GameManager. WeaponData.Weapon[i].BuffType & BuffInfo
+    [SerializeField] private List<GameObject> listWeaponPreview;
+
+    [SerializeField] private GameObject btn_Selelect;
+    [SerializeField] private GameObject btn_Equipped;
+    [SerializeField] private GameObject btn_Buy;
+    [SerializeField] private GameObject btn_UnBuy;
+
+    [Header("SkinShop: ")]
+    [SerializeField] private GameObject popup_SkinShop;
     [Header("InGame: ")]
     [SerializeField] private GameObject popup_Setting;
     [SerializeField] private TMPro.TextMeshProUGUI textAlive;
@@ -110,6 +123,8 @@ public class UIManager : MonoBehaviour
         if (!gameMenu.activeSelf)
         {
             gameMenu.SetActive(true);
+            popup_GameMenuChild.SetActive(true);
+            popup_WeaponShop.SetActive(false);
         }
         if (inGame.activeSelf)
         {
@@ -168,7 +183,7 @@ public class UIManager : MonoBehaviour
                 
         }
     }
-
+    //================IN GAME===================
     public void Show_Popup_Setting()
     {
         popup_Setting.SetActive(true);
@@ -190,21 +205,6 @@ public class UIManager : MonoBehaviour
         popup_Countine.SetActive(false);
         setLoading();
     }
-    public void Show_Popup_PlayerWon()
-    {
-        //TODO
-    }
-    public void Hide_Popup_PlayerWon()
-    {
-        //TODO
-    }
-    public void Show_Popup_Tryagain()
-    {
-        popup_Countine.SetActive(false);
-        popup_TryAgain.SetActive(true);
-        StartCoroutine(Waiter(text_CountDown));
-
-    }
     public void Hide_Popup_Tryagain()
     {
         if (popup_TryAgain.activeSelf)
@@ -212,6 +212,23 @@ public class UIManager : MonoBehaviour
             popup_TryAgain.SetActive(false);
         }
     }
+    public void Show_Popup_PlayerWon()
+    {
+        //TODO
+       
+    }
+    public void Hide_Popup_PlayerWon()
+    {
+        //TODO
+    
+    }
+    public void Show_Popup_Tryagain()
+    {
+        popup_Countine.SetActive(false);
+        popup_TryAgain.SetActive(true);
+        StartCoroutine(Waiter(text_CountDown));
+    }
+
     public void EndGame_RevieNow()
     {
         //UNDONE Test TODO Loading and auto go play
@@ -231,5 +248,19 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "0";
         Show_Popup_Countine();
+    }
+
+    //================GAME MENU===================
+    public void Show_Popup_WeaponShop()
+    {
+        //TODO
+        popup_GameMenuChild.SetActive(false);
+        popup_WeaponShop.SetActive(true);
+    }
+    public void Hide_Popup_WeaponShop()
+    {
+        //TODO
+        popup_GameMenuChild.SetActive(true);
+        popup_WeaponShop.SetActive(false);
     }
 }

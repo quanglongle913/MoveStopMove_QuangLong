@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97e36e8c6243a548b419ff981af62d7, type: 3}
   m_Name: AttackSpeed5
   m_EditorClassIdentifier: 
-  buffType: 0
+  buffType: 1
   buffIndex: 15

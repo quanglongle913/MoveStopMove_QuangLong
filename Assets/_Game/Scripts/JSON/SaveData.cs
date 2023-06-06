@@ -47,7 +47,14 @@ public class SaveData : MonoBehaviour
         //System.IO.File.WriteAllText(Application.streamingAssetsPath + "/BotAIData.json", potion);
         File.WriteAllText(saveFile, potion);
     }
-   
+    public void SaveIntoJson2()
+    {
+        saveFile = Application.dataPath + "/StreamingAssets/BotAIData.json";
+        GenerateDataSetIndex();
+        string potion = JsonUtility.ToJson(botAIData);
+        //System.IO.File.WriteAllText(Application.streamingAssetsPath + "/BotAIData.json", potion);
+        File.WriteAllText(saveFile, potion);
+    }
     public void GenerateData()
     {
         //Tạo data và kiểu BotAIInfo.weapon là số weapon có trong game
@@ -63,6 +70,8 @@ public class SaveData : MonoBehaviour
         }
         botAIData.botAIInfo = _botAIInfo;
     }
+    //Tạo data và kiểu BotAIInfo.weapon là weapon INDEX mà BOT dùng
+    //CharacterSkin[i].index là số skin loại 'i' có trong game
     public void GenerateDataSetIndex()
     {
         List<BotAIInfo> _botAIInfo = new List<BotAIInfo>();

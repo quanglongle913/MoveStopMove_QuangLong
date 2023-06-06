@@ -304,7 +304,14 @@ public class Character : MonoBehaviour
             inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * 10;
             inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * 10;
         }
-        AttackSpeedAfterbuff = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].AttackSpeed / 100);
+        if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
+        {
+            AttackSpeedAfterbuff = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+        }
+        else
+        {
+            AttackSpeedAfterbuff = InGamneAttackSpeed;
+        }
         transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
     }
 }
