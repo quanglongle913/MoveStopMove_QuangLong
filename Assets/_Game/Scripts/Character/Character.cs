@@ -32,7 +32,7 @@ public class Character : MonoBehaviour
     [SerializeField] private bool isTargerInRange;
     [SerializeField] private bool isAttacking;
     [Header("--------------------------- ")]
-    [SerializeField] private GameObject weaponMaster;
+    [SerializeField] private GameObject weaponRoot;
     [SerializeField] private ObjectPool poolObject;
     [Header("-------------Weapon-------------- ")]
     private WeaponType weaponType;
@@ -79,7 +79,7 @@ public class Character : MonoBehaviour
     public GameObject Target { get => target; set => target = value; }
     public List<Weapons> Weapons { get => weapons; set => weapons = value; }
     public ObjectPool PoolObject { get => poolObject; set => poolObject = value; }
-    public GameObject WeaponMaster { get => weaponMaster; set => weaponMaster = value; }
+    public GameObject WeaponRoot { get => weaponRoot; set => weaponRoot = value; }
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public List<Weapons> ListWeaponsInHand { get => listWeaponsInHand; set => listWeaponsInHand = value; }
     public float AttackSpeedAfterbuff { get => attackSpeedAfterbuff; set => attackSpeedAfterbuff = value; }
@@ -89,9 +89,6 @@ public class Character : MonoBehaviour
     public SkinnedMeshRenderer PaintSkin { get => paintSkin; set => paintSkin = value; }
     public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
     
-
-    //public List<Weapons> ListWeaponsAttack { get => listWeaponsAttack; set => listWeaponsAttack = value; }
-
     // Start is called before the first frame update
     public virtual void Awake()
     {
@@ -104,7 +101,6 @@ public class Character : MonoBehaviour
     {
         _GameManager = GameManager.Instance;
         Weapons = new List<Weapons>();
-        //Init Weapons....................
         OnInit();
     }
     public virtual void OnInit()
@@ -117,20 +113,16 @@ public class Character : MonoBehaviour
         //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;
         this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
-        
-
-        //Set Material for Prefabs  when null Material
         setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
-        //endset 
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+
         PoolObject = _GameManager.PoolObject[(int)WeaponType];
         PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
-        //Debug.Log("OK");
+
     }
-    //Set Material for Prefabs  when null Material
+    //Set Material for Prefabs 
     public void setWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index) 
     {
-        //Set Material for Prefabs  when null Material
         var newMaterials = new Material[renderer.materials.Count()];
 
         for (int i = 0; i < newMaterials.Count(); i++)
@@ -140,10 +132,9 @@ public class Character : MonoBehaviour
         }
         renderer.materials = newMaterials;
     }
-    //Set Material for Prefabs  when null Material
+    //Set Material for Prefabs
     public void setAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
     {
-        //Set Material for Prefabs  when null Material
         var newMaterials = new Material[renderer.materials.Count()];
 
         for (int i = 0; i < newMaterials.Count(); i++)
@@ -162,7 +153,7 @@ public class Character : MonoBehaviour
         {
             if (Weapons.Count <= 1)
             {
-                Weapons a_weapon = gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(WeaponMaster, PoolObject);
+                Weapons a_weapon = gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(gameManager.WeaponManager, PoolObject);
                 a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
                 Weapons.Add(a_weapon);
             }
@@ -174,25 +165,35 @@ public class Character : MonoBehaviour
         IsAttacking = true;
         ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(false);
         Weapons weaponAttack = Weapons[0];
+        weaponAttack.transform.position = WeaponRoot.transform.position;
         weaponAttack._GameObject = gameObject;
         weaponAttack.WeaponType = this.WeaponType;
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
-        Vector3 _Direction = new Vector3(newTarget.x - WeaponMaster.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponMaster.transform.position.z);
+        Vector3 _Direction = new Vector3(newTarget.x - weaponAttack.transform.position.x, _Rigidbody.velocity.y, newTarget.z - weaponAttack.transform.position.z);
         RotateTowards(this.gameObject, _Direction);
         weaponAttack.isFire = true;
         weaponAttack.gameObject.SetActive(true);
-        weaponAttack.transform.DOMove(newTarget, (float)Math.Round(60 / AttackSpeedAfterbuff, 1))
-                    .SetEase(Ease.InSine)
-                    .SetLoops(0, LoopType.Restart)
-                    .OnComplete(() =>
-                    {
-                        Weapons.Remove(weaponAttack);
-                        weaponAttack.gameObject.SetActive(false);
-                        weaponAttack.gameObject.GetComponent<PooledObject>().Release();
-                        weaponAttack.isFire = false;
-                        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-                        IsAttacking = false;
-                    });
+        weaponAttack.direction = _Direction;
+        weaponAttack.target = newTarget;
+        weaponAttack.startPoint = gameObject.transform.position;
+        //Move Weapon with DOMove
+        //moveWeaponWithDOMove(gameObject.GetComponent<Character>(), weaponAttack);
+    }
+    private void moveWeaponWithDOMove(Character _character, Weapons _weapons)
+    {
+        _weapons.transform.DOMove(_weapons.target, (float)Math.Round(60 / _character.AttackSpeedAfterbuff, 1))
+                        .SetEase(Ease.InSine)
+                        .SetLoops(0, LoopType.Restart)
+                        .OnComplete(() =>
+                        {
+                            _character.Weapons.Remove(_weapons);
+                            _character.ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+                            _character.IsAttacking = false;
+                            _weapons.gameObject.SetActive(false);
+                            _weapons.gameObject.GetComponent<PooledObject>().Release();
+                            _weapons.isFire = false;
+
+                        });
     }
     private void GenerateZone()
     {
@@ -234,7 +235,6 @@ public class Character : MonoBehaviour
     }
     public void RotateTowards(GameObject gameObject, Vector3 direction)
     {
-        //transform.rotation = Quaternion.LookRotation(direction);
         Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
         gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
@@ -250,7 +250,6 @@ public class Character : MonoBehaviour
     }
     public void ChangeColor(GameObject a_obj, ColorType colorType)
     {
-        //Debug.Log(gameObject.name+":"+colorType.ToString());
         this.colorType = colorType;
         a_obj.GetComponent<Character>().mesh.material = colorData.GetMat(colorType);
     }

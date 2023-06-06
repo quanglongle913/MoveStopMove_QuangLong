@@ -125,8 +125,7 @@ Transform:
   m_LocalPosition: {x: 0.475, y: 0.773, z: 0.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1779045565}
+  m_Children: []
   m_Father: {fileID: 5143315201007492096}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -162,37 +161,6 @@ Transform:
   m_Father: {fileID: 5143315201007492096}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1779045564
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1779045565}
-  m_Layer: 0
-  m_Name: WeaponMaster
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1779045565
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779045564}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1342442282}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &9447357438652989
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,12 +2427,19 @@ MonoBehaviour:
   - {fileID: 4757606706551023939}
   - {fileID: 3855952950599894797}
   - {fileID: 3986349588446256458}
-  attackRange: 7
-  attackSpeed: 90
-  moveSpeed: 10
+  inGamneExp: 100
+  baseSizeCharacter: 1
+  baseAttackRange: 7
+  baseAttackSpeed: 60
+  baseMoveSpeed: 5
+  inGamneSizeCharacter: 1
+  inGamneAttackRange: 7
+  inGamneAttackSpeed: 60
+  inGameMoveSpeed: 5
+  inGamneGold: 50
   isTargerInRange: 0
   isAttacking: 0
-  weaponMaster: {fileID: 1779045564}
+  weaponMaster: {fileID: 0}
   poolObject: {fileID: 0}
   attackSpeedAfterbuff: 0
   characterName: You

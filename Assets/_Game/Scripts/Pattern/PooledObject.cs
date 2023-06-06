@@ -31,7 +31,7 @@ public class PooledObject : MonoBehaviour
         _pooledObject.transform.SetParent(a_root.transform);
         return _pooledObject;
     }
-    public PooledObject Spawner(ObjectPool a_obj)
+    public PooledObject Spawner(ObjectPool a_obj, bool enable)
     {
         PooledObject _pooledObject = a_obj.GetPooledObject();
         return _pooledObject;

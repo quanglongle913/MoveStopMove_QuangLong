@@ -8,13 +8,10 @@ public class BotAISpawner : PooledObject
 {
     [SerializeField] GameObject poolMaster;
     [SerializeField] private ObjectPool poolObject;
-    //[SerializeField] int totalBotAI;
     [SerializeField] float offset;
     [SerializeField] private float size_x;
     [SerializeField] private float size_z;
-
     [SerializeField] private GameManager gameManager;
-    //public int TotalBotAI { get => totalBotAI; set => totalBotAI = value; }
 
     private void Start()
     {
@@ -24,7 +21,7 @@ public class BotAISpawner : PooledObject
     {
         if (gameManager.GameState == GameState.Loading && !gameManager.IsInitBotAI)
         {
-            //Debug.Log("GenerateBotAI.....");
+  
             GenerateBotAI(gameManager.TotalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, gameManager.TotalBotAI));
             gameManager.IsInitBotAI = true;
         }
@@ -37,7 +34,6 @@ public class BotAISpawner : PooledObject
                 gameManager.BotAIListEnable.Add(gameManager.BotAIListStack[randomIndex]);
                 gameManager.BotAIListStack.Remove(gameManager.BotAIListStack[randomIndex]);
                 gameManager.TotalBotAI--;
-                //gameManager.TotalBotAI_InGame++;
             }
             else
             { 
@@ -62,7 +58,7 @@ public class BotAISpawner : PooledObject
         }
         return listPoolObjectPosition;
     }
-
+    
     private void GenerateBotAI(int totalBotAI, List<Vector3> listPoolObjectPosition)
     {
         for (int i = 0; i < totalBotAI; i++)

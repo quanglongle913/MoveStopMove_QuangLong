@@ -156,8 +156,6 @@ public class IndicatorSpawner : PooledObject
 
                 gameManager.CharacterInfoList[i + 1].gameObject.transform.position = new Vector2(viewPosCharacterInfoBotAI.x, viewPosCharacterInfoBotAI.y + 1.4f * Screen.height / 10);
                 gameManager.CharacterInfoList[i + 1].gameObject.SetActive(true);
-
-                //TODO  CharacterInfo set active true
             }
             else
             {
@@ -237,10 +235,8 @@ public class IndicatorSpawner : PooledObject
                             }
                         }
                         gameManager.IndicatorList[i].gameObject.transform.position = new Vector2(viewPosDetectionRadar.x, viewPosDetectionRadar.y);
-                        gameManager.IndicatorList[i].ChangeColor(gameManager.BotAIListEnable[i].ColorType);
+                        gameManager.IndicatorList[i].updateData(gameManager.BotAIListEnable[i].ColorType, gameManager.BotAIListEnable[i].CharacterLevel);
                         gameManager.IndicatorList[i].gameObject.SetActive(true);
-                        //TODO active CharacterInfo set active false
-                        //gameManager.CharacterInfoList[i].gameObject.SetActive(false);
                     }
                 }
                 else

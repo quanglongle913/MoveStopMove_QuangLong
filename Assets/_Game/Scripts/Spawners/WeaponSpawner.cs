@@ -15,7 +15,7 @@ public class WeaponSpawner : PooledObject
     {
         PooledObject weaponObject = Spawner(poolObject, a_root, false);
         weaponObject.transform.localPosition = Vector3.zero;
-        weaponObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        //weaponObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
         weaponObject.GetComponent<Weapons>().isFire = false;
         return weaponObject.GetComponent<Weapons>();
     }

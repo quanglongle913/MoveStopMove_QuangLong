@@ -22,6 +22,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Weapon Manager: ")]
     [SerializeField] private ObjectPool[] poolObject;
     [SerializeField] private WeaponData weaponData;
+    [SerializeField] private GameObject weaponManager;
     [Header("Data Manager: ")]
     [SerializeField] private SaveData saveData;
 
@@ -54,6 +55,7 @@ public class GameManager : Singleton<GameManager>
     public ObjectPool[] PoolObject { get => poolObject; set => poolObject = value; }
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public SaveData SaveData { get => saveData; set => saveData = value; }
+    public GameObject WeaponManager { get => weaponManager; set => weaponManager = value; }
 
     private void Start()
     {
@@ -80,7 +82,7 @@ public class GameManager : Singleton<GameManager>
         }
         if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit)
         {
-            uIManager.setEndGame(); 
+            uIManager.setEndGame();
         }
     }
     IEnumerator SetGameStateMenu()

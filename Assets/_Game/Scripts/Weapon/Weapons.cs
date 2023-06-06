@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
+using DG.Tweening.Core.Easing;
+
 public class Weapons : MonoBehaviour
 {
-    //[SerializeField] Rigidbody _rigidbody;
     [SerializeField] private WeaponType weaponType;
-    //Character =_GameObject
     public GameObject _GameObject;
     public float rotationSpeed;
     public bool isFire;
+    public Vector3 target;
+    public Vector3 startPoint;
+    public Vector3 direction;
     float rotY;
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     // Update is called once per frame
@@ -19,13 +23,45 @@ public class Weapons : MonoBehaviour
         {
             if (weaponType == WeaponType.Knife)
             {
+                //Xoay Weapon to Enemy
+                if (direction.x <= 0)
+                {
+                    Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.forward);
+                    gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+                    gameObject.transform.eulerAngles += new Vector3(0, 90, 0);
+                }
+                else
+                {
+                    Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.back);
+                    gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+                    gameObject.transform.eulerAngles += new Vector3(0, 90, 0);
+                }
 
             }
             else
             {
                 rotY += Time.deltaTime * rotationSpeed;
                 transform.rotation = Quaternion.Euler(90, rotY, 0);
-            } 
+            }
+            Character character = _GameObject.GetComponent<Character>();
+            //Move Weapon with transform.....
+            if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGamneAttackRange))
+            {
+
+                Vector3 TargetPoint = new Vector3(transform.position.x + direction.x * 1f * Time.deltaTime, transform.position.y, transform.position.z + direction.z * 1f * Time.deltaTime);
+                transform.position = TargetPoint;
+            }
+            else
+            {
+                //Debug.Log("sss");
+                character.Weapons.Remove(this);
+                character.ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+                character.IsAttacking = false;
+                this.gameObject.SetActive(false);
+                this.isFire = false;
+                this.GetComponent<PooledObject>().Release();
+            }
+
         }
     }
     public void OnDespawn()
@@ -45,7 +81,7 @@ public class Weapons : MonoBehaviour
             }
             else
             {
-                enemy.OnHit(2f);
+                enemy.OnHit(0f);
                 characterRoot.setExp(enemy.InGamneExp);
             }
             gameObject.SetActive(false);

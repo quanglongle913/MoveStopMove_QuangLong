@@ -104,6 +104,7 @@ MonoBehaviour:
   _GameObject: {fileID: 0}
   rotationSpeed: 1000
   isFire: 0
+  direction: {x: 0, y: 0, z: 0}
 --- !u!114 &-2653447601242426674
 MonoBehaviour:
   m_ObjectHideFlags: 0
