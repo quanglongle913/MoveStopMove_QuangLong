@@ -37,7 +37,6 @@ public class Character : MonoBehaviour
     [Header("-------------Weapon-------------- ")]
     private WeaponType weaponType;
     private WeaponData weaponData;
-    [SerializeField] private float attackSpeedAfterbuff;
     [Header("--------------------------- ")]
     [SerializeField] private string characterName;
     [SerializeField] private int characterLevel;
@@ -82,7 +81,6 @@ public class Character : MonoBehaviour
     public GameObject WeaponRoot { get => weaponRoot; set => weaponRoot = value; }
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public List<Weapons> ListWeaponsInHand { get => listWeaponsInHand; set => listWeaponsInHand = value; }
-    public float AttackSpeedAfterbuff { get => attackSpeedAfterbuff; set => attackSpeedAfterbuff = value; }
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public string CharacterName { get => characterName; set => characterName = value; }
     public int WeaponIndex { get => weaponIndex; set => weaponIndex = value; }
@@ -181,7 +179,7 @@ public class Character : MonoBehaviour
     }
     private void moveWeaponWithDOMove(Character _character, Weapons _weapons)
     {
-        _weapons.transform.DOMove(_weapons.target, (float)Math.Round(60 / _character.AttackSpeedAfterbuff, 1))
+        _weapons.transform.DOMove(_weapons.target, (float)Math.Round(60 / _character.InGamneAttackSpeed, 1))
                         .SetEase(Ease.InSine)
                         .SetLoops(0, LoopType.Restart)
                         .OnComplete(() =>
@@ -319,11 +317,10 @@ public class Character : MonoBehaviour
         //Debug.Log(""+ _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType);
         if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
         {
-            AttackSpeedAfterbuff = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
-        }
-        else
+            InGamneAttackSpeed = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+        } else if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
         {
-            AttackSpeedAfterbuff = InGamneAttackSpeed;
+            inGamneAttackRange = InGamneAttackRange + (InGamneAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         //AttackSpeedAfterbuff = InGamneAttackSpeed;
         transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
