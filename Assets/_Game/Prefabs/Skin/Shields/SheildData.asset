@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5483744ec67557b478431260bdcd4e3f, type: 3}
   m_Name: SheildData
   m_EditorClassIdentifier: 
-  skinType: 0
-  accessories: []
+  skinType: 2
+  accessories:
+  - {fileID: 11400000, guid: 9a2f6a391187c9f4096b8f3233747083, type: 2}
+  - {fileID: 11400000, guid: 723743a4cae89c54eaf453d83406d470, type: 2}

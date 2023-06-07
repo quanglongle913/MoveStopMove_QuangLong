@@ -93,7 +93,6 @@ public class Character : MonoBehaviour
         
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 14);
     }
     public virtual void Start()
     {
@@ -106,14 +105,14 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
-        
+        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 14);
         ChangeColor(gameObject, ColorType);
         //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;
         this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
         setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
-        ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-
+        //ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
+        ShowWeaponIndex((int)WeaponType);
         PoolObject = _GameManager.PoolObject[(int)WeaponType];
         PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
         updateCharacter();

@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Sheild 2
   m_EditorClassIdentifier: 
   accessoriesName: 
-  mat: {fileID: 0}
-  buffData: {fileID: 0}
+  prefabsAccessories: {fileID: 6644172557945121197, guid: f0ebe270fd1f3d04a82103fcaaac55fd, type: 3}
+  mat: {fileID: 2100000, guid: 488afa1b11409ac4cb80ba1a4c9ab8aa, type: 2}
+  buffData: {fileID: 11400000, guid: 98b24afed208cc846b1bfdf0cb08d3d7, type: 2}
+  selected: 0
+  buyed: 0
