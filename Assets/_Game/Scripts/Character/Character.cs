@@ -105,7 +105,6 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
-        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 14);
         ChangeColor(gameObject, ColorType);
         //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;

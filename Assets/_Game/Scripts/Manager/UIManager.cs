@@ -293,6 +293,7 @@ public class UIManager : MonoBehaviour
         popup_GameMenuChild.SetActive(true);
         //gameManager.Player.GetComponent<Character>().ShowWeaponIndex(PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0));
         gameManager.Player.gameObject.SetActive(true);
+        HideAllWeaponsInWeaponShopUI();
         popup_WeaponShop.SetActive(false);
         gameManager.Player.GetComponent<Character>().OnInit();
     }
@@ -384,6 +385,7 @@ public class UIManager : MonoBehaviour
     {
         PlayerPrefs.SetInt(Constant.WEAPONS_USE, itemSelelected);
         PlayerPrefs.Save();
+        gameManager.Player.GetComponent<Character>().WeaponIndex= itemSelelected;
         Hide_Popup_WeaponShop();
     }
     public void OnClickBtnBuy()
@@ -395,6 +397,7 @@ public class UIManager : MonoBehaviour
             PlayerPrefs.SetInt(Constant.PLAYER_WEAPONS_HAVE, itemSelelected);
             PlayerPrefs.SetInt(Constant.WEAPONS_USE, itemSelelected);
             PlayerPrefs.Save();
+            gameManager.Player.GetComponent<Character>().WeaponIndex = itemSelelected;
             Hide_Popup_WeaponShop();
         }
         else

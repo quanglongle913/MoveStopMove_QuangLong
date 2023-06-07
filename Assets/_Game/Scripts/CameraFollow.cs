@@ -35,7 +35,7 @@ public class CameraFollow : MonoBehaviour
             Quaternion target = Quaternion.Euler(45, 0, 0);
             transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 1000);
             float size = player.GetComponent<Character>().InGamneSizeCharacter;
-            transform.position = new Vector3(player.transform.position.x + xAxis, player.transform.position.y + yAxis * size, player.transform.position.z + zAxis);
+            transform.position = new Vector3(player.transform.position.x + xAxis, player.transform.position.y + yAxis * size, player.transform.position.z + zAxis * size);
         }
     }
 }

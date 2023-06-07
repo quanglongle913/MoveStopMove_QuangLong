@@ -37,6 +37,7 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
+        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 14);
         ChangeState(new IdleStateP());
         setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
         setAccessorisSkinMat(PaintSkin, this._GameManager.PantsData, 1); //set paint skin with inde =xx

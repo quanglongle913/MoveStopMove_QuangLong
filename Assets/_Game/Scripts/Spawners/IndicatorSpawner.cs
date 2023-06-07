@@ -127,8 +127,10 @@ public class IndicatorSpawner : PooledObject
         {
             // Your object is in the range of the camera, you can apply your behaviour (.)
             CharacterInfo characterInfo = gameManager.CharacterInfoList[0].gameObject.GetComponent<CharacterInfo>();
-            characterInfo.setCharacterName(player.GetComponent<Character>().CharacterName);
-            characterInfo.setCharacterLevel(""+player.GetComponent<Character>().CharacterLevel);
+            Character character = player.GetComponent<Character>();
+            characterInfo.setCharacterName(character.CharacterName);
+            characterInfo.setCharacterLevel(""+ character.CharacterLevel);
+            characterInfo.ChangeColor(character.ColorType, character.ColorData);
             gameManager.CharacterInfoList[0].gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
             gameManager.CharacterInfoList[0].gameObject.SetActive(true);
 
@@ -151,8 +153,12 @@ public class IndicatorSpawner : PooledObject
             {
                 // Your object is in the range of the camera, you can apply your behaviour (.)
                 CharacterInfo characterInfo = gameManager.CharacterInfoList[i + 1].gameObject.GetComponent<CharacterInfo>();
-                characterInfo.setCharacterName(gameManager.BotAIListEnable[i].GetComponent<Character>().CharacterName);
-                characterInfo.setCharacterLevel(""+gameManager.BotAIListEnable[i].GetComponent<Character>().CharacterLevel);
+
+                Character character = gameManager.BotAIListEnable[i].GetComponent<Character>();
+                characterInfo.setCharacterName(character.CharacterName);
+                characterInfo.setCharacterLevel("" + character.CharacterLevel);
+                characterInfo.ChangeColor(character.ColorType, character.ColorData);
+
 
                 gameManager.CharacterInfoList[i + 1].gameObject.transform.position = new Vector2(viewPosCharacterInfoBotAI.x, viewPosCharacterInfoBotAI.y + 1.4f * Screen.height / 10);
                 gameManager.CharacterInfoList[i + 1].gameObject.SetActive(true);

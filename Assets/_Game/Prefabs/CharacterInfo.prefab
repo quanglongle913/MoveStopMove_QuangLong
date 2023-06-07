@@ -398,7 +398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterName: {fileID: 4513196585208198183}
   CharacterLevel: {fileID: 4788766308280044401}
-  imageLevelBG: {fileID: 0}
+  imageLevelBG: {fileID: 4513196584901256078}
 --- !u!114 &3417911611483682272
 MonoBehaviour:
   m_ObjectHideFlags: 0

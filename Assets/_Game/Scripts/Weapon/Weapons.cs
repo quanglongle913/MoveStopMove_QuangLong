@@ -47,7 +47,6 @@ public class Weapons : MonoBehaviour
             //Move Weapon with transform.....
             if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGamneAttackRange))
             {
-
                 Vector3 TargetPoint = new Vector3(transform.position.x + direction.x * 1f * Time.deltaTime, transform.position.y, transform.position.z + direction.z * 1f * Time.deltaTime);
                 transform.position = TargetPoint;
             }
@@ -76,15 +75,21 @@ public class Weapons : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Player>())
             {
-                enemy.OnHit(0f);
+                enemy.OnHit(1f);
                 characterRoot.setExp(enemy.InGamneExp);
             }
             else
             {
-                enemy.OnHit(0f);
+                enemy.OnHit(1f);
                 characterRoot.setExp(enemy.InGamneExp);
             }
-            gameObject.SetActive(false);
+            Character character = _GameObject.GetComponent<Character>();
+            character.Weapons.Remove(this);
+            character.ShowWeaponIndex((int)WeaponType);
+            character.IsAttacking = false;
+            this.gameObject.SetActive(false);
+            this.isFire = false;
+            this.GetComponent<PooledObject>().Release();
             //OnDespawn();
         }
     }
