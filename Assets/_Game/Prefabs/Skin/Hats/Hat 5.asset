@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5a0d79cfa9658d4b809663f20e40cf5, type: 3}
-  m_Name: Hat 4
+  m_Name: Hat 5
   m_EditorClassIdentifier: 
-  accessoriesName: Hat Cap
-  prefabsAccessories: {fileID: 5962386860471729523, guid: 1f15fdfba73bd5141949fc4a39fed8c5, type: 3}
+  accessoriesName: Hat Yellow
+  prefabsAccessories: {fileID: 6818705563281471581, guid: 41e9f32e463f79d46917bbf035b0aa86, type: 3}
   mat: {fileID: 2100000, guid: d83cb705a505e114db2ebc520a7ea275, type: 2}
   buffData: {fileID: 11400000, guid: f501edb253939084da41e50fd6d4fd79, type: 2}

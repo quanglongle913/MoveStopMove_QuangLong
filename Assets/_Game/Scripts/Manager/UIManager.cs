@@ -282,12 +282,14 @@ public class UIManager : MonoBehaviour
         upDateWeaponShopUI();
         listWeaponPreview[itemSelelected].SetActive(true);
         gameManager.Player.GetComponent<Character>().ShowWeaponIndex(itemSelelected);
+        gameManager.Player.gameObject.SetActive(false);
         BtnUpdate();
     }
     public void Hide_Popup_WeaponShop()
     {
         popup_GameMenuChild.SetActive(true);
         gameManager.Player.GetComponent<Character>().ShowWeaponIndex(PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0));
+        gameManager.Player.gameObject.SetActive(true);
         popup_WeaponShop.SetActive(false);
     }
     public void upDateWeaponShopUI()
@@ -299,7 +301,7 @@ public class UIManager : MonoBehaviour
     {
         for (int i=0; i< listWeaponPreview.Count;i++)
         {
-            listWeaponPreview[i].SetActive(true);
+            listWeaponPreview[i].SetActive(false);
         }
     }
     public void BtnUpdate()

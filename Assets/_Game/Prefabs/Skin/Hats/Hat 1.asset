@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a0d79cfa9658d4b809663f20e40cf5, type: 3}
   m_Name: Hat 1
   m_EditorClassIdentifier: 
-  accessoriesName: 
-  mat: {fileID: 0}
+  accessoriesName: Arrow
+  prefabsAccessories: {fileID: 3861573984400632925, guid: d951196b53f096d46be544b9776cb648, type: 3}
+  mat: {fileID: 2100000, guid: d83cb705a505e114db2ebc520a7ea275, type: 2}
   buffData: {fileID: 11400000, guid: b50f0a44b0f44fc4cbe3f22ec5bf3979, type: 2}
