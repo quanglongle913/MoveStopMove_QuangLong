@@ -459,8 +459,8 @@ public class UIManager : MonoBehaviour
         frame_TopSetFullSkinShop.SetActive(true);
         skinShop.ClearnItems();
         //UNDONE
-        gameManager.PantsData.Accessories[0].Selected = true;
-        skinShop.AccessoriesData = gameManager.PantsData;
+        gameManager.ShieldData.Accessories[0].Selected = true;
+        skinShop.AccessoriesData = gameManager.ShieldData;
         skinShop.IsUpdate = true;
     }
     public void OnSlelectedSetFullSkinShop()
@@ -471,8 +471,8 @@ public class UIManager : MonoBehaviour
         frame_TopSetFullSkinShop.SetActive(false);
         skinShop.ClearnItems();
         //UNDONE 
-        gameManager.PantsData.Accessories[0].Selected = true;
-        skinShop.AccessoriesData = gameManager.PantsData;
+        gameManager.SetfullData.Accessories[0].Selected = true;
+        skinShop.AccessoriesData = gameManager.SetfullData;
         skinShop.IsUpdate = true;
     }
     //=============================================

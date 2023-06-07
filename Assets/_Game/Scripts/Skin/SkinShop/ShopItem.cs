@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopItem : MonoBehaviour
 {
-    [SerializeField] private GameObject accessoriesPrefabs;
+    [SerializeField] private RawImage imageItem;
     [SerializeField] private GameObject frameFocus;
     private int itemID;
     public void OnSelected(bool isCheck)
@@ -13,6 +14,6 @@ public class ShopItem : MonoBehaviour
     }
 
     public GameObject FrameFocus { get => frameFocus; set => frameFocus = value; }
-    public GameObject AccessoriesPrefabs { get => accessoriesPrefabs; set => accessoriesPrefabs = value; }
     public int ItemID { get => itemID; set => itemID = value; }
+    public RawImage ImageItem { get => imageItem; set => imageItem = value; }
 }

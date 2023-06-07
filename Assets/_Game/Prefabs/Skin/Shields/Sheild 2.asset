@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a0d79cfa9658d4b809663f20e40cf5, type: 3}
   m_Name: Sheild 2
   m_EditorClassIdentifier: 
-  accessoriesName: 
-  prefabsAccessories: {fileID: 6644172557945121197, guid: f0ebe270fd1f3d04a82103fcaaac55fd, type: 3}
+  accessoriesName: Khien 2
+  prefabsAccessories: {fileID: 7186523480935414312, guid: f0ebe270fd1f3d04a82103fcaaac55fd, type: 3}
+  imageItem: {fileID: 2800000, guid: c507d6b76416e48c1b37624a41490b0c, type: 3}
   mat: {fileID: 2100000, guid: 488afa1b11409ac4cb80ba1a4c9ab8aa, type: 2}
   buffData: {fileID: 11400000, guid: 98b24afed208cc846b1bfdf0cb08d3d7, type: 2}
   selected: 0

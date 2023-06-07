@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessoriesName: Hat
   prefabsAccessories: {fileID: 4067113196747037587, guid: 04a7204dc122d1f49b85a0d59fe796b2, type: 3}
+  imageItem: {fileID: 2800000, guid: 01fec34bd5f2849ea9dfb1aefa900fba, type: 3}
   mat: {fileID: 2100000, guid: d83cb705a505e114db2ebc520a7ea275, type: 2}
   buffData: {fileID: 11400000, guid: adb768fa68a52ce4ab727b606122fe13, type: 2}
+  selected: 0
+  buyed: 0

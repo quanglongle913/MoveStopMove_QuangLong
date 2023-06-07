@@ -21,11 +21,7 @@ public class SkinShop : MonoBehaviour
             {
                 g = Instantiate(ItemTemplate, ShopScrollView);
                 ShopItem shopItem = g.gameObject.GetComponent<ShopItem>();
-                shopItem.AccessoriesPrefabs.GetComponent<SkinnedMeshRenderer>().sharedMesh = accessoriesData.Accessories[i].PrefabsAccessories.GetComponent<SkinnedMeshRenderer>().sharedMesh;
-                shopItem.AccessoriesPrefabs.GetComponent<MeshFilter>().sharedMesh = accessoriesData.Accessories[i].PrefabsAccessories.GetComponent<MeshFilter>().sharedMesh;
-                shopItem.AccessoriesPrefabs.AddComponent<MeshRenderer>();
-                //ToDO ADD meshRender
-                shopItem.AccessoriesPrefabs.GetComponent<MeshRenderer>().material = accessoriesData.Accessories[i].Mat;
+                shopItem.ImageItem.texture = accessoriesData.Accessories[i].ImageItem;
                 shopItem.FrameFocus.SetActive(accessoriesData.Accessories[i].Selected);
                 items.Add(shopItem.gameObject);
             }

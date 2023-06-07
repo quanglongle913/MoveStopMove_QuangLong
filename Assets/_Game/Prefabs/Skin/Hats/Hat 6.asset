@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessoriesName: Horn
   prefabsAccessories: {fileID: 6093069033241810973, guid: af4e8dd7796951b4a9e17e025f0e2706, type: 3}
+  imageItem: {fileID: 2800000, guid: b7f7fb746c4654e6c9482da9e4cb7a88, type: 3}
   mat: {fileID: 2100000, guid: d83cb705a505e114db2ebc520a7ea275, type: 2}
   buffData: {fileID: 11400000, guid: f501edb253939084da41e50fd6d4fd79, type: 2}
+  selected: 0
+  buyed: 0
