@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI textWeaponPriceBtnBuy;
     [SerializeField] private TMPro.TextMeshProUGUI textWeaponPriceBtnUnBuy;
     [SerializeField] private List<GameObject> listWeaponPreview;
-
+   
     [SerializeField] private GameObject btn_Selelect;
     [SerializeField] private GameObject btn_Equipped;
     [SerializeField] private GameObject btn_Buy;
@@ -37,6 +37,18 @@ public class UIManager : MonoBehaviour
 
     [Header("SkinShop: ")]
     [SerializeField] private GameObject popup_SkinShop;
+
+    [SerializeField] private GameObject frame_TopHatSkinShop;
+    [SerializeField] private GameObject frame_TopPaintSkinShop;
+    [SerializeField] private GameObject frame_TopSheildSkinShop;
+    [SerializeField] private GameObject frame_TopSetFullSkinShop;
+
+    [SerializeField] private TMPro.TextMeshProUGUI textSkinBuffInfo;
+    [SerializeField] private GameObject btn_SelelectSkinShop;
+    [SerializeField] private GameObject btn_EquippedSkinShop;
+    [SerializeField] private GameObject btn_BuySkinShop;
+    [SerializeField] private GameObject btn_UnBuySkinShop;
+
     [Header("InGame: ")]
     [SerializeField] private GameObject popup_Setting;
     [SerializeField] private TMPro.TextMeshProUGUI textAlive;
@@ -135,6 +147,7 @@ public class UIManager : MonoBehaviour
             gameMenu.SetActive(true);
             popup_GameMenuChild.SetActive(true);
             popup_WeaponShop.SetActive(false);
+            popup_SkinShop.SetActive(false);
         }
         if (inGame.activeSelf)
         {
@@ -260,14 +273,12 @@ public class UIManager : MonoBehaviour
         Show_Popup_Countine();
     }
 
-    //================GAME MENU===================
+    //================GAME MENU WEAPONSHOP ===================
     public void Show_Popup_WeaponShop()
     {
-        //TODO
         popup_GameMenuChild.SetActive(false);
         popup_WeaponShop.SetActive(true);
         itemSelelected = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0);
-        //UNDONE
         upDateWeaponShopUI();
         listWeaponPreview[itemSelelected].SetActive(true);
         gameManager.Player.GetComponent<Character>().ShowWeaponIndex(itemSelelected);
@@ -385,4 +396,57 @@ public class UIManager : MonoBehaviour
             Debug.Log("You don't have enough coins to make this");
         }
     }
+    //================GAME MENU SKIN SHOP ===================
+    public void Show_Popup_SkinShop()
+    {
+        popup_GameMenuChild.SetActive(false);
+        popup_SkinShop.SetActive(true);
+        OnSlelectedHatSkinShop();
+       /* itemSelelected = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0);
+        upDateWeaponShopUI();
+        listWeaponPreview[itemSelelected].SetActive(true);
+        gameManager.Player.GetComponent<Character>().ShowWeaponIndex(itemSelelected);
+        BtnUpdate();*/
+    }
+    public void Hide_Popup_SkinShop()
+    {
+        popup_GameMenuChild.SetActive(true);
+        //gameManager.Player.GetComponent<Character>().ShowWeaponIndex(PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0));
+        popup_SkinShop.SetActive(false);
+    }
+    public void upDateSkinShopUI()
+    {
+        //HideAllWeaponsInWeaponShopUI();
+
+    }
+    public void OnSlelectedHatSkinShop()
+    {
+        frame_TopHatSkinShop.SetActive(false);
+        frame_TopPaintSkinShop.SetActive(true);
+        frame_TopSheildSkinShop.SetActive(true);
+        frame_TopSetFullSkinShop.SetActive(true);
+
+    }
+    public void OnSlelectedPaintSkinShop()
+    {
+        frame_TopHatSkinShop.SetActive(true);
+        frame_TopPaintSkinShop.SetActive(false);
+        frame_TopSheildSkinShop.SetActive(true);
+        frame_TopSetFullSkinShop.SetActive(true);
+    }
+    public void OnSlelectedSheildSkinShop()
+    {
+        frame_TopHatSkinShop.SetActive(true);
+        frame_TopPaintSkinShop.SetActive(true);
+        frame_TopSheildSkinShop.SetActive(false);
+        frame_TopSetFullSkinShop.SetActive(true);
+    }
+    public void OnSlelectedSetFullSkinShop()
+    {
+        frame_TopHatSkinShop.SetActive(true);
+        frame_TopPaintSkinShop.SetActive(true);
+        frame_TopSheildSkinShop.SetActive(true);
+        frame_TopSetFullSkinShop.SetActive(false);
+    }
+
 }
