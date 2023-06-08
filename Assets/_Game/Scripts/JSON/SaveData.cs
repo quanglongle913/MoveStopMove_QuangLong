@@ -63,12 +63,12 @@ public class SaveData : MonoBehaviour
         for (int i = 0; i < BotAIGenerate; i++)
         {
             BotAIInfo botAIInfo = new BotAIInfo();
-            botAIInfo.botAI_name = "" + (BotAINameType)i;
-            botAIInfo.weapon = numberOfWeapon;
-            botAIInfo._characterSkin = _characterSkin;
+            botAIInfo.BotAI_name = "" + (BotAINameType)i;
+            botAIInfo.Weapon = numberOfWeapon;
+            botAIInfo.CharacterSkin = _characterSkin;
             _botAIInfo.Add(botAIInfo);
         }
-        botAIData.botAIInfo = _botAIInfo;
+        botAIData.BotAIInfo = _botAIInfo;
     }
     //Tạo data và kiểu BotAIInfo.weapon là weapon INDEX mà BOT dùng
     //CharacterSkin[i].index là số skin loại 'i' có trong game
@@ -78,20 +78,26 @@ public class SaveData : MonoBehaviour
         for (int i = 0; i < BotAIGenerate; i++)
         {
             BotAIInfo botAIInfo = new BotAIInfo();
-            botAIInfo.botAI_name = "" + (BotAINameType)i;
+            botAIInfo.BotAI_name = "" + (BotAINameType)i;
             int randomWeapon = UnityEngine.Random.Range(0, numberOfWeapon);
-            botAIInfo.weapon = randomWeapon;
-            List<CharacterSkin> characterSkin = _characterSkin;
-            for (int j = 0; j < characterSkin.Count; j++)
+            botAIInfo.Weapon = randomWeapon;
+            List<CharacterSkin> characterSkin = new List<CharacterSkin>();
+
+            for (int j = 0; j < _characterSkin.Count; j++)
             {
-                int randomSkin = UnityEngine.Random.Range(0, characterSkin[j].index);
-                characterSkin[j].index = randomSkin;
+                int randomSkin = UnityEngine.Random.Range(0, _characterSkin[j].Index);
+                CharacterSkin temp = new CharacterSkin();
+                temp.Index = randomSkin;
+                temp.Skin_name = _characterSkin[j].Skin_name;
+                characterSkin.Add(temp);
+
             }
 
-            botAIInfo._characterSkin = characterSkin;
+
+            botAIInfo.CharacterSkin = characterSkin;
             _botAIInfo.Add(botAIInfo);
         }
-        botAIData.botAIInfo = _botAIInfo;
+        botAIData.BotAIInfo = _botAIInfo;
         
     }
 }
@@ -100,21 +106,24 @@ public class SaveData : MonoBehaviour
 [System.Serializable]
 public class BotAIData
 {
-    public List<BotAIInfo> botAIInfo = new List<BotAIInfo>();
+    public List<BotAIInfo> BotAIInfo = new List<BotAIInfo>();
 }
 [System.Serializable]
 public class BotAIInfo
 {
-    public string botAI_name;
-    public int weapon;//là số weapon có trong game
-    public List<CharacterSkin> _characterSkin = new List<CharacterSkin>();
+    public string BotAI_name;
+    public int Weapon;//là số weapon index trong game
+    public List<CharacterSkin> CharacterSkin = new List<CharacterSkin>();
 }
 
 [System.Serializable]
 public class CharacterSkin
 {
-    public string skin_name;
-    public int index; //số skin loại 'i' có trong game
+    [SerializeField] private string skin_name;
+    [SerializeField] private int index; //số skin index  trong game
+
+    public string Skin_name { get => skin_name; set => skin_name = value; }
+    public int Index { get => index; set => index = value; }
     //public List<BotAIAccessories> _botAIAccessories = new List<BotAIAccessories>();
 }
 /*[System.Serializable]

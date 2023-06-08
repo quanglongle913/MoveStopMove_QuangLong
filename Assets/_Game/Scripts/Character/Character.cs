@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
 {
     [Header("Character: ")]
     [SerializeField] private SkinnedMeshRenderer mesh;
-    [SerializeField] private SkinnedMeshRenderer paintSkin;
+    [SerializeField] private SkinnedMeshRenderer pantsSkin;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
     [SerializeField] private List<Weapons> listWeaponsInHand;
@@ -37,6 +37,12 @@ public class Character : MonoBehaviour
     [Header("-------------Weapon-------------- ")]
     private WeaponType weaponType;
     private WeaponData weaponData;
+    [Header("-------------Skin-------------- ")]
+    [SerializeField] private List<GameObject> listHats;
+    [SerializeField] private List<GameObject> listSheilds;
+    [SerializeField] private List<GameObject> listSetFull;
+    [SerializeField] private GameObject Pants;
+
     [Header("--------------------------- ")]
     [SerializeField] private string characterName;
     [SerializeField] private int characterLevel;
@@ -84,7 +90,7 @@ public class Character : MonoBehaviour
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public string CharacterName { get => characterName; set => characterName = value; }
     public int WeaponIndex { get => weaponIndex; set => weaponIndex = value; }
-    public SkinnedMeshRenderer PaintSkin { get => paintSkin; set => paintSkin = value; }
+    public SkinnedMeshRenderer PantsSkin { get => pantsSkin; set => pantsSkin = value; }
     public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
     
     // Start is called before the first frame update
@@ -128,19 +134,7 @@ public class Character : MonoBehaviour
         }
         renderer.materials = newMaterials;
     }
-    //Set Material for Prefabs
-    public void setAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
-    {
-        var newMaterials = new Material[renderer.materials.Count()];
 
-        for (int i = 0; i < newMaterials.Count(); i++)
-        {
-            newMaterials[i] = accessoriesData.Accessories[index].Mat;
-
-        }
-        renderer.materials = newMaterials;
-    }
-   
     public virtual void FixedUpdate()
     {
         GenerateZone();
@@ -265,6 +259,7 @@ public class Character : MonoBehaviour
         }
 
     }
+   //=====================Weapons===================
     public void HideAllWeaponsInHand()
     {
         for (int i = 0; i < ListWeaponsInHand.Count; i++)
@@ -277,6 +272,76 @@ public class Character : MonoBehaviour
         HideAllWeaponsInHand();
         listWeaponsInHand[index].gameObject.SetActive(true);
     }
+    //=======================Skin===================
+    public void HideAllSkin()
+    {
+        for (int i = 0; i < listHats.Count; i++)
+        {
+            listHats[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < listSheilds.Count; i++)
+        {
+            listSheilds[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < listSetFull.Count; i++)
+        {
+            listSetFull[i].gameObject.SetActive(false);
+        }
+        Pants.SetActive(false);
+    }
+    public void HideHatsSkin()
+    {
+        for (int i = 0; i < listHats.Count; i++)
+        {
+            listHats[i].gameObject.SetActive(false);
+        }
+    }
+    public void ActiveHatsSkin(int index)
+    {
+        HideHatsSkin();
+        listHats[index].gameObject.SetActive(false);
+    }
+    public void HideSheildsSkin()
+    {
+        for (int i = 0; i < listSheilds.Count; i++)
+        {
+            listSheilds[i].gameObject.SetActive(false);
+        }
+    }
+    public void ActiveSheildsSkin(int index)
+    {
+        HideSheildsSkin();
+        listSheilds[index].gameObject.SetActive(false);
+    }
+    public void HideAllSetFullsSkin()
+    {
+        for (int i = 0; i < listSetFull.Count; i++)
+        {
+            listSetFull[i].gameObject.SetActive(false);
+        }
+    }
+    public void ActiveSetFullsSkin(int index)
+    {
+        HideAllSetFullsSkin();
+        listSetFull[index].gameObject.SetActive(false);
+    }
+    public void HidePantsSkin()
+    {
+        Pants.SetActive(false);
+    }
+    public void ActivePantsSkin()
+    {
+        if (Pants != null)
+        {
+            HidePantsSkin();
+            Pants.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Pants is Null");
+        }
+    }
+
     //Set EXP when killed other character
     public void setExp(int exp)
     {

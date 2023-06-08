@@ -40,8 +40,10 @@ public class Player : Character
         this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 14);
         ChangeState(new IdleStateP());
         setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
-        setAccessorisSkinMat(PaintSkin, this._GameManager.PantsData, 1); //set paint skin with inde =xx
+        ActivePantsSkin();
+        SetAccessorisSkinMat(PantsSkin, this._GameManager.PantsData); //set Pant skin PantsData Selected
     }
+    
     void Update()
     {
         if (this._GameManager.GameState == GameState.InGame)
@@ -127,6 +129,41 @@ public class Player : Character
     {
         base.OnDeath();
         ChangeState(new DeadStateP());
+    }
+    //Set Material for Prefabs
+    public void SetAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData)
+    {   //for Player
+        var newMaterials = new Material[renderer.materials.Count()];
+
+        for (int i = 0; i < newMaterials.Count(); i++)
+        {
+            newMaterials[i] = accessoriesData.Accessories[GetAccessorisSelectedIndex(accessoriesData)].Mat;
+
+        }
+        renderer.materials = newMaterials;
+    }
+    public int GetAccessorisSelectedIndex(AccessoriesData accessoriesData)
+    {
+        int index = 0;
+        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        {
+            if (accessoriesData.Accessories[i].Selected)
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == 0) {
+            accessoriesData.Accessories[0].Selected = true; 
+        }
+        return index;
+    }
+    public void UnSelectedAccessoris(AccessoriesData accessoriesData)
+    {
+        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        {
+            accessoriesData.Accessories[i].Selected=false;
+        }
     }
 }
 

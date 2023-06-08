@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessoriesName: 3
   prefabsAccessories: {fileID: 0}
-  imageItem: {fileID: 2800000, guid: b7f7fb746c4654e6c9482da9e4cb7a88, type: 3}
+  imageItem: {fileID: 2800000, guid: 916eb971e2dc28b419a242fa6950df78, type: 3}
   mat: {fileID: 2100000, guid: 395d938957593154baaccd90f5e5f3f9, type: 2}
   buffData: {fileID: 11400000, guid: 87d51d786464d274db2e4c33eb5579f6, type: 2}
   selected: 0

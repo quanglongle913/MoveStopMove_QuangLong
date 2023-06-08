@@ -8,7 +8,7 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private RawImage imageItem;
     [SerializeField] private GameObject frameFocus;
     private int itemID;
-    public void OnSelected(bool isCheck)
+    public void SetSelected(bool isCheck)
     {
         frameFocus.SetActive(isCheck);
     }

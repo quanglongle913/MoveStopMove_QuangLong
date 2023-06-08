@@ -1352,6 +1352,22 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 865156256479570549, guid: 3884c128dfe5448b9803f68a1a42e2ed, type: 3}
+      propertyPath: _characterSkin.Array.data[0].index
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 865156256479570549, guid: 3884c128dfe5448b9803f68a1a42e2ed, type: 3}
+      propertyPath: _characterSkin.Array.data[1].index
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 865156256479570549, guid: 3884c128dfe5448b9803f68a1a42e2ed, type: 3}
+      propertyPath: _characterSkin.Array.data[2].index
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 865156256479570549, guid: 3884c128dfe5448b9803f68a1a42e2ed, type: 3}
+      propertyPath: _characterSkin.Array.data[3].index
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 865156256479570549, guid: 3884c128dfe5448b9803f68a1a42e2ed, type: 3}
       propertyPath: _characterSkin.Array.data[0].skin_name
       value: H
       objectReference: {fileID: 0}

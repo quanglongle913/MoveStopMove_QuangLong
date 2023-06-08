@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class SkinShop : MonoBehaviour
 {
@@ -8,11 +11,14 @@ public class SkinShop : MonoBehaviour
     AccessoriesData accessoriesData;
     GameObject g;
     [SerializeField] Transform ShopScrollView;
-    private List<GameObject> items = new List<GameObject>();
+    private List<ShopItem> items =new List<ShopItem>();
     public bool IsUpdate=false;
     public AccessoriesData AccessoriesData { get => accessoriesData; set => accessoriesData = value; }
-    public List<GameObject> Items { get => items; set => items = value; }
-
+    public List<ShopItem> Items { get => items; set => items = value; }
+    private void Start()
+    {
+       // items = new List<ShopItem>();
+    }
     void Update()
     {
         if (IsUpdate)
@@ -22,8 +28,10 @@ public class SkinShop : MonoBehaviour
                 g = Instantiate(ItemTemplate, ShopScrollView);
                 ShopItem shopItem = g.gameObject.GetComponent<ShopItem>();
                 shopItem.ImageItem.texture = accessoriesData.Accessories[i].ImageItem;
+                shopItem.ItemID = i;
                 shopItem.FrameFocus.SetActive(accessoriesData.Accessories[i].Selected);
-                items.Add(shopItem.gameObject);
+                //shopItem.ImageItem.GetComponent<Button>().AddEventListener(i, ItemsOnClicked);
+                items.Add(shopItem);
             }
             IsUpdate = false;
         }
@@ -32,8 +40,24 @@ public class SkinShop : MonoBehaviour
     public void ClearnItems()
     {
         for (int i = 0; i < Items.Count; i++)
+        { 
+            Destroy(Items[i].gameObject);
+        }
+        Items.Clear();
+    }
+    public void ItemsOnClicked(int index)
+    {
+        SetAllItemsUnSelected();
+        items[index].SetSelected(true);
+        Debug.Log("Items "+index);
+    }
+
+    private void SetAllItemsUnSelected()
+    {
+        for (int i=0; i<items.Count;i++)
         {
-            Destroy(Items[i]);
+            items[i].SetSelected(false);
+
         }
     }
 }

@@ -3,6 +3,7 @@ using DG.Tweening.Core.Easing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -110,5 +111,16 @@ public class BotAI : Character
             _GameManager.BotAIListEnable.Remove(this.gameObject.GetComponent<BotAI>());
             ChangeState(new DeadState());
         } 
+    }
+    public void setAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
+    { //For BOTAI
+        var newMaterials = new Material[renderer.materials.Count()];
+
+        for (int i = 0; i < newMaterials.Count(); i++)
+        {
+            newMaterials[i] = accessoriesData.Accessories[index].Mat;
+
+        }
+        renderer.materials = newMaterials;
     }
 }

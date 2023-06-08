@@ -15,7 +15,5 @@ MonoBehaviour:
   skinType: 3
   accessories:
   - {fileID: 11400000, guid: bbd7e6d3b1a20e34895c5b04425cf78d, type: 2}
-  - {fileID: 11400000, guid: e642ffb5c9d8c034aabe889d1f485537, type: 2}
-  - {fileID: 11400000, guid: fc0b44de053bc3540a1de01115e7cf56, type: 2}
   - {fileID: 11400000, guid: 42be3380885644f448287824dab99cc2, type: 2}
   - {fileID: 11400000, guid: 7b1f68dbb9342734a872649e8c60f56d, type: 2}
