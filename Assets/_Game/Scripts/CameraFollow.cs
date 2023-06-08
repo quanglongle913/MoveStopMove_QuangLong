@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    [SerializeField] private float xAxis, yAxis, zAxis;
+    [SerializeField] private float xAxis, yAxis, zAxis,axisX, axisY, axisZ;
     private GameManager gameManager;
 
 
@@ -37,5 +37,13 @@ public class CameraFollow : MonoBehaviour
             float size = player.GetComponent<Character>().InGamneSizeCharacter;
             transform.position = new Vector3(player.transform.position.x + xAxis, player.transform.position.y + yAxis * size, player.transform.position.z + zAxis * size);
         }
+        else if (gameManager.GameState == GameState.SkinShop)
+        {
+           Quaternion target = Quaternion.Euler(20, 0, 0);
+            transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * 1000);
+            transform.position = new Vector3(player.transform.position.x + xAxis, player.transform.position.y + 1.5f, player.transform.position.z - 7f);
+
+            Vector3 _Direction = new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
+            player.GetComponent<Player>().RotateTowards(player.gameObject,_Direction); }
     }
 }

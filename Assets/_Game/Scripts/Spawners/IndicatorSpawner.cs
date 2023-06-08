@@ -158,8 +158,14 @@ public class IndicatorSpawner : PooledObject
                 characterInfo.setCharacterName(character.CharacterName);
                 characterInfo.setCharacterLevel("" + character.CharacterLevel);
                 characterInfo.ChangeColor(character.ColorType, character.ColorData);
-
-
+                if (character.ColorType == ColorType.Yellow)
+                {
+                    characterInfo.CharacterLevel.color = Color.black;
+                }
+                else
+                {
+                    characterInfo.CharacterLevel.color = Color.white;
+                }
                 gameManager.CharacterInfoList[i + 1].gameObject.transform.position = new Vector2(viewPosCharacterInfoBotAI.x, viewPosCharacterInfoBotAI.y + 1.4f * Screen.height / 10);
                 gameManager.CharacterInfoList[i + 1].gameObject.SetActive(true);
             }

@@ -115,26 +115,14 @@ public class Character : MonoBehaviour
         //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;
         this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
-        setWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
+        SetWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
         //ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
         ShowWeaponIndex((int)WeaponType);
         PoolObject = _GameManager.PoolObject[(int)WeaponType];
         PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
         updateCharacter();
     }
-    //Set Material for Prefabs 
-    public void setWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index) 
-    {
-        var newMaterials = new Material[renderer.materials.Count()];
-
-        for (int i = 0; i < newMaterials.Count(); i++)
-        {
-            newMaterials[i] = weaponData.Weapon[index].Mat;
-
-        }
-        renderer.materials = newMaterials;
-    }
-
+    
     public virtual void FixedUpdate()
     {
         GenerateZone();
@@ -143,7 +131,7 @@ public class Character : MonoBehaviour
         {
             if (Weapons.Count <= 1)
             {
-                Weapons a_weapon = gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(gameManager.WeaponManager, PoolObject);
+                Weapons a_weapon = gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(_GameManager.WeaponManager, PoolObject);
                 a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
                 Weapons.Add(a_weapon);
             }
@@ -259,7 +247,30 @@ public class Character : MonoBehaviour
         }
 
     }
-   //=====================Weapons===================
+    //=====================Weapons===================
+    //Set Material for Prefabs 
+    public void SetWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index)
+    {
+        var newMaterials = new Material[renderer.materials.Count()];
+
+        for (int i = 0; i < newMaterials.Count(); i++)
+        {
+            newMaterials[i] = weaponData.Weapon[index].Mat;
+
+        }
+        renderer.materials = newMaterials;
+    }
+    public void SetAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
+    { //For BOTAI
+        var newMaterials = new Material[renderer.materials.Count()];
+
+        for (int i = 0; i < newMaterials.Count(); i++)
+        {
+            newMaterials[i] = accessoriesData.Accessories[index].Mat;
+
+        }
+        renderer.materials = newMaterials;
+    }
     public void HideAllWeaponsInHand()
     {
         for (int i = 0; i < ListWeaponsInHand.Count; i++)
@@ -299,7 +310,7 @@ public class Character : MonoBehaviour
     public void ActiveHatsSkin(int index)
     {
         HideHatsSkin();
-        listHats[index].gameObject.SetActive(false);
+        listHats[index].gameObject.SetActive(true);
     }
     public void HideSheildsSkin()
     {
@@ -311,7 +322,7 @@ public class Character : MonoBehaviour
     public void ActiveSheildsSkin(int index)
     {
         HideSheildsSkin();
-        listSheilds[index].gameObject.SetActive(false);
+        listSheilds[index].gameObject.SetActive(true);
     }
     public void HideAllSetFullsSkin()
     {
@@ -323,23 +334,16 @@ public class Character : MonoBehaviour
     public void ActiveSetFullsSkin(int index)
     {
         HideAllSetFullsSkin();
-        listSetFull[index].gameObject.SetActive(false);
+        listSetFull[index].gameObject.SetActive(true);
+        //Set Material
     }
     public void HidePantsSkin()
     {
         Pants.SetActive(false);
     }
-    public void ActivePantsSkin()
+    public void ShowPantsSkin()
     {
-        if (Pants != null)
-        {
-            HidePantsSkin();
-            Pants.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("Pants is Null");
-        }
+        Pants.SetActive(true);
     }
 
     //Set EXP when killed other character

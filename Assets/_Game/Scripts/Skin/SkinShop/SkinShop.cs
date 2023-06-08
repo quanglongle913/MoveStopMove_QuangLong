@@ -30,6 +30,7 @@ public class SkinShop : MonoBehaviour
                 shopItem.ImageItem.texture = accessoriesData.Accessories[i].ImageItem;
                 shopItem.ItemID = i;
                 shopItem.FrameFocus.SetActive(accessoriesData.Accessories[i].Selected);
+                shopItem.SkinType = accessoriesData.SkinType;
                 //shopItem.ImageItem.GetComponent<Button>().AddEventListener(i, ItemsOnClicked);
                 items.Add(shopItem);
             }
@@ -49,7 +50,7 @@ public class SkinShop : MonoBehaviour
     {
         SetAllItemsUnSelected();
         items[index].SetSelected(true);
-        Debug.Log("Items "+index);
+        //Debug.Log("Items "+index);
     }
 
     private void SetAllItemsUnSelected()

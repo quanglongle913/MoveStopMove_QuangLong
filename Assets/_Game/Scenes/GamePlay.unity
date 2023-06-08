@@ -823,8 +823,8 @@ MonoBehaviour:
   gameState: 0
   uIManager: {fileID: 1732760747}
   player: {fileID: 1678857054}
-  numberOfBotsOnMap: 1
-  numberOfBotsInGameLvel: 1
+  numberOfBotsOnMap: 10
+  numberOfBotsInGameLvel: 10
   hatsData: {fileID: 11400000, guid: eb40b6edeec131b489f5c92760a14834, type: 2}
   pantsData: {fileID: 11400000, guid: 109176987034c994cb9b3d49839c872b, type: 2}
   setfullData: {fileID: 11400000, guid: 31bfe7d4b5ea60b4f9c236ba74323dfd, type: 2}
@@ -2343,6 +2343,9 @@ MonoBehaviour:
   xAxis: 0
   yAxis: 15
   zAxis: -15
+  axisX: 0
+  axisY: 0
+  axisZ: 0
 --- !u!1 &314080389
 GameObject:
   m_ObjectHideFlags: 0
@@ -12466,7 +12469,7 @@ MonoBehaviour:
   offset: 12
   size_x: 1
   size_z: 1
-  gameManager: {fileID: 105759266}
+  _GameManager: {fileID: 105759266}
 --- !u!4 &1826131713
 Transform:
   m_ObjectHideFlags: 0

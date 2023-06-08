@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerSkinShopState {None, UnSetFull, SetFull }
+public enum GameState { Loading = 0, GameMenu = 1, InGame = 2, EndGame = 3 , SkinShop=4}
 public enum ColorType { Blue = 0, Yellow = 1, Red = 2, Green = 3, Purple = 4, Player =5 }
 public enum WeaponType { Arrow = 0, Axe_0 = 1, Axe_1 = 2, Boomerang = 3, Candy_0 = 4, Candy_1 = 5, Candy_2 = 6, Candy_4 = 7, Hammer = 8, Knife = 9, Uzi = 10, Z = 11 }
 public enum SkinType { Hat = 0, Pant = 1, Sheild = 2, SetFull = 3 }

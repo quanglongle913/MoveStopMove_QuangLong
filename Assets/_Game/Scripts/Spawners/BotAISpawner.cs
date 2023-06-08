@@ -11,29 +11,29 @@ public class BotAISpawner : PooledObject
     [SerializeField] float offset;
     [SerializeField] private float size_x;
     [SerializeField] private float size_z;
-    [SerializeField] private GameManager gameManager;
+    [SerializeField] private GameManager _GameManager;
 
-    private void Start()
+   /* private void Start()
     {
-        gameManager = GameManager.Instance;
-    }
+        _GameManager = GameManager.Instance;
+    }*/
     private void Update()
     {
-        if (gameManager.GameState == GameState.Loading && !gameManager.IsInitBotAI)
+        if (_GameManager.GameState == GameState.Loading && !_GameManager.IsInitBotAI)
         {
   
-            GenerateBotAI(gameManager.TotalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, gameManager.TotalBotAI));
-            gameManager.IsInitBotAI = true;
+            GenerateBotAI(_GameManager.TotalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, _GameManager.TotalBotAI));
+            _GameManager.IsInitBotAI = true;
         }
-        else if (gameManager.GameState == GameState.InGame && gameManager.BotAIListEnable.Count < gameManager.TotalBotAI_InGame && gameManager.IsInitBotAI)
+        else if (_GameManager.GameState == GameState.InGame && _GameManager.BotAIListEnable.Count < _GameManager.TotalBotAI_InGame && _GameManager.IsInitBotAI)
         {
-            if (gameManager.BotAIListStack.Count > 0)
+            if (_GameManager.BotAIListStack.Count > 0)
             {
-                int randomIndex = Random.Range(0, gameManager.BotAIListStack.Count);
-                gameManager.BotAIListStack[randomIndex].gameObject.SetActive(true);
-                gameManager.BotAIListEnable.Add(gameManager.BotAIListStack[randomIndex]);
-                gameManager.BotAIListStack.Remove(gameManager.BotAIListStack[randomIndex]);
-                gameManager.TotalBotAI--;
+                int randomIndex = Random.Range(0, _GameManager.BotAIListStack.Count);
+                _GameManager.BotAIListStack[randomIndex].gameObject.SetActive(true);
+                _GameManager.BotAIListEnable.Add(_GameManager.BotAIListStack[randomIndex]);
+                _GameManager.BotAIListStack.Remove(_GameManager.BotAIListStack[randomIndex]);
+                _GameManager.TotalBotAI--;
             }
             else
             { 
@@ -77,46 +77,87 @@ public class BotAISpawner : PooledObject
             //Bot weapon = random (.) weapon List Have
             //int weaponRandom = Random.Range(0, gameManager.SaveData.BotAIData.botAIInfo[i].weapon); //weapon power (bot have)
             //Debug.Log("BotAI:" + weapon);
-            botAI.WeaponIndex = gameManager.SaveData.BotAIData.BotAIInfo[i].Weapon;
+            botAI.WeaponIndex = _GameManager.SaveData.BotAIData.BotAIInfo[i].Weapon;
             //set paint= _characterSkin[1] skin with inde =random 0->index
             //int paintRandom = Random.Range(0, gameManager.SaveData.BotAIData.botAIInfo[i]._characterSkin[1].index);
             //Debug.Log(gameManager.SaveData.BotAIData.botAIInfo[i].characterSkin[1].Index);
-            botAI.setAccessorisSkinMat(botAI.PantsSkin, gameManager.PantsData, gameManager.SaveData.BotAIData.BotAIInfo[i].CharacterSkin[1].Index);  //Set BotAI Pant Skin with paintRandom
-
-            botAI.CharacterName = gameManager.SaveData.BotAIData.BotAIInfo[i].BotAI_name;
-            gameManager.BotAIListStack.Add(botAI);
+            UpdateAccessoriesSkinShop(botAI,i);
+            botAI.CharacterName = _GameManager.SaveData.BotAIData.BotAIInfo[i].BotAI_name;
+            _GameManager.BotAIListStack.Add(botAI);
             //Debug.Log("BotAI:" +weapon);
         }
     }
-    void OnDrawGizmos()
+    private void UpdateAccessoriesSkinShop(BotAI botAI, int indexBotAI)
     {
-        Gizmos.color = Color.blue;
-        int Row = Mathf.CeilToInt(Mathf.Sqrt(gameManager.TotalBotAI));
-        int Column = Row;
-        for (int i = 0; i < Row; i++)
+        BotAIInfo botAIInfo = _GameManager.SaveData.BotAIData.BotAIInfo[indexBotAI];
+        botAI.HideAllSetFullsSkin();
+        botAI.HideAllSkin();
+        if (botAIInfo.playerSkinShopState == PlayerSkinShopState.SetFull)
         {
-            for (int j = 0; j < Column; j++)
+            //Active Setfull Skin
+            botAI.ActiveSetFullsSkin(botAIInfo.CharacterSkin[(int)SkinType.SetFull].Index);
+        }
+        else
+        {
+            if (GetAccessoriesSelected(_GameManager.HatsData))
             {
-                int index = Row * j + i;
-                Vector3 objectPosition = new Vector3((j - (Row / 2)) + offset * j + poolMaster.transform.position.x, 0.05f + poolMaster.transform.position.y, ((Column / 2) - i) - offset * i + poolMaster.transform.position.z);
-                drawRectangle(objectPosition);
+                botAI.ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
+            }
+            if (GetAccessoriesSelected(_GameManager.PantsData))
+            {
+                botAI.SetAccessorisSkinMat(botAI.PantsSkin, _GameManager.PantsData, botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
+                botAI.ShowPantsSkin();
+            }
+            if (GetAccessoriesSelected(_GameManager.ShieldData))
+            {
+                botAI.ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
             }
         }
     }
-    private void drawRectangle(Vector3 point)
+    private bool GetAccessoriesSelected(AccessoriesData accessoriesData)
     {
-        //Top Left
-        Vector3 topL = new Vector3(point.x - size_x, point.y, point.z + size_z);
-        //Top Right
-        Vector3 topR = new Vector3(point.x + size_x, point.y, point.z + size_z);
-        //Bot Right
-        Vector3 botR = new Vector3(point.x + size_x, point.y, point.z - size_z);
-        //Bot Left
-        Vector3 botL = new Vector3(point.x - size_x, point.y, point.z - size_z);
+        bool isCheck = false;
+        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        {
+            if (accessoriesData.Accessories[i].Selected)
+            {
+                isCheck = true;
+                break;
+            }
 
-        Gizmos.DrawLine(topL, topR);
-        Gizmos.DrawLine(topR, botR);
-        Gizmos.DrawLine(botR, botL);
-        Gizmos.DrawLine(botL, topL);
+        }
+        return isCheck;
     }
+    /*void OnDrawGizmos()
+    {
+            Gizmos.color = Color.blue;
+            int Row = Mathf.CeilToInt(Mathf.Sqrt(_GameManager.TotalBotAI));
+            int Column = Row;
+            for (int i = 0; i < Row; i++)
+            {
+                for (int j = 0; j < Column; j++)
+                {
+                    int index = Row * j + i;
+                    Vector3 objectPosition = new Vector3((j - (Row / 2)) + offset * j + poolMaster.transform.position.x, 0.05f + poolMaster.transform.position.y, ((Column / 2) - i) - offset * i + poolMaster.transform.position.z);
+                    drawRectangle(objectPosition);
+                }
+            }
+        
+    }*/
+    /*    private void drawRectangle(Vector3 point)
+        {
+            //Top Left
+            Vector3 topL = new Vector3(point.x - size_x, point.y, point.z + size_z);
+            //Top Right
+            Vector3 topR = new Vector3(point.x + size_x, point.y, point.z + size_z);
+            //Bot Right
+            Vector3 botR = new Vector3(point.x + size_x, point.y, point.z - size_z);
+            //Bot Left
+            Vector3 botL = new Vector3(point.x - size_x, point.y, point.z - size_z);
+
+            Gizmos.DrawLine(topL, topR);
+            Gizmos.DrawLine(topR, botR);
+            Gizmos.DrawLine(botR, botL);
+            Gizmos.DrawLine(botL, topL);
+        }*/
 }

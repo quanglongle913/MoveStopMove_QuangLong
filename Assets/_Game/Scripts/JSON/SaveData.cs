@@ -79,6 +79,8 @@ public class SaveData : MonoBehaviour
         {
             BotAIInfo botAIInfo = new BotAIInfo();
             botAIInfo.BotAI_name = "" + (BotAINameType)i;
+            int randomSKinShopState = UnityEngine.Random.Range(0, 3);
+            botAIInfo.playerSkinShopState = (PlayerSkinShopState)randomSKinShopState;
             int randomWeapon = UnityEngine.Random.Range(0, numberOfWeapon);
             botAIInfo.Weapon = randomWeapon;
             List<CharacterSkin> characterSkin = new List<CharacterSkin>();
@@ -92,8 +94,6 @@ public class SaveData : MonoBehaviour
                 characterSkin.Add(temp);
 
             }
-
-
             botAIInfo.CharacterSkin = characterSkin;
             _botAIInfo.Add(botAIInfo);
         }
@@ -113,6 +113,7 @@ public class BotAIInfo
 {
     public string BotAI_name;
     public int Weapon;//là số weapon index trong game
+    public PlayerSkinShopState playerSkinShopState;
     public List<CharacterSkin> CharacterSkin = new List<CharacterSkin>();
 }
 

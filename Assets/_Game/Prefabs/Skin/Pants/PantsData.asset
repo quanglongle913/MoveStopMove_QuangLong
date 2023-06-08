@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5483744ec67557b478431260bdcd4e3f, type: 3}
   m_Name: PantsData
   m_EditorClassIdentifier: 
-  skinType: 0
+  skinType: 1
   accessories:
   - {fileID: 11400000, guid: b7d5999688ff2e34587416c230b67aa3, type: 2}
   - {fileID: 11400000, guid: 25a90737958b6b74fa6226637344dbf7, type: 2}

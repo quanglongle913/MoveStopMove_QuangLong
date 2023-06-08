@@ -112,15 +112,4 @@ public class BotAI : Character
             ChangeState(new DeadState());
         } 
     }
-    public void setAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
-    { //For BOTAI
-        var newMaterials = new Material[renderer.materials.Count()];
-
-        for (int i = 0; i < newMaterials.Count(); i++)
-        {
-            newMaterials[i] = accessoriesData.Accessories[index].Mat;
-
-        }
-        renderer.materials = newMaterials;
-    }
 }

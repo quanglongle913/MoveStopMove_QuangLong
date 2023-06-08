@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class Indicator : MonoBehaviour
@@ -23,6 +24,14 @@ public class Indicator : MonoBehaviour
         image.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
         image2.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
         textLevel.text = "" + _level;
+        if (this.ColorType == ColorType.Yellow)
+        {
+            textLevel.color = Color.black;
+        }
+        else
+        {
+            textLevel.color = Color.white;
+        }
     }
     public void ChangeColor(RawImage a_obj, ColorType colorType)
     {
