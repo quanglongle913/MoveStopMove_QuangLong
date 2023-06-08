@@ -74,20 +74,14 @@ public class BotAISpawner : PooledObject
             botAI.ColorType = _colorType;
             botAI.InGamneExp = 100;
             botAI.ChangeColor(botAI.gameObject, _colorType);
-            //Bot weapon = random (.) weapon List Have
-            //int weaponRandom = Random.Range(0, gameManager.SaveData.BotAIData.botAIInfo[i].weapon); //weapon power (bot have)
-            //Debug.Log("BotAI:" + weapon);
             botAI.WeaponIndex = _GameManager.SaveData.BotAIData.BotAIInfo[i].Weapon;
-            //set paint= _characterSkin[1] skin with inde =random 0->index
-            //int paintRandom = Random.Range(0, gameManager.SaveData.BotAIData.botAIInfo[i]._characterSkin[1].index);
-            //Debug.Log(gameManager.SaveData.BotAIData.botAIInfo[i].characterSkin[1].Index);
-            UpdateAccessoriesSkinShop(botAI,i);
+            UpdateAccessoriesSkinAI(botAI,i);
             botAI.CharacterName = _GameManager.SaveData.BotAIData.BotAIInfo[i].BotAI_name;
             _GameManager.BotAIListStack.Add(botAI);
             //Debug.Log("BotAI:" +weapon);
         }
     }
-    private void UpdateAccessoriesSkinShop(BotAI botAI, int indexBotAI)
+    private void UpdateAccessoriesSkinAI(BotAI botAI, int indexBotAI)
     {
         BotAIInfo botAIInfo = _GameManager.SaveData.BotAIData.BotAIInfo[indexBotAI];
         botAI.HideAllSetFullsSkin();
@@ -99,19 +93,10 @@ public class BotAISpawner : PooledObject
         }
         else
         {
-            if (GetAccessoriesSelected(_GameManager.HatsData))
-            {
-                botAI.ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
-            }
-            if (GetAccessoriesSelected(_GameManager.PantsData))
-            {
-                botAI.SetAccessorisSkinMat(botAI.PantsSkin, _GameManager.PantsData, botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
-                botAI.ShowPantsSkin();
-            }
-            if (GetAccessoriesSelected(_GameManager.ShieldData))
-            {
-                botAI.ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
-            }
+            botAI.ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
+            botAI.SetAccessorisSkinMat(botAI.PantsSkin, _GameManager.PantsData, botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
+            botAI.ShowPantsSkin();
+            botAI.ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
         }
     }
     private bool GetAccessoriesSelected(AccessoriesData accessoriesData)

@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Arrow
   weaponType: 0
+  weaponPrice: 0
+  equipped: 1
+  buyed: 1
   mat: {fileID: 2100000, guid: d83cb705a505e114db2ebc520a7ea275, type: 2}
   buffData: {fileID: 11400000, guid: 90f1507e56f9c8d4b88ac476cf13e9c8, type: 2}

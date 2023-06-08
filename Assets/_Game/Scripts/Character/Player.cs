@@ -19,6 +19,10 @@ public class Player : Character
     private float horizontal;
     private float vertical;
     public PlayerSkinShopState PlayerSkinShopState;
+
+    public ColorType KillerColorType;
+    public string KilledBuyName;
+    public int Rank;
     public FloatingJoystick FloatingJoystick { get => floatingJoystick; set => floatingJoystick = value; }
    
     public float Horizontal { get => horizontal; set => horizontal = value; }
@@ -38,10 +42,19 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
-        this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 14);
         ChangeState(new IdleStateP());
+        //this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0);
+        this.WeaponIndex = GetWeaponsEquippedIndex(_GameManager.WeaponData);
+        this.WeaponType = WeaponData.Weapon[WeaponIndex].WeaponType;
+
+        PoolObject = _GameManager.PoolObject[(int)WeaponType];
+        PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material = WeaponData.Weapon[WeaponIndex].Mat;
+
         SetWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
-        UpdateAccessoriesSkinShop();
+        ShowWeaponIndex((int)WeaponType);
+        UpdateCharacter();
+        UpdateAccessoriesSkinShopOnInit();
+
     }
     
     void Update()
@@ -130,7 +143,56 @@ public class Player : Character
         base.OnDeath();
         ChangeState(new DeadStateP());
     }
- 
+    public override void OnHit(float damage)
+    {
+        base.OnHit(damage);
+        Rank= _GameManager.BotAIListEnable.Count + _GameManager.BotAIListStack.Count;
+    }
+    //Number of AccessorisBuyed in Accessories[]
+    public int GetAccessorisBuyedIndex(AccessoriesData accessoriesData)
+    {
+        int index = 99;
+        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        {
+            if (!accessoriesData.Accessories[i].Buyed)
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == 99)
+        {
+            //You don't have any Skin
+            Debug.Log("You don't have any Skin");
+        }
+        return index;
+    }
+    public int GetWeaponsEquippedIndex(WeaponData weaponData)
+    {
+        int index = 0;
+        for (int i = 0; i < weaponData.Weapon.Length; i++)
+        {
+            if (weaponData.Weapon[i].Equipped)
+            {
+                index = i;
+                break;
+            }
+
+        }
+        return index;
+    }
+    public int GetNumberOfWeaponsHave(WeaponData weaponData)
+    {
+        int index = 0;
+        for (int i = 0; i < weaponData.Weapon.Length; i++)
+        {
+            if (weaponData.Weapon[i].Buyed)
+            {
+                index=i;
+            }
+        }
+        return index;
+    }
     public int GetAccessorisSelectedIndex(AccessoriesData accessoriesData)
     {
         int index = 0;
@@ -142,10 +204,8 @@ public class Player : Character
                 break;
             }
         }
-        if (index == 0) {
-            accessoriesData.Accessories[0].Selected = true; 
-        }
         return index;
+
     }
     public void UnSelectedAccessoris(AccessoriesData accessoriesData)
     {
@@ -158,16 +218,50 @@ public class Player : Character
     {
         SetAccessorisSkinMat(PantsSkin, accessoriesData, GetAccessorisSelectedIndex(accessoriesData));
     }
+    public void UpdateAccessoriesSkinShopOnInit()
+    {
+        HideAllSkin();
+        HideAllSetFullsSkin();
+        if (GetAccessoriesEquipped(_GameManager.SetfullData))
+        {
+            UpdatePlayerAccessoris(_GameManager.SetfullData);
+            PlayerSkinShopState = PlayerSkinShopState.SetFull;
+        }
+        else
+        {
+            if (!GetAccessoriesEquipped(_GameManager.HatsData) && !GetAccessoriesEquipped(_GameManager.PantsData) && !GetAccessoriesEquipped(_GameManager.ShieldData))
+            {
+                PlayerSkinShopState = PlayerSkinShopState.None;
+
+            }
+            if (GetAccessoriesEquipped(_GameManager.HatsData))
+            {
+                UpdatePlayerAccessoris(_GameManager.HatsData);
+
+                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+            }
+            if (GetAccessoriesEquipped(_GameManager.PantsData))
+            {
+                UpdatePlayerAccessoris(_GameManager.PantsData);
+
+                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+            }
+            if (GetAccessoriesEquipped(_GameManager.ShieldData))
+            {
+                UpdatePlayerAccessoris(_GameManager.ShieldData);
+
+                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+            }
+        }
+    }
     public void UpdateAccessoriesSkinShop()
     {
         HideAllSkin();
         HideAllSetFullsSkin();
         if (GetAccessoriesSelected(_GameManager.SetfullData))
         {
-            SetAllAccessoriesUnSelected(_GameManager.HatsData);
-            SetAllAccessoriesUnSelected(_GameManager.PantsData);
-            SetAllAccessoriesUnSelected(_GameManager.ShieldData);
             UpdateUIAccessoris(_GameManager.SetfullData);
+        
             PlayerSkinShopState = PlayerSkinShopState.SetFull;
 
         }
@@ -181,22 +275,54 @@ public class Player : Character
             if (GetAccessoriesSelected(_GameManager.HatsData))
             {
                 UpdateUIAccessoris(_GameManager.HatsData);
+          
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
             if (GetAccessoriesSelected(_GameManager.PantsData))
             {
 
                 UpdateUIAccessoris(_GameManager.PantsData);
+            
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
             if (GetAccessoriesSelected(_GameManager.ShieldData))
             {
                 UpdateUIAccessoris(_GameManager.ShieldData);
+           
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
         }
     }
-    
+    public void UpdatePlayerAccessoris(AccessoriesData accessoriesData)
+    {
+        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        {
+            if (accessoriesData.Accessories[i].Equipped)
+            {
+                if (accessoriesData.SkinType == SkinType.Hat)
+                {
+                    HideAllSetFullsSkin();
+                    ActiveHatsSkin(i);
+                }
+                else if (accessoriesData.SkinType == SkinType.Pant)
+                {
+                    HideAllSetFullsSkin();
+                    SetPantsSkin(_GameManager.PantsData);
+                    ShowPantsSkin();
+                }
+                else if (accessoriesData.SkinType == SkinType.Sheild)
+                {
+                    HideAllSetFullsSkin();
+                    ActiveSheildsSkin(i);
+                }
+                else if (accessoriesData.SkinType == SkinType.SetFull)
+                {
+                    HideAllSkin();
+                    ActiveSetFullsSkin(i);
+                }
+            }
+        }
+    }
     public void UpdateUIAccessoris(AccessoriesData accessoriesData)
     {
         for (int i = 0; i < accessoriesData.Accessories.Length; i++)
@@ -226,6 +352,21 @@ public class Player : Character
                 }
             }
         }
+    }
+    
+    private bool GetAccessoriesEquipped(AccessoriesData accessoriesData)
+    {
+        bool isCheck = false;
+        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        {
+            if (accessoriesData.Accessories[i].Equipped)
+            {
+                isCheck = true;
+                break;
+            }
+
+        }
+        return isCheck;
     }
     private bool GetAccessoriesSelected(AccessoriesData accessoriesData)
     {

@@ -10,9 +10,11 @@ public class Accessories : ScriptableObject
     [SerializeField] private GameObject prefabsAccessories;
     [SerializeField] private Texture imageItem;
     [SerializeField] private Material mat;
+    [SerializeField] private int price;
     [SerializeField] private BuffData buffData;
     [SerializeField] private bool selected=false;
     [SerializeField] private bool buyed = false;
+    [SerializeField] private bool equipped = false;
 
     public string AccessoriesName { get => accessoriesName; set => accessoriesName = value; }
     public Material Mat { get => mat; set => mat = value; }
@@ -21,4 +23,6 @@ public class Accessories : ScriptableObject
     public bool Selected { get => selected; set => selected = value; }
     public bool Buyed { get => buyed; set => buyed = value; }
     public Texture ImageItem { get => imageItem; set => imageItem = value; }
+    public int Price { get => price; set => price = value; }
+    public bool Equipped { get => equipped; set => equipped = value; }
 }

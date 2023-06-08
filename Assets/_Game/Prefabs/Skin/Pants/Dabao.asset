@@ -16,6 +16,8 @@ MonoBehaviour:
   prefabsAccessories: {fileID: 483955115659953245, guid: e0d9915dd0233324b9e0a48f54a566b9, type: 3}
   imageItem: {fileID: 2800000, guid: e6cdcdd7f2a0d8b4fb11ca94d0d7d775, type: 3}
   mat: {fileID: 2100000, guid: a78e79c32d9223142be40777219b47af, type: 2}
+  price: 200
   buffData: {fileID: 11400000, guid: 40db7c0ee2bc25a4cb672d17c70f56fd, type: 2}
   selected: 0
   buyed: 0
+  equipped: 0

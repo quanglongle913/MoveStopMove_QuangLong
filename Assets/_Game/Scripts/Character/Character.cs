@@ -112,15 +112,7 @@ public class Character : MonoBehaviour
         IsTargerInRange = false;
         hp = 1;
         ChangeColor(gameObject, ColorType);
-        //Get Weapon info buff.... etc
         this.WeaponData = _GameManager.WeaponData;
-        this.WeaponType = WeaponData.Weapon[weaponIndex].WeaponType;
-        SetWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
-        //ListWeaponsInHand[(int)WeaponType].gameObject.SetActive(true);
-        ShowWeaponIndex((int)WeaponType);
-        PoolObject = _GameManager.PoolObject[(int)WeaponType];
-        PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material= WeaponData.Weapon[weaponIndex].Mat;
-        updateCharacter();
     }
     
     public virtual void FixedUpdate()
@@ -232,7 +224,7 @@ public class Character : MonoBehaviour
         a_obj.GetComponent<Character>().mesh.material = colorData.GetMat(colorType);
     }
 
-    public void OnHit(float damage)
+    public virtual void OnHit(float damage)
     {
 
         if (!IsDeath)
@@ -248,6 +240,7 @@ public class Character : MonoBehaviour
 
     }
     //=====================Weapons===================
+   
     //Set Material for Prefabs 
     public void SetWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index)
     {
@@ -262,14 +255,17 @@ public class Character : MonoBehaviour
     }
     public void SetAccessorisSkinMat(Renderer renderer, AccessoriesData accessoriesData, int index)
     { //For BOTAI
-        var newMaterials = new Material[renderer.materials.Count()];
-
-        for (int i = 0; i < newMaterials.Count(); i++)
+        if (index != 5555)
         {
-            newMaterials[i] = accessoriesData.Accessories[index].Mat;
+            var newMaterials = new Material[renderer.materials.Count()];
+            for (int i = 0; i < newMaterials.Count(); i++)
+            {
+                newMaterials[i] = accessoriesData.Accessories[index].Mat;
 
+            }
+            renderer.materials = newMaterials;
         }
-        renderer.materials = newMaterials;
+       
     }
     public void HideAllWeaponsInHand()
     {
@@ -351,9 +347,9 @@ public class Character : MonoBehaviour
     {
         InGamneExp += exp / CharacterLevel + 40;
         InGamneGold += 50;
-        updateCharacter();
+        UpdateCharacter();
     }
-    public void updateCharacter()
+    public void UpdateCharacter()
     {
         CharacterLevel = InGamneExp / 100; //tinh level character
         float offsetSize = 0.02f;

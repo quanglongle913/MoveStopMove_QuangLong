@@ -5,14 +5,12 @@ using UnityEngine;
 public class Constant
 {
 
-   
-    public static string WEAPONS_USE = "WeaponsUse";
-    /// 
-    /// </summary>
+  
     public static string PLAYER_MAP = "PlayerMap";
     public static string ZOMBIEDAYS = "ZombieDays";
 
-    public static string PLAYER_WEAPONS_HAVE = "PlayerWeaponsHave"; 
+    public static string BEST_RANK = "BestRank";
+
     public static string PLAYER_EXP = "PlayerExp";
     public static string PLAYER_ZONE = "PlayerZone";
     public static string PLAYER_BEST = "PlayerBest";
@@ -26,6 +24,8 @@ public class Constant
 
 
     public static float RAYCAST_HIT_RANGE_WALL = 1.0f;
+
+   
 
 
 

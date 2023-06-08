@@ -262,6 +262,7 @@ public class IndicatorSpawner : PooledObject
                 Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
                 float angle = Constant.AngleBetween2Vector2Up(B, A);
                 gameManager.IndicatorList[i].gameObject.transform.rotation = Quaternion.Euler(0, 0, angle);
+                gameManager.IndicatorList[i].gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
     }

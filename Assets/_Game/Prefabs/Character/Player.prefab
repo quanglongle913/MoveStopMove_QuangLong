@@ -2324,6 +2324,7 @@ MonoBehaviour:
   IsHaveWeapon: 0
   floatingJoystick: {fileID: 0}
   cylinder: {fileID: 991997396}
+  PlayerSkinShopState: 0
 --- !u!114 &1678857061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3108,6 +3109,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pants
       objectReference: {fileID: 0}
+    - target: {fileID: 5420428449688961711, guid: 3f48290a59913be429f315893ef74bf0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7514849634267919176, guid: 3f48290a59913be429f315893ef74bf0, type: 3}
       propertyPath: m_RootBone
       value: 
@@ -3831,7 +3836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1047643248131137326, guid: 8ea37a658fc15574cb9c9487bd85c51a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4435066218714006088, guid: 8ea37a658fc15574cb9c9487bd85c51a, type: 3}
       propertyPath: m_RootOrder

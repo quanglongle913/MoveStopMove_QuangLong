@@ -21,7 +21,7 @@ public class Weapons : MonoBehaviour
     {
         if (isFire)
         {
-            if (weaponType == WeaponType.Knife)
+            if (weaponType == WeaponType.Knife || weaponType == WeaponType.Arrow)/////
             {
                 //Xoay Weapon to Enemy
                 if (direction.x <= 0)
@@ -77,6 +77,8 @@ public class Weapons : MonoBehaviour
             {
                 enemy.OnHit(1f);
                 characterRoot.setExp(enemy.InGamneExp);
+                other.gameObject.GetComponent<Player>().KilledBuyName = characterRoot.CharacterName;
+                other.gameObject.GetComponent<Player>().KillerColorType = characterRoot.ColorType;
             }
             else
             {

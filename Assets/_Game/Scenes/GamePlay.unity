@@ -1963,7 +1963,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1732760747}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickBtnSelelect_Equipped
+        m_MethodName: OnClickBtnSelelect_EquippedWeapon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2063,7 +2063,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &249426181
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2607,7 +2607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &340346747
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3733,7 +3733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &515531188
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5323,7 +5323,7 @@ GameObject:
   - component: {fileID: 796456998}
   - component: {fileID: 796456997}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text (TMP) Rank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6567,7 +6567,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1732760747}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickBtnSelelect_Equipped
+        m_MethodName: OnClickBtnSelelect_EquippedSkinShop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8251,7 +8251,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1272200318
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9670,7 +9670,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1732760747}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickBtnBuy
+        m_MethodName: OnClickBtnBuySkinShop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11384,7 +11384,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1732760747}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickBtnSelelect_Equipped
+        m_MethodName: OnClickBtnSelelect_EquippedSkinShop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12090,6 +12090,7 @@ MonoBehaviour:
   frame_TopSheildSkinShop: {fileID: 667943750}
   frame_TopSetFullSkinShop: {fileID: 396924166}
   textSkinBuffInfo: {fileID: 1943170773}
+  textSkinShopPriceBtnBuy: {fileID: 2044748207}
   btn_SelelectSkinShop: {fileID: 1671598477}
   btn_EquippedSkinShop: {fileID: 1058361793}
   btn_BuySkinShop: {fileID: 1445860631}
@@ -12099,6 +12100,9 @@ MonoBehaviour:
   popup_Countine: {fileID: 249426180}
   popup_TryAgain: {fileID: 340346746}
   text_CountDown: {fileID: 1527244294}
+  text_PlayerRank: {fileID: 796456997}
+  text_KillerName: {fileID: 1286077328}
+  text_GoldEarned: {fileID: 1254352100}
 --- !u!4 &1735926783 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6188210730131408955, guid: f0ebe270fd1f3d04a82103fcaaac55fd, type: 3}
@@ -15155,7 +15159,7 @@ GameObject:
   - component: {fileID: 2044748208}
   - component: {fileID: 2044748207}
   m_Layer: 5
-  m_Name: Text (TMP) WeaponPrice
+  m_Name: Text (TMP) SkinShopPrice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27049,7 +27053,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1732760747}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickBtnBuy
+        m_MethodName: OnClickBtnBuyWeapon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -28271,7 +28275,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1732760747}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickBtnSelelect_Equipped
+        m_MethodName: OnClickBtnSelelect_EquippedWeapon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

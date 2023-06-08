@@ -14,7 +14,7 @@ public class BotAI : Character
     private IState<BotAI> currentState;
     private NavMeshAgent agent;
     private Transform targetTransform;
-
+    //public bool IsKilledPlayer=false;
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
     public Transform TargetTransform { get => targetTransform; set => targetTransform = value; }
     public override void Awake()
@@ -35,7 +35,12 @@ public class BotAI : Character
             CircleAttack.SetActive(false);
         }
         ChangeState(new IdleState());
-       
+        this.WeaponType = WeaponData.Weapon[WeaponIndex].WeaponType;
+        SetWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
+        ShowWeaponIndex((int)WeaponType);
+        PoolObject = _GameManager.PoolObject[(int)WeaponType];
+        PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material = WeaponData.Weapon[WeaponIndex].Mat;
+        UpdateCharacter();
     }
 
     // Update is called once per frame
@@ -46,6 +51,10 @@ public class BotAI : Character
             if (currentState != null)
             {
                 currentState.OnExecute(this);
+            }
+            if (Constant.isWall(this.gameObject, LayerMask.GetMask(Constant.LAYOUT_WALL)))
+            {
+                ChangeState(new IdleState());
             }
         }
         else
@@ -62,11 +71,15 @@ public class BotAI : Character
                 ChangeState(new IdleState());
             }
         }
+
     }
     public override void FixedUpdate() { 
         base.FixedUpdate();
     }
-
+    public override void OnHit(float damage)
+    {
+        base.OnHit(damage);
+    }
     public void moveToTarget(Vector3 targetTransform)
     {
         agent.SetDestination(targetTransform);
