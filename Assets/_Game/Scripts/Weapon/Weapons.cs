@@ -77,13 +77,18 @@ public class Weapons : MonoBehaviour
             {
                 enemy.OnHit(1f);
                 characterRoot.setExp(enemy.InGamneExp);
-                other.gameObject.GetComponent<Player>().KilledBuyName = characterRoot.CharacterName;
+                other.gameObject.GetComponent<Player>().KilledByName = characterRoot.CharacterName;
                 other.gameObject.GetComponent<Player>().KillerColorType = characterRoot.ColorType;
+                other.gameObject.GetComponent<Player>().SetEndGame();
             }
             else
             {
                 enemy.OnHit(1f);
                 characterRoot.setExp(enemy.InGamneExp);
+                if (_GameObject.GetComponent<Player>())
+                {
+                    _GameObject.GetComponent<Player>().KilledCount++;
+                }
             }
             Character character = _GameObject.GetComponent<Character>();
             character.Weapons.Remove(this);

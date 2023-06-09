@@ -11,9 +11,11 @@ public class Constant
 
     public static string BEST_RANK = "BestRank";
 
-    public static string PLAYER_EXP = "PlayerExp";
-    public static string PLAYER_ZONE = "PlayerZone";
-    public static string PLAYER_BEST = "PlayerBest";
+    public static string POPUP_COUNTINUE_STATUS_LOSE = "Too bad, try again......";
+    public static string POPUP_COUNTINUE_STATUS_WIN = "Coming Soon!...";
+    /*public static string PLAYER_ZONE = "PlayerZone";
+    public static string PLAYER_ZONE_EXP = "PlayerZoneExp";*/
+    //public static string PLAYER_BEST = "PlayerBest";
     public static string PLAYER_COIN = "PlayerCoin";
     public static string PLAYER_NAME = "PlayerName";
     public static string PLAYER_ZOMBIEDAY = "PlayerZombieDay";

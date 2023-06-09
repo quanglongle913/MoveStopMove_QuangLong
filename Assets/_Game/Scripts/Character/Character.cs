@@ -28,6 +28,7 @@ public class Character : MonoBehaviour
     [SerializeField] private float inGamneAttackSpeed = 60f;
     [SerializeField] private float inGameMoveSpeed = 5.0f;
     [SerializeField] private float inGamneGold = 50f;
+    [SerializeField] private int inGamneZoneExp = 0;
 
     [SerializeField] private bool isTargerInRange;
     [SerializeField] private bool isAttacking;

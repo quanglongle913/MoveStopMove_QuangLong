@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI textCoin;
     [SerializeField] private TMPro.TextMeshProUGUI textName;
     [SerializeField] private TMPro.TextMeshProUGUI textZone;
+    [SerializeField] private Slider sliderZoneExp;
+
     [SerializeField] private TMPro.TextMeshProUGUI textZoneBTN;
     [SerializeField] private TMPro.TextMeshProUGUI textBestBTN;
     [SerializeField] private TMPro.TextMeshProUGUI textZombieDay;
@@ -60,12 +62,23 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject popup_Setting;
     [SerializeField] private TMPro.TextMeshProUGUI textAlive;
     [Header("EndGame: ")]
-    [SerializeField] private GameObject popup_Countine;
     [SerializeField] private GameObject popup_TryAgain;
+    [SerializeField] private GameObject popup_Countine;
+    [SerializeField] private GameObject popup_PlayerLose, popup_PlayerWin;
+    //Top-ZONE
+    [SerializeField] private TMPro.TextMeshProUGUI text_ZoneType;
+    [SerializeField] private RawImage image_ZoneType;
+    [SerializeField] private TMPro.TextMeshProUGUI text_ZoneTypeNext;
+    [SerializeField] private RawImage image_ZoneTypeNext;
+    [SerializeField] private TMPro.TextMeshProUGUI text_Status;
+    //END Top Zone
+
     [SerializeField] private TMPro.TextMeshProUGUI text_CountDown;
-    [SerializeField] private TMPro.TextMeshProUGUI text_PlayerRank;
+    [SerializeField] private TMPro.TextMeshProUGUI text_PlayerRank, text_PlayerKillCount;
     [SerializeField] private TMPro.TextMeshProUGUI text_KillerName;
     [SerializeField] private TMPro.TextMeshProUGUI text_GoldEarned;
+    private bool IsRevive = false;
+
 
     GameManager _GameManager;
     Player player;
@@ -83,27 +96,30 @@ public class UIManager : MonoBehaviour
                 PlayerPrefs.SetInt(Constant.PLAYER_COIN,10000);
                 PlayerPrefs.Save();
             }
-          /*  if (PlayerPrefs.GetInt(Constant.PLAYER_WEAPONS_HAVE, -1) == -1) 
-            {
-                PlayerPrefs.SetInt(Constant.PLAYER_WEAPONS_HAVE, 0);
-                PlayerPrefs.SetInt(Constant.WEAPONS_USE, 0);
-                PlayerPrefs.Save();
-            }*/
             var score = PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
             string.Format("Score: {0:#,#}", score);
             score.ToString("#,#");
             textCoin.text = (score.ToString("#,#"));
             textName.text = PlayerPrefs.GetString(Constant.PLAYER_NAME, "You");
-            textZone.text = ("" + PlayerPrefs.GetInt(Constant.PLAYER_ZONE, 1));
-            textZoneBTN.text = ("ZONE: " + PlayerPrefs.GetInt(Constant.PLAYER_ZONE, 1));
-            textBestBTN.text = ("BEST: #" + PlayerPrefs.GetInt(Constant.PLAYER_BEST, 99));
+            int ZoneNumber = (int)_GameManager.ZoneData.PlayerZoneType + 1;
+            textZone.text = ""+ ZoneNumber;
             textZombieDay.text = ("" + PlayerPrefs.GetInt(Constant.PLAYER_ZOMBIEDAY, 0));
-            int maxExpZone = PlayerPrefs.GetInt(Constant.PLAYER_ZONE, 1) * 200;
-            textZoneExp.text = (PlayerPrefs.GetInt(Constant.PLAYER_EXP, 0)+"/"+ maxExpZone);
+            int maxExpZone = _GameManager.ZoneData.Zones[(int)_GameManager.ZoneData.PlayerZoneType].ZoneExp;
+            textZoneExp.text = _GameManager.ZoneData.PlayerZoneExp+ "/"+ maxExpZone;
+            sliderZoneExp.value = (float)_GameManager.ZoneData.PlayerZoneExp / (float)maxExpZone;
 
+
+            textZoneBTN.text = ("ZONE: " + ZoneNumber);
+            textBestBTN.text = ("BEST: #" + PlayerPrefs.GetInt(Constant.BEST_RANK, 99));
         }
         else if (_GameManager.GameState == GameState.InGame)
         {
+            if (IsRevive)
+            {
+                InGame();
+                IsRevive=false;
+            }
+            
             int total = _GameManager.TotalBotAI + _GameManager.BotAIListEnable.Count;
             textAlive.text = ("Alive: " + total);
         }
@@ -147,7 +163,7 @@ public class UIManager : MonoBehaviour
             endGame.SetActive(false);
         }
     }
-    public void GameMenu()
+    private void GameMenu()
     {
         if (loading.activeSelf)
         {
@@ -159,6 +175,7 @@ public class UIManager : MonoBehaviour
             popup_GameMenuChild.SetActive(true);
             popup_WeaponShop.SetActive(false);
             popup_SkinShop.SetActive(false);
+            player.transform.position = _GameManager.PlayerStartPoint.position;
         }
         if (inGame.activeSelf)
         {
@@ -170,7 +187,7 @@ public class UIManager : MonoBehaviour
         }
         Hide_Popup_Setting();
     }
-    public void InGame()
+    private void InGame()
     {
         if (loading.activeSelf)
         {
@@ -189,7 +206,7 @@ public class UIManager : MonoBehaviour
             endGame.SetActive(false);
         }
     }
-    public void EndGame(bool isPlayerWon)
+    private void EndGame(bool isPlayerWon)
     {
         if (loading.activeSelf)
         {
@@ -229,8 +246,31 @@ public class UIManager : MonoBehaviour
             popup_Setting.SetActive(false);
         }
     }
-    public void Show_Popup_Countine()
+    public void Show_Popup_Countine(bool IsWin)
     {
+        text_Status.text = Constant.POPUP_COUNTINUE_STATUS_LOSE;
+        popup_PlayerWin.SetActive(IsWin);
+        popup_PlayerLose.SetActive(!IsWin);
+        if (IsWin)
+        {
+            text_Status.text = Constant.POPUP_COUNTINUE_STATUS_WIN;
+        }
+        
+        text_KillerName.text = player.KilledByName;
+        text_KillerName.color = player.ColorData.GetMat(player.KillerColorType).color;
+        text_PlayerRank.text = "#" + player.Rank;
+        text_PlayerKillCount.text ="" + player.KilledCount;
+        text_GoldEarned.text = "" + player.InGamneGold;
+        int coin = PlayerPrefs.GetInt(Constant.PLAYER_COIN) + (int)player.InGamneGold;
+        PlayerPrefs.SetInt(Constant.PLAYER_COIN, coin);
+        PlayerPrefs.Save();
+        int zoneType = (int)_GameManager.ZoneData.PlayerZoneType;
+        text_ZoneType.text =_GameManager.ZoneData.Zones[zoneType].ZoneName;
+        image_ZoneType.texture = _GameManager.ZoneData.Zones[zoneType].Texture;
+        zoneType++;
+        text_ZoneTypeNext.text = _GameManager.ZoneData.Zones[zoneType].ZoneName;
+        image_ZoneTypeNext.texture = _GameManager.ZoneData.Zones[zoneType].Texture;
+
         popup_TryAgain.SetActive(false);
         popup_Countine.SetActive(true);    
     }
@@ -249,33 +289,23 @@ public class UIManager : MonoBehaviour
     public void Show_Popup_PlayerWon()
     {
         //TODO
-       
+        Show_Popup_Countine(true);
     }
-    public void Hide_Popup_PlayerWon()
-    {
-        //TODO
-    
-    }
+
     public void Show_Popup_Tryagain()
     {
         popup_Countine.SetActive(false);
         popup_TryAgain.SetActive(true);
-
-        text_KillerName.text = player.KilledBuyName;
-        text_KillerName.color = player.ColorData.GetMat(player.KillerColorType).color;
-        text_PlayerRank.text = ""+player.Rank;
-        text_GoldEarned.text = ""+player.InGamneGold;
-        //add GOLD
-        int coin = PlayerPrefs.GetInt(Constant.PLAYER_COIN) + (int)player.InGamneGold;
-        PlayerPrefs.SetInt(Constant.PLAYER_COIN, coin);
-        PlayerPrefs.Save();
         StartCoroutine(Waiter(text_CountDown));
     }
 
     public void EndGame_RevieNow()
     {
         //UNDONE Test TODO Loading and auto go play
-        setLoading();
+        //setLoading();
+        IsRevive = true;
+        player.GetComponent<Player>().hp = 1;
+        _GameManager.GameState = GameState.InGame;
     }
     IEnumerator Waiter(TMPro.TextMeshProUGUI text_CountDown)
     {
@@ -290,7 +320,7 @@ public class UIManager : MonoBehaviour
         text_CountDown.text = "1";
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "0";
-        Show_Popup_Countine();
+        Show_Popup_Countine(false);
     }
 
     //================GAME MENU WEAPONSHOP ===================

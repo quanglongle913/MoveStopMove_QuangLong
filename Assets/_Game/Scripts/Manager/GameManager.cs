@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
     [SerializeField] private GameObject player;
+    [SerializeField] private Transform playerStartPoint;
     [Header("BotAI: ")]
     [Tooltip("Number Bot in Map < Bot in Game")]
     [SerializeField] private int numberOfBotsOnMap;
@@ -26,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject weaponManager;
     [Header("Data Manager: ")]
     [SerializeField] private SaveData saveData;
+    [SerializeField] private ZoneData zoneData;
 
     private List<Indicator> indicatorList;
     private List<CharacterInfo> characterInfoList;
@@ -59,6 +61,9 @@ public class GameManager : Singleton<GameManager>
     public GameObject WeaponManager { get => weaponManager; set => weaponManager = value; }
     public UIManager UIManager { get => uIManager; set => uIManager = value; }
     public GameObject Player { get => player; set => player = value; }
+    public int NumberOfBotsInGameLvel { get => numberOfBotsInGameLvel; set => numberOfBotsInGameLvel = value; }
+    public ZoneData ZoneData { get => zoneData; set => zoneData = value; }
+    public Transform PlayerStartPoint { get => playerStartPoint; set => playerStartPoint = value; }
 
     private void Start()
     {
@@ -83,17 +88,20 @@ public class GameManager : Singleton<GameManager>
             
             StartCoroutine(SetGameStateMenu());
         }
-        if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit)
+        if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit && !Player.GetComponent<Player>().IsDeath)
         {
+            //Player Won!.....
+            Player.GetComponent<Player>().SetEndGame();
             uIManager.setEndGame(true);
         }
     }
     IEnumerator SetGameStateMenu()
     {
         //Loading time 1.5s
+        
         yield return new WaitForSeconds(1.5f);
-        gameState = GameState.GameMenu;
-        uIManager.GameMenu();
+        uIManager.setGameMenu();
+
     }
     IEnumerator loading()
     {

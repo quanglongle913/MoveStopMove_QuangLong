@@ -21,8 +21,9 @@ public class Player : Character
     public PlayerSkinShopState PlayerSkinShopState;
 
     public ColorType KillerColorType;
-    public string KilledBuyName;
+    public string KilledByName;
     public int Rank;
+    public int KilledCount=0;
     public FloatingJoystick FloatingJoystick { get => floatingJoystick; set => floatingJoystick = value; }
    
     public float Horizontal { get => horizontal; set => horizontal = value; }
@@ -146,7 +147,24 @@ public class Player : Character
     public override void OnHit(float damage)
     {
         base.OnHit(damage);
-        Rank= _GameManager.BotAIListEnable.Count + _GameManager.BotAIListStack.Count;
+    }
+    public void SetEndGame()
+    {
+        Rank = _GameManager.BotAIListEnable.Count + _GameManager.BotAIListStack.Count + 1;
+        if (Rank < PlayerPrefs.GetInt(Constant.BEST_RANK, 99))
+        {
+            PlayerPrefs.SetInt(Constant.BEST_RANK, Rank);
+            PlayerPrefs.Save();
+        }
+        _GameManager.ZoneData.PlayerZoneExp += _GameManager.NumberOfBotsInGameLvel - Rank + 1;
+        ZoneType playerZoneType = _GameManager.ZoneData.PlayerZoneType;
+
+        if (_GameManager.ZoneData.PlayerZoneExp >= _GameManager.ZoneData.Zones[(int)playerZoneType].ZoneExp)
+        {
+            _GameManager.ZoneData.PlayerZoneExp -= _GameManager.ZoneData.Zones[(int)playerZoneType].ZoneExp;
+            int zoneIndex = (int)_GameManager.ZoneData.PlayerZoneType + 1;
+            _GameManager.ZoneData.PlayerZoneType = (ZoneType)zoneIndex;
+        }
     }
     //Number of AccessorisBuyed in Accessories[]
     public int GetAccessorisBuyedIndex(AccessoriesData accessoriesData)

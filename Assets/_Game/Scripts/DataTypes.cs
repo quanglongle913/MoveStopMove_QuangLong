@@ -8,6 +8,7 @@ public enum ColorType { Blue = 0, Yellow = 1, Red = 2, Green = 3, Purple = 4, Pl
 public enum WeaponType { Arrow = 0, Axe_0 = 1, Axe_1 = 2, Boomerang = 3, Candy_0 = 4, Candy_1 = 5, Candy_2 = 6, Candy_4 = 7, Hammer = 8, Knife = 9, Uzi = 10, Z = 11 }
 public enum SkinType { Hat = 0, Pant = 1, Sheild = 2, SetFull = 3 }
 public enum BuffType { Range = 0, AttackSpeed = 1, MoveSpeed = 2, Gold = 3 }
+public enum ZoneType { Table = 0, Kitchen = 1, City = 2, Stadium = 3 }
 public enum BotAINameType { Pro1 = 0, No1Killer = 1, SpeedUp = 2, 
                         Maxping = 3 , ACE =4, AceNo1=5, Skull = 6, 
                         Zombie = 7, Jack = 8, Kassin = 9, Nana =10, Kunka=11,

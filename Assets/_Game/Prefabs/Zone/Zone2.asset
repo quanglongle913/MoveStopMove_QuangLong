@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Zone2
   m_EditorClassIdentifier: 
   zoneName: Zone 2
+  zoneType: 1
   texture: {fileID: 2800000, guid: 193635a93a84f6e46a227467bf2b4d0b, type: 3}
   zoneExp: 200
