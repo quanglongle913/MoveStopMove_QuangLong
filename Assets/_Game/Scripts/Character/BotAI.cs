@@ -52,10 +52,6 @@ public class BotAI : Character
             {
                 currentState.OnExecute(this);
             }
-            if (Constant.isWall(this.gameObject, LayerMask.GetMask(Constant.LAYOUT_WALL)))
-            {
-                ChangeState(new IdleState());
-            }
         }
         else
         {
@@ -64,6 +60,10 @@ public class BotAI : Character
                 if (currentState != null)
                 {
                     currentState.OnExecute(this);
+                }
+                if (Constant.isWall(this.gameObject, LayerMask.GetMask(Constant.LAYOUT_WALL)))
+                {
+                    ChangeState(new IdleState());
                 }
             }
             else
@@ -82,13 +82,27 @@ public class BotAI : Character
     }
     public void moveToTarget(Vector3 targetTransform)
     {
-        agent.SetDestination(targetTransform);
+        //agent.SetDestination(targetTransform);
+        agent.destination = targetTransform;
+    }
+    public void isStopped(bool check)
+    {
+        if (this.gameObject.activeSelf)
+        {
+            agent.isStopped = check;
+        }
     }
     public Vector3 generateTargetTransform()
     {
-        float posX = transform.position.x + UnityEngine.Random.Range(-InGamneAttackRange*2, InGamneAttackRange * 2);
-        float posZ = transform.position.z + UnityEngine.Random.Range(-InGamneAttackRange * 2, InGamneAttackRange * 2);
-        Vector3 target = new Vector3(posX, transform.position.y,posZ);
+        Vector3 target = transform.position;
+        bool isCheck=false;
+        while (!isCheck)
+        {
+            float posX = transform.position.x + UnityEngine.Random.Range(-InGamneAttackRange * 2, InGamneAttackRange * 2);
+            float posZ = transform.position.z + UnityEngine.Random.Range(-InGamneAttackRange * 2, InGamneAttackRange * 2);
+            target = new Vector3(posX, transform.position.y, posZ);
+            isCheck = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, new NavMeshPath());
+        }
         return target;
     }
     public override void Attack()
@@ -109,6 +123,58 @@ public class BotAI : Character
             currentState.OnEnter(this);
         }
     }
+    public void UpdateBotAIInfo(int indexBotAI, GameManager gameManager)
+    {
+        int randomColor = UnityEngine.Random.Range(0, 5);
+        ColorType _colorType = (ColorType)randomColor;
+        ColorType = _colorType;
+        InGamneExp = 100;
+        ChangeColor(gameObject, _colorType);
+        BotAIInfo botAIInfo = gameManager.SaveData.BotAIData.BotAIInfo[indexBotAI];
+        WeaponIndex = botAIInfo.Weapon;
+        CharacterName = botAIInfo.BotAI_name;
+        //SKin
+       HideAllSetFullsSkin();
+        HideAllSkin();
+        if (botAIInfo.playerSkinShopState == PlayerSkinShopState.SetFull)
+        {
+            //Active Setfull Skin
+            ActiveSetFullsSkin(botAIInfo.CharacterSkin[(int)SkinType.SetFull].Index);
+        }
+        else
+        {
+            ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
+            SetAccessorisSkinMat(PantsSkin, gameManager.PantsData, botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
+            ShowPantsSkin();
+            ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
+        }
+    }
+    /*public void UpdateBotAIInfo(BotAI botAI, int indexBotAI, GameManager gameManager)
+    {
+        int randomColor = UnityEngine.Random.Range(0, 5);
+        ColorType _colorType = (ColorType)randomColor;
+        botAI.ColorType = _colorType;
+        botAI.InGamneExp = 100;
+        botAI.ChangeColor(botAI.gameObject, _colorType);
+        BotAIInfo botAIInfo = gameManager.SaveData.BotAIData.BotAIInfo[indexBotAI];
+        botAI.WeaponIndex = botAIInfo.Weapon;
+        botAI.CharacterName = botAIInfo.BotAI_name;
+        //SKin
+        botAI.HideAllSetFullsSkin();
+        botAI.HideAllSkin();
+        if (botAIInfo.playerSkinShopState == PlayerSkinShopState.SetFull)
+        {
+            //Active Setfull Skin
+            botAI.ActiveSetFullsSkin(botAIInfo.CharacterSkin[(int)SkinType.SetFull].Index);
+        }
+        else
+        {
+            botAI.ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
+            botAI.SetAccessorisSkinMat(botAI.PantsSkin, gameManager.PantsData, botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
+            botAI.ShowPantsSkin();
+            botAI.ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
+        }
+    }*/
     public override void OnDespawn()
     {
         base.OnDespawn();

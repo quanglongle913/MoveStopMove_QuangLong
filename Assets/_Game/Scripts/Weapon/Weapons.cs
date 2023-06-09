@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using DG.Tweening.Core.Easing;
+using UnityEngine.TextCore.Text;
 
 public class Weapons : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class Weapons : MonoBehaviour
                 this.isFire = false;
                 this.GetComponent<PooledObject>().Release();
             }
-
+            
         }
     }
     public void OnDespawn()
@@ -99,5 +100,21 @@ public class Weapons : MonoBehaviour
             this.GetComponent<PooledObject>().Release();
             //OnDespawn();
         }
+        if (other.GetComponent<Obstacle>())
+        {
+            Debug.Log("Obstacle");
+            this.isFire = false;
+            Character character = _GameObject.GetComponent<Character>();
+            character.Weapons.Remove(this);
+            character.ShowWeaponIndex((int)WeaponType);
+            character.IsAttacking = false;
+            StartCoroutine(Waiter());
+        }
+    }
+    IEnumerator Waiter()
+    {
+        yield return new WaitForSeconds(1f);
+        this.gameObject.SetActive(false);
+        this.GetComponent<PooledObject>().Release();
     }
 }

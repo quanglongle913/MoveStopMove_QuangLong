@@ -97,7 +97,7 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Awake()
     {
-        
+       
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
     }
@@ -353,7 +353,7 @@ public class Character : MonoBehaviour
     public void UpdateCharacter()
     {
         CharacterLevel = InGamneExp / 100; //tinh level character
-        float offsetSize = 0.02f;
+        float offsetSize = 0.05f;
         float offsetAttackSpeed = 0.04f;
         float offsetMoveSpeed = 0.3f;
 

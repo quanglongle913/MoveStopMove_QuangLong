@@ -7,8 +7,8 @@ public class IdleState : IState<BotAI>
     float timer;
     float randomTime;
     public void OnEnter(BotAI t)
-    {
-        //Debug.Log("IdleState");
+    {;
+        t.isStopped(true);
         t.ChangeAnim("Idle");
         timer = 0;
         randomTime = Random.Range(1.0f,2.5f);
@@ -34,7 +34,7 @@ public class IdleState : IState<BotAI>
 
     public void OnExit(BotAI t)
     {
-
+        t.isStopped(false);
     }
 
 }

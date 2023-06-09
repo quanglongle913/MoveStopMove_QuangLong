@@ -137,7 +137,7 @@ public class Player : Character
     {
         base.OnDespawn();
         _GameManager.UIManager.setEndGame(false);
-        //OnInit();
+        FloatingJoystick.OnReset();
     }
     protected override void OnDeath()
     {

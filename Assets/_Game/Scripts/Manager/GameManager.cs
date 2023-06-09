@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
-    [SerializeField] private GameObject player;
+    [SerializeField] private Player player;
     [SerializeField] private Transform playerStartPoint;
     [Header("BotAI: ")]
     [Tooltip("Number Bot in Map < Bot in Game")]
@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
     public SaveData SaveData { get => saveData; set => saveData = value; }
     public GameObject WeaponManager { get => weaponManager; set => weaponManager = value; }
     public UIManager UIManager { get => uIManager; set => uIManager = value; }
-    public GameObject Player { get => player; set => player = value; }
+    public Player Player { get => player; set => player = value; }
     public int NumberOfBotsInGameLvel { get => numberOfBotsInGameLvel; set => numberOfBotsInGameLvel = value; }
     public ZoneData ZoneData { get => zoneData; set => zoneData = value; }
     public Transform PlayerStartPoint { get => playerStartPoint; set => playerStartPoint = value; }
@@ -88,18 +88,19 @@ public class GameManager : Singleton<GameManager>
             
             StartCoroutine(SetGameStateMenu());
         }
-        if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit && !Player.GetComponent<Player>().IsDeath)
+        if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit && !Player.IsDeath)
         {
             //Player Won!.....
-            Player.GetComponent<Player>().SetEndGame();
+            Player.SetEndGame();
             uIManager.setEndGame(true);
+            Player.FloatingJoystick.OnReset();
         }
     }
     IEnumerator SetGameStateMenu()
     {
         //Loading time 1.5s
         
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
         uIManager.setGameMenu();
 
     }

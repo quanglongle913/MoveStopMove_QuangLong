@@ -106,15 +106,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 2
-    agentHeight: 20
+    agentRadius: 0.5
+    agentHeight: 30
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.6666667
+    cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -822,10 +822,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   uIManager: {fileID: 1732760747}
-  player: {fileID: 1678857054}
+  player: {fileID: 1678857062}
   playerStartPoint: {fileID: 1678857060}
-  numberOfBotsOnMap: 10
-  numberOfBotsInGameLvel: 10
+  numberOfBotsOnMap: 40
+  numberOfBotsInGameLvel: 40
   hatsData: {fileID: 11400000, guid: eb40b6edeec131b489f5c92760a14834, type: 2}
   pantsData: {fileID: 11400000, guid: 109176987034c994cb9b3d49839c872b, type: 2}
   setfullData: {fileID: 11400000, guid: 31bfe7d4b5ea60b4f9c236ba74323dfd, type: 2}
@@ -8851,7 +8851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1272178492
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12203,6 +12203,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5143315201007492096, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
   m_PrefabInstance: {fileID: 620682357}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1678857062 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1678857059, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
+  m_PrefabInstance: {fileID: 620682357}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678857054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a467b3b9e01da842b24038067b74250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1683999925
 GameObject:
   m_ObjectHideFlags: 0
@@ -12814,6 +12825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c4d1255296a714fb481ce93fb6b4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _GameManager: {fileID: 105759266}
   loading: {fileID: 2681594238292723573}
   inGame: {fileID: 1272178491}
   gameMenu: {fileID: 1272200317}
@@ -13383,6 +13395,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 865769509847500392, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_Size.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 865769509847500392, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_Size.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1968258359077713933, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456611003867116211, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3887127379314012801, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3887127379314012801, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 48.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 4725950607206424721, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8056982522062447459, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
       propertyPath: m_Name
       value: Map2
@@ -13437,6 +13477,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8056982522062447484, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8754392057780928167, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -28311,7 +28355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2569797867337859197
 Transform:
   m_ObjectHideFlags: 0
