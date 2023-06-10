@@ -100,9 +100,9 @@ public class Weapons : MonoBehaviour
             this.GetComponent<PooledObject>().Release();
             //OnDespawn();
         }
-        if (other.GetComponent<Obstacle>())
+        if (other.GetComponent<TransparentObstacle>())
         {
-            Debug.Log("Obstacle");
+            //Debug.Log("Obstacle");
             this.isFire = false;
             Character character = _GameObject.GetComponent<Character>();
             character.Weapons.Remove(this);

@@ -4,9 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class IndicatorSpawner : PooledObject
 {
+    [Range(0.5f, 0.9f)]
+    [Tooltip("Distance offset of the indicators from the centre of the screen")]
+    [SerializeField] private float screenBoundOffset = 0.9f;
+
+    private Vector3 screenCentre;
+    private Vector3 screenBounds;
+
     [SerializeField] Camera mainCam;
     [SerializeField] Camera radarCam;
     [SerializeField] GameObject player;
@@ -24,6 +32,9 @@ public class IndicatorSpawner : PooledObject
     void Start()
     {
         gameManager = GameManager.Instance;
+        //
+        screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
+        screenBounds = screenCentre * screenBoundOffset;
     }
 
     // Update is called once per frame
@@ -191,6 +202,11 @@ public class IndicatorSpawner : PooledObject
                 Vector3 viewPosDetection = mainCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
                 Vector3 viewPosDetectionRadar = radarCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
 
+                //Set screenPosition  
+                Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCam, gameManager.BotAIListEnable[i].gameObject.transform.position);
+                float angle = float.MinValue;
+                OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
+
                 //Debug.Log("target is viewPos.x:" + viewPos.x + " viewPos.y:" + viewPos.y + " viewPos.z:" + viewPos.z);
                 if (viewPosRadar.x >= 0 && viewPosRadar.x <= 1 && viewPosRadar.y >= 0 && viewPosRadar.y <= 1 && (viewPosRadar.z > 0))
                 {
@@ -203,50 +219,7 @@ public class IndicatorSpawner : PooledObject
                     }
                     else
                     {
-                        if (viewPosDetection.y <= 0)
-                        {
-                            viewPosDetectionRadar.y = 0;
-                            if (viewPosDetection.x >= 0)
-                            {
-                                if (viewPosDetection.x > Screen.width)
-                                {
-                                    viewPosDetectionRadar.x = Screen.width;
-                                }
-                                else
-                                {
-                                    viewPosDetectionRadar.x = (viewPosDetectionRadar.x + viewPosDetection.x) / 2;
-                                    viewPosDetectionRadar.x = Math.Abs(viewPosDetectionRadar.x);
-                                }
-                            }
-                            else
-                            {
-                                viewPosDetectionRadar.x = 0;
-                            }
-                        }
-                        if (viewPosDetection.y > 0)
-                        {
-                            if (viewPosDetection.y > Screen.height)
-                            {
-                                viewPosDetectionRadar.y = Screen.height;
-                            }
-                            if (viewPosDetection.x >= 0)
-                            {
-                                if (viewPosDetection.x > Screen.width)
-                                {
-                                    viewPosDetectionRadar.x = Screen.width;
-                                }
-                                else
-                                {
-                                    viewPosDetectionRadar.x = (viewPosDetectionRadar.x + viewPosDetection.x) / 2;
-                                    viewPosDetectionRadar.x = Math.Abs(viewPosDetectionRadar.x);
-                                }
-                            }
-                            else
-                            {
-                                viewPosDetectionRadar.x = 0;
-                            }
-                        }
-                        gameManager.IndicatorList[i].gameObject.transform.position = new Vector2(viewPosDetectionRadar.x, viewPosDetectionRadar.y);
+                        gameManager.IndicatorList[i].gameObject.transform.position = screenPosition;
                         gameManager.IndicatorList[i].updateData(gameManager.BotAIListEnable[i].ColorType, gameManager.BotAIListEnable[i].CharacterLevel);
                         gameManager.IndicatorList[i].gameObject.SetActive(true);
                     }
@@ -260,8 +233,8 @@ public class IndicatorSpawner : PooledObject
                 // Your object isn't in the range of the camera
                 Vector2 A = new Vector2(viewPos.x, viewPos.y);
                 Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
-                float angle = Constant.AngleBetween2Vector2Up(B, A);
-                gameManager.IndicatorList[i].gameObject.transform.rotation = Quaternion.Euler(0, 0, angle);
+                float angle1 = Constant.AngleBetween2Vector2Up(B, A);
+                gameManager.IndicatorList[i].gameObject.transform.rotation = Quaternion.Euler(0, 0, angle1);
                 gameManager.IndicatorList[i].gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }

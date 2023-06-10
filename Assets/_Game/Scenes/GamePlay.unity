@@ -824,8 +824,8 @@ MonoBehaviour:
   uIManager: {fileID: 1732760747}
   player: {fileID: 1678857062}
   playerStartPoint: {fileID: 1678857060}
-  numberOfBotsOnMap: 40
-  numberOfBotsInGameLvel: 40
+  numberOfBotsOnMap: 10
+  numberOfBotsInGameLvel: 10
   hatsData: {fileID: 11400000, guid: eb40b6edeec131b489f5c92760a14834, type: 2}
   pantsData: {fileID: 11400000, guid: 109176987034c994cb9b3d49839c872b, type: 2}
   setfullData: {fileID: 11400000, guid: 31bfe7d4b5ea60b4f9c236ba74323dfd, type: 2}
@@ -2256,6 +2256,7 @@ GameObject:
   - component: {fileID: 303999681}
   - component: {fileID: 303999680}
   - component: {fileID: 303999683}
+  - component: {fileID: 303999684}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2349,6 +2350,19 @@ MonoBehaviour:
   axisX: 0
   axisY: 0
   axisZ: 0
+--- !u!114 &303999684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303999679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ca3bec4c66fbb4bb81343d90821086, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1678857054}
 --- !u!1 &314080389
 GameObject:
   m_ObjectHideFlags: 0
@@ -5090,12 +5104,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0220848d73433b44591b67deb72e7e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenBoundOffset: 0.9
   mainCam: {fileID: 303999681}
   radarCam: {fileID: 1298030181}
   player: {fileID: 1678857054}
   poolMaster: {fileID: 758027350}
   total: 0
-  rangeDetection: 80
+  rangeDetection: 200
   poolObject: {fileID: 829249251}
   poolObjectCharacterInfo: {fileID: 2037851763}
   axisY: 200
@@ -14111,7 +14126,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 865156256479570442, guid: 3884c128dfe5448b9803f68a1a42e2ed, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 865156256479570442, guid: 3884c128dfe5448b9803f68a1a42e2ed, type: 3}
       propertyPath: m_LocalPosition.x
