@@ -80,5 +80,13 @@ public class OffScreenIndicatorCore
         // Bring the ScreenPosition back to its original reference.
         screenPosition += screenCentre;
     }
+    public static Vector3 GetScreenPosition(Camera mainCam, GameObject target, Vector3 screenCentre, Vector3 screenBounds)
+    {
+        //Set screenPosition  
+        Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCam, target.transform.position);
+        float angle = float.MinValue;
+        OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
+        return screenPosition;
+    }
 }
 

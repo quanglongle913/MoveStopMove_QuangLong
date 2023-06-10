@@ -227,33 +227,25 @@ public class IndicatorSpawner : PooledObject
                     else
                     {
                         indicator.updateData(gameManager.BotAIListEnable[i].ColorType, gameManager.BotAIListEnable[i].CharacterLevel);
-                        indicator.gameObject.transform.position = GetScreenPosition(mainCam, target);
+                        indicator.gameObject.transform.position = OffScreenIndicatorCore.GetScreenPosition(mainCam, target,screenCentre,screenBounds);
                         indicator.gameObject.SetActive(true);
+                        Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
+                        Vector2 A = new Vector2(viewPos.x, viewPos.y);
+                        Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
+                        //Debug.Log("X:" + viewPos.x + " Y:" + viewPos.y + " Z:" + viewPos.z);
+                        //Debug.Log("X:"+viewPosPlayer.x+" Y:"+ viewPosPlayer.y+" Z:" + viewPosPlayer.z);
+                        float angle1 = Constant.AngleBetween2Vector2Up(B, A);
+                        //Debug.Log(angle1);
+                        indicator.gameObject.transform.rotation = Quaternion.Euler(0, 0, angle1);
+                        indicator.gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
                     }
                 }
                 else
                 {
                     indicator.gameObject.SetActive(false);
 
-                }
-                //UNDONE Bug ....
-                Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
-                Vector2 A = new Vector2(viewPos.x, viewPos.y);
-                Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
-                Debug.Log("X:" + viewPos.x + " Y:" + viewPos.y + " Z:" + viewPos.z);
-                //Debug.Log("X:"+viewPosPlayer.x+" Y:"+ viewPosPlayer.y+" Z:" + viewPosPlayer.z);
-                float angle1 = Constant.AngleBetween2Vector2Up(B, A);
-                indicator.gameObject.transform.rotation = Quaternion.Euler(0, 0, angle1);
-                indicator.gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
+                } 
             }
         }
-    }
-    private Vector3 GetScreenPosition(Camera mainCam, GameObject target)
-    {
-        //Set screenPosition  
-        Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCam, target.transform.position);
-        float angle = float.MinValue;
-        OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
-        return screenPosition;
     }
 }

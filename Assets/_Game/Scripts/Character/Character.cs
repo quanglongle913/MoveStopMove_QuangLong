@@ -389,4 +389,45 @@ public class Character : MonoBehaviour
         //AttackSpeedAfterbuff = InGamneAttackSpeed;
         transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
     }
+    public void BufffCountDown(BuffData buffData)
+    {
+        if (buffData.BuffType == BuffType.AttackSpeed)
+        {
+            StartCoroutine(Waiter(InGamneAttackSpeed, buffData));
+            InGamneAttackSpeed = InGamneAttackSpeed + (InGamneAttackSpeed * buffData.BuffIndex / 100);
+            //TODO Effect BUff
+        }
+        if (buffData.BuffType == BuffType.MoveSpeed)
+        {
+            StartCoroutine(Waiter(InGameMoveSpeed, buffData));
+            InGameMoveSpeed = InGameMoveSpeed + (InGameMoveSpeed * buffData.BuffIndex / 100);
+            //TODO Effect BUff
+        }
+        if (buffData.BuffType == BuffType.Range)
+        {
+            StartCoroutine(Waiter(InGamneAttackRange, buffData));
+            InGamneAttackRange = InGamneAttackRange + (InGamneAttackRange * buffData.BuffIndex / 100);
+            //TODO Effect BUff
+        }
+    }
+    IEnumerator Waiter(float Index, BuffData buffData)
+    {
+        float backUp = Index;
+        yield return new WaitForSeconds(3f);
+        if (buffData.BuffType == BuffType.AttackSpeed)
+        {
+            InGamneAttackSpeed = backUp;
+
+        }
+        if (buffData.BuffType == BuffType.MoveSpeed)
+        {
+            InGameMoveSpeed = backUp;
+
+        }
+        if (buffData.BuffType == BuffType.Range)
+        {
+            InGamneAttackRange = backUp;
+
+        }
+    }
 }

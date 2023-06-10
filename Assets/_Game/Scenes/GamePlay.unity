@@ -825,8 +825,8 @@ MonoBehaviour:
   player: {fileID: 1678857062}
   playerStartPoint: {fileID: 1678857060}
   numberOfBotsOnMap: 1
-  numberOfBotsInGameLvel: 1
-  giftBoxNumber: 2
+  numberOfBotsInGameLvel: 10
+  giftBoxNumber: 30
   hatsData: {fileID: 11400000, guid: eb40b6edeec131b489f5c92760a14834, type: 2}
   pantsData: {fileID: 11400000, guid: 109176987034c994cb9b3d49839c872b, type: 2}
   setfullData: {fileID: 11400000, guid: 31bfe7d4b5ea60b4f9c236ba74323dfd, type: 2}
@@ -1131,7 +1131,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138680725}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -29, y: 5.97, z: 87.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1156,6 +1156,8 @@ MonoBehaviour:
   size_x: 1
   size_z: 1
   _GameManager: {fileID: 105759266}
+  debugNumberGiftBox: 60
+  debugEnabled: 0
 --- !u!1 &150801662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,7 +2376,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 303999679}
   m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 4.5, z: -10}
+  m_LocalPosition: {x: 32, y: 4.5, z: 32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5192,7 +5194,7 @@ MonoBehaviour:
   player: {fileID: 1678857054}
   poolMaster: {fileID: 758027350}
   total: 0
-  rangeDetection: 200
+  rangeDetection: 50
   poolObject: {fileID: 829249251}
   poolObjectCharacterInfo: {fileID: 2037851763}
   axisY: 200
@@ -10534,6 +10536,27 @@ RectTransform:
   m_AnchoredPosition: {x: -120, y: -318}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1463526946 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8056982522062447459, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
+  m_PrefabInstance: {fileID: 1842061937}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1463526949
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463526946}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1474891918
 GameObject:
   m_ObjectHideFlags: 0
@@ -13416,7 +13439,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826131711}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -10,6 +10,8 @@ public class GiftBoxSpawner : PooledObject
     [SerializeField] private float size_x;
     [SerializeField] private float size_z;
     [SerializeField] private GameManager _GameManager;
+    [SerializeField] private int debugNumberGiftBox = 10;
+    [SerializeField] private bool debugEnabled = false;
 
     private void Update()
     {
@@ -20,7 +22,7 @@ public class GiftBoxSpawner : PooledObject
         }
         else if (_GameManager.GameState == GameState.InGame && _GameManager.ListGiftBox.Count < _GameManager.GiftBoxNumber && _GameManager.IsInitBotAI)
         {
-            GenerateGiftBox(1, GeneratePoolObjectPosition(poolMaster.transform.position, _GameManager.GiftBoxNumber*10));
+            GenerateGiftBox(1, GeneratePoolObjectPosition(poolMaster.transform.position, debugNumberGiftBox));
         }
     }
     // Start is called before the first frame update
@@ -56,19 +58,22 @@ public class GiftBoxSpawner : PooledObject
         }
     }
     void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        int Row = Mathf.CeilToInt(Mathf.Sqrt(_GameManager.TotalBotAI));
-        int Column = Row;
-        for (int i = 0; i < Row; i++)
+    {   if (debugEnabled)
         {
-            for (int j = 0; j < Column; j++)
+            Gizmos.color = Color.blue;
+            int Row = Mathf.CeilToInt(Mathf.Sqrt(debugNumberGiftBox));
+            int Column = Row;
+            for (int i = 0; i < Row; i++)
             {
-                int index = Row * j + i;
-                Vector3 objectPosition = new Vector3((j - (Row / 2)) + offset * j + poolMaster.transform.position.x, 0.05f + poolMaster.transform.position.y, ((Column / 2) - i) - offset * i + poolMaster.transform.position.z);
-                drawRectangle(objectPosition);
+                for (int j = 0; j < Column; j++)
+                {
+                    int index = Row * j + i;
+                    Vector3 objectPosition = new Vector3((j - (Row / 2)) + offset * j + poolMaster.transform.position.x, 0.05f + poolMaster.transform.position.y, ((Column / 2) - i) - offset * i + poolMaster.transform.position.z);
+                    drawRectangle(objectPosition);
+                }
             }
         }
+       
 
     }
     private void drawRectangle(Vector3 point)

@@ -2257,7 +2257,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8159361664601157139}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.42
   m_Height: 2.2
@@ -2302,6 +2302,7 @@ MonoBehaviour:
   inGamneAttackSpeed: 60
   inGameMoveSpeed: 5
   inGamneGold: 50
+  inGamneZoneExp: 0
   isTargerInRange: 0
   isAttacking: 0
   weaponRoot: {fileID: 1342442281}
@@ -2325,6 +2326,10 @@ MonoBehaviour:
   floatingJoystick: {fileID: 0}
   cylinder: {fileID: 991997396}
   PlayerSkinShopState: 0
+  KillerColorType: 0
+  KilledByName: 
+  Rank: 0
+  KilledCount: 0
 --- !u!114 &1678857061
 MonoBehaviour:
   m_ObjectHideFlags: 0

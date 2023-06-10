@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3987564805929213193}
   - component: {fileID: -7102019555415214565}
   - component: {fileID: -2423701734960406203}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Gift
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,3 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5546f111cfe0bd44adf96c8d72c204b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffData:
+  - {fileID: 11400000, guid: 091e21001a4a4eb4a8f8380f5f79ddb7, type: 2}
+  - {fileID: 11400000, guid: f6dbfbd8ddbffba4db1b4017964b8935, type: 2}
+  - {fileID: 11400000, guid: 3770ff4d426edf74ab1249c0ef9a3bf2, type: 2}
+  randomBuff: 0
