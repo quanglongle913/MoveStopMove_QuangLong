@@ -824,8 +824,9 @@ MonoBehaviour:
   uIManager: {fileID: 1732760747}
   player: {fileID: 1678857062}
   playerStartPoint: {fileID: 1678857060}
-  numberOfBotsOnMap: 10
-  numberOfBotsInGameLvel: 10
+  numberOfBotsOnMap: 1
+  numberOfBotsInGameLvel: 1
+  giftBoxNumber: 2
   hatsData: {fileID: 11400000, guid: eb40b6edeec131b489f5c92760a14834, type: 2}
   pantsData: {fileID: 11400000, guid: 109176987034c994cb9b3d49839c872b, type: 2}
   setfullData: {fileID: 11400000, guid: 31bfe7d4b5ea60b4f9c236ba74323dfd, type: 2}
@@ -1105,6 +1106,56 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6384643894467301715, guid: 62c4e4070296d471182f431d17f52765, type: 3}
   m_PrefabInstance: {fileID: 6384643894497656701}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &138680725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 138680726}
+  - component: {fileID: 138680727}
+  m_Layer: 0
+  m_Name: GiftBox Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &138680726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138680725}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1439568213}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &138680727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138680725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8907a6f31d125743ac09f596b56f670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolMaster: {fileID: 138680725}
+  poolObject: {fileID: 1701334692}
+  offset: 12
+  size_x: 1
+  size_z: 1
+  _GameManager: {fileID: 105759266}
 --- !u!1 &150801662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2892,6 +2943,37 @@ MonoBehaviour:
   initPoolSize: 10
   objectToPool: {fileID: 3481367434845503858, guid: 7bb3ea08a1bfb614cbe15975b7326a4c, type: 3}
   PoolMasters: {fileID: 992591299}
+--- !u!1 &365781770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 365781771}
+  m_Layer: 0
+  m_Name: PoolMaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &365781771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365781770}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1701334691}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &393776131
 GameObject:
   m_ObjectHideFlags: 0
@@ -10237,7 +10319,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439568212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 120.66998, y: 1819, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10245,6 +10327,7 @@ Transform:
   - {fileID: 1826131713}
   - {fileID: 438064806}
   - {fileID: 1919276968}
+  - {fileID: 138680726}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12071,6 +12154,7 @@ Transform:
   - {fileID: 829249252}
   - {fileID: 1632870197}
   - {fileID: 2037851762}
+  - {fileID: 1701334691}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12637,6 +12721,54 @@ Transform:
   m_Father: {fileID: 868658548}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1701334690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1701334691}
+  - component: {fileID: 1701334692}
+  m_Layer: 0
+  m_Name: GiftBox Pooling
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1701334691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701334690}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 365781771}
+  m_Father: {fileID: 1663440822}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1701334692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701334690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26fff492ad1c6284391eae5e9634c76a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initPoolSize: 50
+  objectToPool: {fileID: -7102019555415214565, guid: a1926a2eebdb67d4eb5b0b4c701e2321, type: 3}
+  PoolMasters: {fileID: 365781770}
 --- !u!1 &1710701210 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6384643892822738407, guid: 62c4e4070296d471182f431d17f52765, type: 3}
@@ -13284,7 +13416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826131711}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -135.9, y: -1818.7, z: 73.4}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -15,6 +15,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private int numberOfBotsOnMap;
     [Tooltip("Number Bot in Game > Bot in Map")]
     [SerializeField] private int numberOfBotsInGameLvel;
+    [Header("GiftBox: ")]
+    [Tooltip("Number GiftBox in Game")]
+    [SerializeField] private int giftBoxNumber;
     [Header("Character Skins Data: ")]
     [SerializeField] private AccessoriesData hatsData;
     [SerializeField] private AccessoriesData pantsData;
@@ -33,6 +36,7 @@ public class GameManager : Singleton<GameManager>
     private List<CharacterInfo> characterInfoList;
     private List<BotAI> botAIListEnable;
     private List<BotAI> botAIListStack;
+    private List<GiftBox> listGiftBox;
 
     private bool isInit, isInitIndicator, isInitBotAI;
 
@@ -64,13 +68,16 @@ public class GameManager : Singleton<GameManager>
     public int NumberOfBotsInGameLvel { get => numberOfBotsInGameLvel; set => numberOfBotsInGameLvel = value; }
     public ZoneData ZoneData { get => zoneData; set => zoneData = value; }
     public Transform PlayerStartPoint { get => playerStartPoint; set => playerStartPoint = value; }
+    public List<GiftBox> ListGiftBox { get => listGiftBox; set => listGiftBox = value; }
+    public int GiftBoxNumber { get => giftBoxNumber; set => giftBoxNumber = value; }
 
     private void Start()
     {
         botAIListStack = new List<BotAI>();
         BotAIListEnable = new List<BotAI>();
-        IndicatorList = new List<Indicator>();
-        CharacterInfoList = new List<CharacterInfo>();
+        indicatorList = new List<Indicator>();
+        characterInfoList = new List<CharacterInfo>();
+        listGiftBox = new List<GiftBox>();
         SaveData.ReadJsonFile(); // read Json Data Bot
         OnInit();
        

@@ -61,6 +61,7 @@ public class IndicatorSpawner : PooledObject
                 if (gameManager != null && gameManager.IndicatorList.Count > 0)
                 {
                     GenerateRadar(mainCam, radarCam, gameManager, player);
+                    
                     GenerateCharacterInfoPlayer(mainCam, gameManager, player);
                 }
                 if (gameManager.CharacterInfoList.Count+1 > gameManager.BotAIListEnable.Count)
@@ -133,22 +134,31 @@ public class IndicatorSpawner : PooledObject
     {
         Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.transform.position);
         Vector3 viewPosCharacterInfo = mainCam.WorldToScreenPoint(player.transform.position);
+        CharacterInfo characterInfo = gameManager.CharacterInfoList[0];
         // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
         if (viewPosPlayer.x >= 0 && viewPosPlayer.x <= 1 && viewPosPlayer.y >= 0 && viewPosPlayer.y <= 1 && (viewPosPlayer.z > 0))
         {
-            // Your object is in the range of the camera, you can apply your behaviour (.)
-            CharacterInfo characterInfo = gameManager.CharacterInfoList[0].gameObject.GetComponent<CharacterInfo>();
+            //characterInfo.MainCam = mainCam;
+            //characterInfo.Target = player;
             Character character = player.GetComponent<Character>();
             characterInfo.setCharacterName(character.CharacterName);
-            characterInfo.setCharacterLevel(""+ character.CharacterLevel);
+            characterInfo.setCharacterLevel("" + character.CharacterLevel);
             characterInfo.ChangeColor(character.ColorType, character.ColorData);
-            gameManager.CharacterInfoList[0].gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
-            gameManager.CharacterInfoList[0].gameObject.SetActive(true);
+            if (character.ColorType == ColorType.Yellow)
+            {
+                characterInfo.CharacterLevel.color = Color.black;
+            }
+            else
+            {
+                characterInfo.CharacterLevel.color = Color.white;
+            }
+            characterInfo.gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
+            characterInfo.gameObject.SetActive(true);
 
         }
         else
         {
-            gameManager.CharacterInfoList[0].gameObject.SetActive(false);
+            characterInfo.gameObject.SetActive(false);
         }
     }
     private void showCharacterInfoEnemy(Camera mainCam, GameManager gameManager)
@@ -156,16 +166,15 @@ public class IndicatorSpawner : PooledObject
 
         for (int i = 0; i < gameManager.BotAIListEnable.Count; i++)
         {
-
             Vector3 viewPos = mainCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
             Vector3 viewPosCharacterInfoBotAI = mainCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
+            CharacterInfo characterInfo = gameManager.CharacterInfoList[i + 1];
             // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
             if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && (viewPos.z > 0))
             {
-                // Your object is in the range of the camera, you can apply your behaviour (.)
-                CharacterInfo characterInfo = gameManager.CharacterInfoList[i + 1].gameObject.GetComponent<CharacterInfo>();
-
-                Character character = gameManager.BotAIListEnable[i].GetComponent<Character>();
+                //characterInfo.MainCam = mainCam;
+                //characterInfo.Target = gameManager.BotAIListEnable[i].gameObject;
+                Character character = gameManager.BotAIListEnable[i].gameObject.GetComponent<Character>();
                 characterInfo.setCharacterName(character.CharacterName);
                 characterInfo.setCharacterLevel("" + character.CharacterLevel);
                 characterInfo.ChangeColor(character.ColorType, character.ColorData);
@@ -177,12 +186,12 @@ public class IndicatorSpawner : PooledObject
                 {
                     characterInfo.CharacterLevel.color = Color.white;
                 }
-                gameManager.CharacterInfoList[i + 1].gameObject.transform.position = new Vector2(viewPosCharacterInfoBotAI.x, viewPosCharacterInfoBotAI.y + 1.4f * Screen.height / 10);
-                gameManager.CharacterInfoList[i + 1].gameObject.SetActive(true);
+                characterInfo.gameObject.transform.position = new Vector2(viewPosCharacterInfoBotAI.x, viewPosCharacterInfoBotAI.y + 1.4f * Screen.height / 10);
+                characterInfo.gameObject.SetActive(true);
             }
             else
             {
-                gameManager.CharacterInfoList[i + 1].gameObject.SetActive(false);
+                characterInfo.gameObject.SetActive(false);
 
             }
         }
@@ -194,18 +203,16 @@ public class IndicatorSpawner : PooledObject
             //Debug.Log("BotAI:" + gameManager.BotAIListEnable.Count);
             for (int i = 0; i < gameManager.BotAIListEnable.Count; i++)
             {
-                Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
+                Indicator indicator = gameManager.IndicatorList[i];
+                GameObject target = gameManager.BotAIListEnable[i].gameObject;
 
-                Vector3 viewPos = mainCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
-                Vector3 viewPosRadar = radarCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
+                //indicator.Player = player;
+                //indicator.Target = gameManager.BotAIListEnable[i].gameObject;
+                //indicator.MainCam = mainCam;
+                //indicator.RadarCam = radarCam;
 
-                Vector3 viewPosDetection = mainCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
-                Vector3 viewPosDetectionRadar = radarCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
-
-                //Set screenPosition  
-                Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCam, gameManager.BotAIListEnable[i].gameObject.transform.position);
-                float angle = float.MinValue;
-                OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
+                Vector3 viewPos = mainCam.WorldToViewportPoint(target.transform.position);
+                Vector3 viewPosRadar = radarCam.WorldToViewportPoint(target.transform.position);
 
                 //Debug.Log("target is viewPos.x:" + viewPos.x + " viewPos.y:" + viewPos.y + " viewPos.z:" + viewPos.z);
                 if (viewPosRadar.x >= 0 && viewPosRadar.x <= 1 && viewPosRadar.y >= 0 && viewPosRadar.y <= 1 && (viewPosRadar.z > 0))
@@ -214,29 +221,39 @@ public class IndicatorSpawner : PooledObject
                     if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && (viewPos.z > 0))
                     {
                         // Your object is in the range of the camera, you can apply your behaviour (.)
-                        gameManager.IndicatorList[i].gameObject.SetActive(false);
+                        indicator.gameObject.SetActive(false);
                         //TODO  CharacterInfo set active true
                     }
                     else
                     {
-                        gameManager.IndicatorList[i].gameObject.transform.position = screenPosition;
-                        gameManager.IndicatorList[i].updateData(gameManager.BotAIListEnable[i].ColorType, gameManager.BotAIListEnable[i].CharacterLevel);
-                        gameManager.IndicatorList[i].gameObject.SetActive(true);
+                        indicator.updateData(gameManager.BotAIListEnable[i].ColorType, gameManager.BotAIListEnable[i].CharacterLevel);
+                        indicator.gameObject.transform.position = GetScreenPosition(mainCam, target);
+                        indicator.gameObject.SetActive(true);
                     }
                 }
                 else
                 {
-                    gameManager.IndicatorList[i].gameObject.SetActive(false);
-                    
-                }
+                    indicator.gameObject.SetActive(false);
 
-                // Your object isn't in the range of the camera
+                }
+                //UNDONE Bug ....
+                Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
                 Vector2 A = new Vector2(viewPos.x, viewPos.y);
                 Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
+                Debug.Log("X:" + viewPos.x + " Y:" + viewPos.y + " Z:" + viewPos.z);
+                //Debug.Log("X:"+viewPosPlayer.x+" Y:"+ viewPosPlayer.y+" Z:" + viewPosPlayer.z);
                 float angle1 = Constant.AngleBetween2Vector2Up(B, A);
-                gameManager.IndicatorList[i].gameObject.transform.rotation = Quaternion.Euler(0, 0, angle1);
-                gameManager.IndicatorList[i].gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
+                indicator.gameObject.transform.rotation = Quaternion.Euler(0, 0, angle1);
+                indicator.gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
+    }
+    private Vector3 GetScreenPosition(Camera mainCam, GameObject target)
+    {
+        //Set screenPosition  
+        Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCam, target.transform.position);
+        float angle = float.MinValue;
+        OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
+        return screenPosition;
     }
 }
