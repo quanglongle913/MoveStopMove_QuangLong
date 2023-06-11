@@ -113,6 +113,7 @@ public class Character : MonoBehaviour
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
+        OnReset();
         ChangeColor(gameObject, ColorType);
         this.WeaponData = _GameManager.WeaponData;
     }
@@ -353,9 +354,19 @@ public class Character : MonoBehaviour
     {
         InGamneExp += exp / CharacterLevel + 40;
         InGamneGold += 50;
-        UpdateCharacter();
+        UpdateCharacterLvl();
     }
-    public void UpdateCharacter()
+    public void OnReset()
+    {
+        //InGamneExp = 100;
+        InGamneGold = 50;
+        inGamneSizeCharacter = baseSizeCharacter;
+        inGamneAttackRange = baseAttackRange;
+        inGamneAttackSpeed = baseAttackSpeed;
+        inGameMoveSpeed = baseMoveSpeed;
+        UpdateCharacterLvl();
+    }
+    public void UpdateCharacterLvl()
     {
         CharacterLevel = InGamneExp / 100; //tinh level character
         float offsetSize = 0.05f;
@@ -376,23 +387,19 @@ public class Character : MonoBehaviour
             inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * characterLevel;
             inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * characterLevel;
         }
-        else
-        {
-            inGamneSizeCharacter = baseSizeCharacter + offsetSize * 20;
-            inGamneAttackRange = baseAttackRange + offsetSize * 20;
-            inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * 20;
-            inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * 20;
-        }
-        //Debug.Log(""+ _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType);
+        transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
+    }
+    public void UpdateCharacterAcessories()
+    {  //Weapons buff
         if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
         {
             InGamneAttackSpeed = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
-        } else if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
+        }
+        else if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
         {
             inGamneAttackRange = InGamneAttackRange + (InGamneAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
-        //AttackSpeedAfterbuff = InGamneAttackSpeed;
-        transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
+        //Acessories buff
     }
     public void BufffCountDown(BuffData buffData)
     {
@@ -419,8 +426,8 @@ public class Character : MonoBehaviour
     {
         float backUp = indexType;
         GameObject newBuffVfx = Instantiate(BuffVfx[indexVfx], gameObject.transform.position, gameObject.transform.rotation);
+        newBuffVfx.transform.parent = gameObject.transform;
         newBuffVfx.GetComponent<ParticleSystem>().Play();
-        newBuffVfx.GetComponent<BuffVfx>()._Character= gameObject;
         yield return new WaitForSeconds(3f);
         if (buffData.BuffType == BuffType.AttackSpeed)
         {

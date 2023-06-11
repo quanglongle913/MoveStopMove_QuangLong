@@ -26,7 +26,10 @@ public class BotAISpawner : PooledObject
             if (_GameManager.BotAIListStack.Count > 0)
             {
                 int randomIndex = Random.Range(0, _GameManager.BotAIListStack.Count);
+                _GameManager.BotAIListStack[randomIndex].InGamneExp = _GameManager.LevelExpAverage;
+                Debug.Log(_GameManager.BotAIListStack[randomIndex].InGamneExp);
                 _GameManager.BotAIListStack[randomIndex].gameObject.SetActive(true);
+                _GameManager.BotAIListStack[randomIndex].UpdateCharacterLvl();
                 _GameManager.BotAIListEnable.Add(_GameManager.BotAIListStack[randomIndex]);
                 _GameManager.BotAIListStack.Remove(_GameManager.BotAIListStack[randomIndex]);
                 _GameManager.TotalBotAI--;

@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f1c4e3f04e2d04b8b8d8c3937303c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponType: 0
+  weaponType: 10
   bloodVfx: {fileID: 1365626343157702567, guid: 2dea81dd7d915814b96e3ee79bd777d3, type: 3}
   FireVfx: {fileID: 271093378344025040, guid: b2d5504def568a645a2020ee089ee8c0, type: 3}
   _GameObject: {fileID: 0}

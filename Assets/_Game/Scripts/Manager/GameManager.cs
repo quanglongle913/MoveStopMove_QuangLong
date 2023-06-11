@@ -42,6 +42,7 @@ public class GameManager : Singleton<GameManager>
 
     private int totalBotAI_InGame;
     private int totalBotAI;
+    public int LevelExpAverage;
     public List<BotAI> BotAIListEnable { get => botAIListEnable; set => botAIListEnable = value; }
     public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
@@ -92,15 +93,32 @@ public class GameManager : Singleton<GameManager>
     {
         if (IsInitBotAI && gameState == GameState.Loading)
         {
-            
             StartCoroutine(SetGameStateMenu());
         }
-        if (BotAIListEnable.Count == 0 && gameState == GameState.InGame && IsInit && !Player.IsDeath)
+        if (gameState == GameState.InGame && IsInit && !Player.IsDeath)
         {
-            //Player Won!.....
-            Player.SetEndGame();
-            uIManager.setEndGame(true);
-            Player.FloatingJoystick.OnReset();
+            if (BotAIListEnable.Count == 0 && BotAIListStack.Count ==0)
+            {
+                //Player Won!.....
+                Player.SetEndGame();
+                uIManager.setEndGame(true);
+                Player.FloatingJoystick.OnReset();
+            }
+            else 
+            {
+                /* int totalLevel = player.InGamneExp;
+                 for (int i = 0; i < BotAIListEnable.Count; i ++)
+                 {
+                     totalLevel += botAIListEnable[i].InGamneExp;
+                 }
+                 LevelExpAverage = totalLevel/(BotAIListEnable.Count+1);
+                 if (LevelExpAverage < Player.InGamneExp)
+                 {
+                     LevelExpAverage = Player.InGamneExp;
+                 }*/
+                LevelExpAverage = Player.InGamneExp;
+            }
+
         }
     }
     IEnumerator SetGameStateMenu()

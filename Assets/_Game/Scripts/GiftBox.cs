@@ -9,17 +9,31 @@ public class GiftBox : MonoBehaviour
     private GameManager _GameManager;
     [SerializeField] private int randomBuff;
     GameObject newbuffEffectVfx;
+    float timer;
     public List<BuffData> BuffData { get => buffData; set => buffData = value; }
     public virtual void Start()
     {
         _GameManager = GameManager.Instance;
         randomBuff = Random.Range(0, buffData.Count);
         newbuffEffectVfx = Instantiate(buffEffectVfx[randomBuff], gameObject.transform.position, gameObject.transform.rotation);
+        newbuffEffectVfx.transform.parent = gameObject.transform;
         newbuffEffectVfx.GetComponent<ParticleSystem>().Play();
+        timer=0;
     }
-    private void FixedUpdate()
+    private void Update()
     {
-        newbuffEffectVfx.transform.position = gameObject.transform.position;
+        //reset giftbuff effext for 10s
+        timer += Time.deltaTime;
+        if (timer > 10f)
+        {
+            timer = 0;
+            Destroy(newbuffEffectVfx);
+            randomBuff = Random.Range(0, buffData.Count);
+            newbuffEffectVfx = Instantiate(buffEffectVfx[randomBuff], gameObject.transform.position, gameObject.transform.rotation);
+            newbuffEffectVfx.transform.parent = gameObject.transform;
+            newbuffEffectVfx.GetComponent<ParticleSystem>().Play();
+            
+        }
     }
     private void OnTriggerEnter(Collider other)
     {

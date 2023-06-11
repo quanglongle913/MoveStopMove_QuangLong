@@ -144,14 +144,6 @@ public class IndicatorSpawner : PooledObject
             characterInfo.setCharacterName(character.CharacterName);
             characterInfo.setCharacterLevel("" + character.CharacterLevel);
             characterInfo.ChangeColor(character.ColorType, character.ColorData);
-            if (character.ColorType == ColorType.Yellow)
-            {
-                characterInfo.CharacterLevel.color = Color.black;
-            }
-            else
-            {
-                characterInfo.CharacterLevel.color = Color.white;
-            }
             characterInfo.gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
             characterInfo.gameObject.SetActive(true);
 
@@ -233,10 +225,8 @@ public class IndicatorSpawner : PooledObject
                         Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
                         Vector2 A = new Vector2(viewPos.x, viewPos.y);
                         Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
-                        //Debug.Log("X:" + viewPos.x + " Y:" + viewPos.y + " Z:" + viewPos.z);
-                        //Debug.Log("X:"+viewPosPlayer.x+" Y:"+ viewPosPlayer.y+" Z:" + viewPosPlayer.z);
-                        float angle1 = Constant.AngleBetween2Vector2Up(B, A);
-                        //Debug.Log(angle1);
+
+                        float angle1 = GetAngleTwoVector2(A,B,viewPos.z);
                         indicator.SetRotation(Quaternion.Euler(0, 0, angle1));
                         indicator.SetTextRotation(Quaternion.identity);
                     }
@@ -248,5 +238,18 @@ public class IndicatorSpawner : PooledObject
                 } 
             }
         }
+    }
+    private float GetAngleTwoVector2(Vector2 A, Vector2 B,float asixZ)
+    {
+        float angle1 = 0;
+        if (asixZ > 0)
+        {
+            angle1 = Constant.AngleBetween2Vector2Up(B, A);
+        }
+        else
+        {
+            angle1 = Constant.AngleBetween2Vector2Up(A, B);
+        }
+        return angle1;
     }
 }

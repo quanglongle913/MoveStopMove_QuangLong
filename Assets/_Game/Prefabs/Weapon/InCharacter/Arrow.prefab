@@ -12,15 +12,13 @@ GameObject:
   - component: {fileID: 2395184284620029863}
   - component: {fileID: 8215108887197778782}
   - component: {fileID: -274191848357511639}
-  - component: {fileID: 800744211300424579}
-  - component: {fileID: 3869650702539397731}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6658116669766944145
 Transform:
   m_ObjectHideFlags: 0
@@ -30,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 7655336571444803458}
   m_LocalRotation: {x: 0, y: 0, z: -0.58070296, w: 0.8141155}
   m_LocalPosition: {x: 0.029, y: 0.049, z: 0.017}
-  m_LocalScale: {x: 35, y: 35, z: 35}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 45, y: 45, z: 45}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -63,7 +61,10 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials: []
+  m_Materials:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,37 +93,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7655336571444803458}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20f1c4e3f04e2d04b8b8d8c3937303c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 0
+  bloodVfx: {fileID: 1365626343157702567, guid: 2dea81dd7d915814b96e3ee79bd777d3, type: 3}
+  FireVfx: {fileID: 271093378344025040, guid: b2d5504def568a645a2020ee089ee8c0, type: 3}
   _GameObject: {fileID: 0}
   rotationSpeed: 1000
   isFire: 0
---- !u!114 &800744211300424579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7655336571444803458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!65 &3869650702539397731
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7655336571444803458}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.0049725757, y: 0.02522432, z: 0.0025105476}
-  m_Center: {x: -0.00025516617, y: 0.0021604483, z: 0}
+  target: {x: 0, y: 0, z: 0}
+  startPoint: {x: 0, y: 0, z: 0}
+  direction: {x: 0, y: 0, z: 0}

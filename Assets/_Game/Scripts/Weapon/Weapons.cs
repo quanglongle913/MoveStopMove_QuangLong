@@ -84,7 +84,7 @@ public class Weapons : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Player>())
             {
-                enemy.OnHit(0f);
+                enemy.OnHit(1f);
                 characterRoot.setExp(enemy.InGamneExp);
                 other.gameObject.GetComponent<Player>().KilledByName = characterRoot.CharacterName;
                 other.gameObject.GetComponent<Player>().KillerColorType = characterRoot.ColorType;
@@ -92,7 +92,7 @@ public class Weapons : MonoBehaviour
             }
             else
             {
-                enemy.OnHit(0f);
+                enemy.OnHit(1f);
                 characterRoot.setExp(enemy.InGamneExp);
                 if (_GameObject.GetComponent<Player>())
                 {

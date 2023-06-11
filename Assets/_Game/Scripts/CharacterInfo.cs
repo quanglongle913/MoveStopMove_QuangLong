@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
@@ -39,6 +40,14 @@ public class CharacterInfo : MonoBehaviour
     public void ChangeColor(ColorType colorType, ColorData colorData)
     {
         imageLevelBG.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
+        if (colorType == ColorType.Yellow)
+        {
+            CharacterLevel.color = Color.black;
+        }
+        else
+        {
+            CharacterLevel.color = Color.white;
+        }
     }
     public void setCharacterName(string _name)
     {

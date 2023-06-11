@@ -40,7 +40,8 @@ public class BotAI : Character
         ShowWeaponIndex((int)WeaponType);
         PoolObject = _GameManager.PoolObject[(int)WeaponType];
         PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material = WeaponData.Weapon[WeaponIndex].Mat;
-        UpdateCharacter();
+        UpdateCharacterLvl();
+        UpdateCharacterAcessories();
     }
 
     // Update is called once per frame
@@ -152,6 +153,7 @@ public class BotAI : Character
     public override void OnDespawn()
     {
         base.OnDespawn();
+        OnReset();
         gameObject.GetComponent<PooledObject>().Release();
         OnInit();
 

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8138760410303562492}
   - component: {fileID: 8138760410304692284}
   - component: {fileID: -3908508708975476786}
-  - component: {fileID: -2653447601242426674}
   - component: {fileID: 5171342215847457513}
   m_Layer: 0
   m_Name: candy_4
@@ -92,27 +91,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8138760410302766844}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20f1c4e3f04e2d04b8b8d8c3937303c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 7
+  bloodVfx: {fileID: 0}
+  FireVfx: {fileID: 0}
   _GameObject: {fileID: 0}
   rotationSpeed: 1000
   isFire: 0
---- !u!114 &-2653447601242426674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8138760410302766844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  target: {x: 0, y: 0, z: 0}
+  startPoint: {x: 0, y: 0, z: 0}
+  direction: {x: 0, y: 0, z: 0}
 --- !u!65 &5171342215847457513
 BoxCollider:
   m_ObjectHideFlags: 0

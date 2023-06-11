@@ -101,7 +101,6 @@ public class UIManager : MonoBehaviour
             textZoneExp.text = _GameManager.ZoneData.PlayerZoneExp+ "/"+ maxExpZone;
             sliderZoneExp.value = (float)_GameManager.ZoneData.PlayerZoneExp / (float)maxExpZone;
 
-
             textZoneBTN.text = ("ZONE: " + ZoneNumber);
             textBestBTN.text = ("BEST: #" + PlayerPrefs.GetInt(Constant.BEST_RANK, 99));
         }
@@ -158,7 +157,10 @@ public class UIManager : MonoBehaviour
     }
     private void GameMenu()
     {
-        _GameManager.Player.transform.position = _GameManager.PlayerStartPoint.position;
+        _GameManager.Player.gameObject.transform.position = _GameManager.PlayerStartPoint.position;
+        _GameManager.LevelExpAverage = 100;
+        _GameManager.Player.OnInit();
+        
         if (loading.activeSelf)
         {
             loading.SetActive(false);

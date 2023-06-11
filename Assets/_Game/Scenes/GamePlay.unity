@@ -801,7 +801,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105759264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 20, y: 0.3, z: 39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -823,9 +823,9 @@ MonoBehaviour:
   gameState: 0
   uIManager: {fileID: 1732760747}
   player: {fileID: 1678857062}
-  playerStartPoint: {fileID: 1678857060}
+  playerStartPoint: {fileID: 105759265}
   numberOfBotsOnMap: 1
-  numberOfBotsInGameLvel: 10
+  numberOfBotsInGameLvel: 20
   giftBoxNumber: 10
   hatsData: {fileID: 11400000, guid: eb40b6edeec131b489f5c92760a14834, type: 2}
   pantsData: {fileID: 11400000, guid: 109176987034c994cb9b3d49839c872b, type: 2}
@@ -848,6 +848,7 @@ MonoBehaviour:
   weaponManager: {fileID: 438064805}
   saveData: {fileID: 1919276969}
   zoneData: {fileID: 11400000, guid: 67ecbdd998230410ea99824e069b8842, type: 2}
+  LevelExpAverage: 100
 --- !u!114 &105759267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4803,7 +4804,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5143315201007492096, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.2
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5143315201007492096, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4811,7 +4812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5143315201007492096, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 32.9
+      value: 39
       objectReference: {fileID: 0}
     - target: {fileID: 5143315201007492096, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5350,7 +5351,7 @@ MonoBehaviour:
   player: {fileID: 1678857054}
   poolMaster: {fileID: 758027350}
   total: 0
-  rangeDetection: 50
+  rangeDetection: 300
   poolObject: {fileID: 829249251}
   poolObjectCharacterInfo: {fileID: 2037851763}
   axisY: 200
@@ -9183,7 +9184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1272178492
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9264,7 +9265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1272200318
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12627,11 +12628,6 @@ CanvasRenderer:
 --- !u!1 &1678857054 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8159361664601157139, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
-  m_PrefabInstance: {fileID: 620682357}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1678857060 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5143315201007492096, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
   m_PrefabInstance: {fileID: 620682357}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1678857062 stripped
@@ -28869,7 +28865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2569797867337859197
 Transform:
   m_ObjectHideFlags: 0
@@ -30904,7 +30900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6384643893149304666, guid: 62c4e4070296d471182f431d17f52765, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 32
+      value: 39.9
       objectReference: {fileID: 0}
     - target: {fileID: 6384643893149304666, guid: 62c4e4070296d471182f431d17f52765, type: 3}
       propertyPath: m_LocalRotation.w
@@ -30924,7 +30920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6384643893149304666, guid: 62c4e4070296d471182f431d17f52765, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 32
+      value: 19.8
       objectReference: {fileID: 0}
     - target: {fileID: 6384643893149304666, guid: 62c4e4070296d471182f431d17f52765, type: 3}
       propertyPath: m_AnchoredPosition.y

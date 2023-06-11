@@ -54,8 +54,8 @@ public class Player : Character
         SetWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
         ShowWeaponIndex((int)WeaponType);
         
-        UpdateCharacter();
-        
+        UpdateCharacterLvl();
+        UpdateCharacterAcessories();
         UpdateAccessoriesSkinShopOnInit();
 
     }
@@ -149,7 +149,14 @@ public class Player : Character
     }
     public override void OnHit(float damage)
     {
-        base.OnHit(damage);
+        if (_GameManager.BotAIListEnable.Count == 0 && _GameManager.BotAIListStack.Count == 0)
+        {
+
+        }
+        else {
+            base.OnHit(damage);
+        }
+        
     }
     public void SetEndGame()
     {
