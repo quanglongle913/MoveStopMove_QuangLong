@@ -134,7 +134,7 @@ public class BotAI : Character
         WeaponIndex = botAIInfo.Weapon;
         CharacterName = botAIInfo.BotAI_name;
         //SKin
-       HideAllSetFullsSkin();
+        HideAllSetFullsSkin();
         HideAllSkin();
         if (botAIInfo.playerSkinShopState == PlayerSkinShopState.SetFull)
         {
@@ -149,32 +149,6 @@ public class BotAI : Character
             ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
         }
     }
-    /*public void UpdateBotAIInfo(BotAI botAI, int indexBotAI, GameManager gameManager)
-    {
-        int randomColor = UnityEngine.Random.Range(0, 5);
-        ColorType _colorType = (ColorType)randomColor;
-        botAI.ColorType = _colorType;
-        botAI.InGamneExp = 100;
-        botAI.ChangeColor(botAI.gameObject, _colorType);
-        BotAIInfo botAIInfo = gameManager.SaveData.BotAIData.BotAIInfo[indexBotAI];
-        botAI.WeaponIndex = botAIInfo.Weapon;
-        botAI.CharacterName = botAIInfo.BotAI_name;
-        //SKin
-        botAI.HideAllSetFullsSkin();
-        botAI.HideAllSkin();
-        if (botAIInfo.playerSkinShopState == PlayerSkinShopState.SetFull)
-        {
-            //Active Setfull Skin
-            botAI.ActiveSetFullsSkin(botAIInfo.CharacterSkin[(int)SkinType.SetFull].Index);
-        }
-        else
-        {
-            botAI.ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
-            botAI.SetAccessorisSkinMat(botAI.PantsSkin, gameManager.PantsData, botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
-            botAI.ShowPantsSkin();
-            botAI.ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
-        }
-    }*/
     public override void OnDespawn()
     {
         base.OnDespawn();

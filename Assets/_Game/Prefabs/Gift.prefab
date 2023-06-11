@@ -32,7 +32,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 25.949358, y: 4.86, z: 43.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -144,4 +144,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 091e21001a4a4eb4a8f8380f5f79ddb7, type: 2}
   - {fileID: 11400000, guid: f6dbfbd8ddbffba4db1b4017964b8935, type: 2}
   - {fileID: 11400000, guid: 3770ff4d426edf74ab1249c0ef9a3bf2, type: 2}
+  buffEffectVfx:
+  - {fileID: 1571115987916023587, guid: e4060a33ec577044cb745f2961b2717a, type: 3}
+  - {fileID: 2106837454059666552, guid: eb7aba556cb96d146a2eba352a3bbd0d, type: 3}
+  - {fileID: 1017104607327276856, guid: 57547db422ae6a2449d0f3f17be5e408, type: 3}
   randomBuff: 0

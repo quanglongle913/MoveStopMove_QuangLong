@@ -105,10 +105,16 @@ public class GameManager : Singleton<GameManager>
     }
     IEnumerator SetGameStateMenu()
     {
-        //Loading time 1.5s
+        yield return new WaitForSeconds(0.1f);
+        if (IsInitBotAI)
+        {
+            uIManager.setGameMenu();
+        }
+        else
+        {
+            StartCoroutine(SetGameStateMenu());
+        }
         
-        yield return new WaitForSeconds(0.5f);
-        uIManager.setGameMenu();
 
     }
     IEnumerator loading()

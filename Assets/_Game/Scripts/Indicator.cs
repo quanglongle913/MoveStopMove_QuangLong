@@ -29,22 +29,7 @@ public class Indicator : MonoBehaviour
     public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
     public GameObject Player { get => player; set => player = value; }
     public GameObject Target { get => target; set => target = value; }
- 
-  /*  public void FixedUpdate()
-    {
-        if (gameObject.activeSelf)
-        {
-            Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(Player.gameObject.transform.position);
-            Vector3 viewPos = mainCam.WorldToViewportPoint(Target.gameObject.transform.position);
-            // Your object isn't in the range of the camera
-            Vector2 A = new Vector2(viewPos.x, viewPos.y);
-            Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
-            float angle1 = Constant.AngleBetween2Vector2Up(B, A);
-            gameObject.transform.rotation = Quaternion.Euler(0, 0, angle1);
-            gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        
-    }*/
+
     public void updateData(ColorType colorType,int _level)
     {
         this.ColorType = colorType;
@@ -65,5 +50,13 @@ public class Indicator : MonoBehaviour
     {
         this.ColorType = colorType;
         a_obj.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
+    }
+    public void SetTextRotation(Quaternion rotation) 
+    {
+        TextLevel.transform.rotation = rotation;
+    }
+    public void SetRotation(Quaternion rotation)
+    {
+        gameObject.transform.rotation = rotation;
     }
 }

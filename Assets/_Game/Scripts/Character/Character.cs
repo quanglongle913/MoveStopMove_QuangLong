@@ -43,7 +43,8 @@ public class Character : MonoBehaviour
     [SerializeField] private List<GameObject> listSheilds;
     [SerializeField] private List<GameObject> listSetFull;
     [SerializeField] private GameObject Pants;
-
+    [Header("-------------Buff Vfx-------------- ")]
+    [SerializeField] private List<GameObject> BuffVfx;
     [Header("--------------------------- ")]
     [SerializeField] private string characterName;
     [SerializeField] private int characterLevel;
@@ -125,8 +126,12 @@ public class Character : MonoBehaviour
             if (Weapons.Count <= 1)
             {
                 Weapons a_weapon = gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(_GameManager.WeaponManager, PoolObject);
-                a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
+                //a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
                 Weapons.Add(a_weapon);
+            }
+            for (int i = 0; i < Weapons.Count; i++)
+            {
+                Weapons[i].gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.lossyScale;
             }
         }
     }
@@ -364,19 +369,19 @@ public class Character : MonoBehaviour
             inGamneAttackSpeed = baseAttackSpeed;
             inGameMoveSpeed = baseMoveSpeed;
         }
-        else if (characterLevel <= 10)
+        else if (characterLevel <= 20)
         {
             inGamneSizeCharacter = baseSizeCharacter + offsetSize * characterLevel;
-            //inGamneAttackRange = baseAttackRange + offset * characterLevel;
+            inGamneAttackRange = baseAttackRange + offsetSize * characterLevel;
             inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * characterLevel;
             inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * characterLevel;
         }
         else
         {
-            inGamneSizeCharacter = baseSizeCharacter + offsetSize * 10;
-            //inGamneAttackRange = baseAttackRange + offset * 10;
-            inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * 10;
-            inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * 10;
+            inGamneSizeCharacter = baseSizeCharacter + offsetSize * 20;
+            inGamneAttackRange = baseAttackRange + offsetSize * 20;
+            inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * 20;
+            inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * 20;
         }
         //Debug.Log(""+ _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType);
         if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
@@ -393,41 +398,45 @@ public class Character : MonoBehaviour
     {
         if (buffData.BuffType == BuffType.AttackSpeed)
         {
-            StartCoroutine(Waiter(InGamneAttackSpeed, buffData));
+            StartCoroutine(Waiter(1,InGamneAttackSpeed, buffData));
             InGamneAttackSpeed = InGamneAttackSpeed + (InGamneAttackSpeed * buffData.BuffIndex / 100);
             //TODO Effect BUff
         }
         if (buffData.BuffType == BuffType.MoveSpeed)
         {
-            StartCoroutine(Waiter(InGameMoveSpeed, buffData));
+            StartCoroutine(Waiter(2,InGameMoveSpeed, buffData));
             InGameMoveSpeed = InGameMoveSpeed + (InGameMoveSpeed * buffData.BuffIndex / 100);
             //TODO Effect BUff
         }
         if (buffData.BuffType == BuffType.Range)
         {
-            StartCoroutine(Waiter(InGamneAttackRange, buffData));
+            StartCoroutine(Waiter(0,InGamneAttackRange, buffData));
             InGamneAttackRange = InGamneAttackRange + (InGamneAttackRange * buffData.BuffIndex / 100);
             //TODO Effect BUff
         }
     }
-    IEnumerator Waiter(float Index, BuffData buffData)
+    IEnumerator Waiter(int indexVfx, float indexType, BuffData buffData)
     {
-        float backUp = Index;
+        float backUp = indexType;
+        GameObject newBuffVfx = Instantiate(BuffVfx[indexVfx], gameObject.transform.position, gameObject.transform.rotation);
+        newBuffVfx.GetComponent<ParticleSystem>().Play();
+        newBuffVfx.GetComponent<BuffVfx>()._Character= gameObject;
         yield return new WaitForSeconds(3f);
         if (buffData.BuffType == BuffType.AttackSpeed)
         {
             InGamneAttackSpeed = backUp;
+            Destroy(newBuffVfx);
 
         }
         if (buffData.BuffType == BuffType.MoveSpeed)
         {
             InGameMoveSpeed = backUp;
-
+            Destroy(newBuffVfx);
         }
         if (buffData.BuffType == BuffType.Range)
         {
             InGamneAttackRange = backUp;
-
+            Destroy(newBuffVfx);
         }
     }
 }

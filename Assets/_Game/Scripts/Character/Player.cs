@@ -53,7 +53,9 @@ public class Player : Character
 
         SetWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
         ShowWeaponIndex((int)WeaponType);
+        
         UpdateCharacter();
+        
         UpdateAccessoriesSkinShopOnInit();
 
     }
@@ -77,7 +79,7 @@ public class Player : Character
         base.FixedUpdate();
         if (cylinder != null)
         {
-            cylinder.transform.localScale = new Vector3(InGamneAttackRange * 2, 0.001f, InGamneAttackRange * 2);
+            cylinder.transform.localScale = new Vector3(InGamneAttackRange * 2 / InGamneSizeCharacter, 0.001f, InGamneAttackRange * 2 / InGamneSizeCharacter);
         }
         Horizontal = FloatingJoystick.Horizontal;
         Vertical = FloatingJoystick.Vertical;

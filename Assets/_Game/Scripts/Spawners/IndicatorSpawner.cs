@@ -40,16 +40,16 @@ public class IndicatorSpawner : PooledObject
     // Update is called once per frame
     void FixedUpdate()
     {
-       
-        if (!gameManager.IsInitIndicator && gameManager.TotalBotAI_InGame>0)
+
+        if (!gameManager.IsInitIndicator && gameManager.TotalBotAI_InGame > 0)
         {
             total = gameManager.TotalBotAI_InGame;
             GenerateDetection(total);
-            GenerateCharacterInfo(total+1);
-            gameManager.IsInitIndicator=true;
+            GenerateCharacterInfo(total + 1);
+            gameManager.IsInitIndicator = true;
             gameManager.IsInit = true; //hoan tat IsInit
         }
-        if (gameManager.IsInitIndicator && gameManager.GameState==GameState.InGame)
+        if (gameManager.IsInitIndicator && gameManager.GameState == GameState.InGame)
         {
             if (gameManager.BotAIListEnable.Count > 0)
             {
@@ -61,17 +61,17 @@ public class IndicatorSpawner : PooledObject
                 if (gameManager != null && gameManager.IndicatorList.Count > 0)
                 {
                     GenerateRadar(mainCam, radarCam, gameManager, player);
-                    
+
                     GenerateCharacterInfoPlayer(mainCam, gameManager, player);
                 }
-                if (gameManager.CharacterInfoList.Count+1 > gameManager.BotAIListEnable.Count)
-                { 
-                    for (int i = gameManager.BotAIListEnable.Count+1; i < gameManager.CharacterInfoList.Count; i++) 
+                if (gameManager.CharacterInfoList.Count + 1 > gameManager.BotAIListEnable.Count)
+                {
+                    for (int i = gameManager.BotAIListEnable.Count + 1; i < gameManager.CharacterInfoList.Count; i++)
                     {
                         gameManager.CharacterInfoList[i].gameObject.SetActive(false);
                     }
                 }
-                if (gameManager.IndicatorList.Count  > gameManager.BotAIListEnable.Count)
+                if (gameManager.IndicatorList.Count > gameManager.BotAIListEnable.Count)
                 {
                     for (int i = gameManager.BotAIListEnable.Count; i < gameManager.IndicatorList.Count; i++)
                     {
@@ -135,9 +135,9 @@ public class IndicatorSpawner : PooledObject
         Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.transform.position);
         Vector3 viewPosCharacterInfo = mainCam.WorldToScreenPoint(player.transform.position);
         CharacterInfo characterInfo = gameManager.CharacterInfoList[0];
-        // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
+        
         if (viewPosPlayer.x >= 0 && viewPosPlayer.x <= 1 && viewPosPlayer.y >= 0 && viewPosPlayer.y <= 1 && (viewPosPlayer.z > 0))
-        {
+        {// Your object is in the range of the mainCam, you can apply your behaviour(.)
             //characterInfo.MainCam = mainCam;
             //characterInfo.Target = player;
             Character character = player.GetComponent<Character>();
@@ -161,6 +161,7 @@ public class IndicatorSpawner : PooledObject
             characterInfo.gameObject.SetActive(false);
         }
     }
+    
     private void showCharacterInfoEnemy(Camera mainCam, GameManager gameManager)
     {
 
@@ -236,8 +237,8 @@ public class IndicatorSpawner : PooledObject
                         //Debug.Log("X:"+viewPosPlayer.x+" Y:"+ viewPosPlayer.y+" Z:" + viewPosPlayer.z);
                         float angle1 = Constant.AngleBetween2Vector2Up(B, A);
                         //Debug.Log(angle1);
-                        indicator.gameObject.transform.rotation = Quaternion.Euler(0, 0, angle1);
-                        indicator.gameObject.GetComponent<Indicator>().TextLevel.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        indicator.SetRotation(Quaternion.Euler(0, 0, angle1));
+                        indicator.SetTextRotation(Quaternion.identity);
                     }
                 }
                 else
