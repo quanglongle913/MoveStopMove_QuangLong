@@ -27,7 +27,7 @@ public class BotAISpawner : PooledObject
             {
                 int randomIndex = Random.Range(0, _GameManager.BotAIListStack.Count);
                 _GameManager.BotAIListStack[randomIndex].InGamneExp = _GameManager.LevelExpAverage;
-                Debug.Log(_GameManager.BotAIListStack[randomIndex].InGamneExp);
+                //Debug.Log(_GameManager.BotAIListStack[randomIndex].InGamneExp);
                 _GameManager.BotAIListStack[randomIndex].gameObject.SetActive(true);
                 _GameManager.BotAIListStack[randomIndex].UpdateCharacterLvl();
                 _GameManager.BotAIListEnable.Add(_GameManager.BotAIListStack[randomIndex]);
@@ -58,7 +58,7 @@ public class BotAISpawner : PooledObject
         for (int i = 0; i < totalBotAI; i++)
         {
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
-            PooledObject botAIObject = Spawner(poolObject, poolMaster,false);
+            PooledObject botAIObject = Spawner(poolObject, poolMaster, false);
             botAIObject.transform.position = listPoolObjectPosition[randomIndex];
             listPoolObjectPosition.Remove(listPoolObjectPosition[randomIndex]);
 

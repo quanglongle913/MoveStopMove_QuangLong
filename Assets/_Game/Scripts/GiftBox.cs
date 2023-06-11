@@ -41,7 +41,6 @@ public class GiftBox : MonoBehaviour
         if (character)
         {
             character.BufffCountDown(buffData[randomBuff]);
-
             _GameManager.ListGiftBox.Remove(gameObject.GetComponent<GiftBox>());
             gameObject.GetComponent<PooledObject>().Release();
         }

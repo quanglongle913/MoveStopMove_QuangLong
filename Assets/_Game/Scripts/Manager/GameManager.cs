@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
+    [SerializeField] private SoundManager soundManager;
     [SerializeField] private Player player;
     [SerializeField] private Transform playerStartPoint;
     [Header("BotAI: ")]
@@ -27,7 +28,8 @@ public class GameManager : Singleton<GameManager>
     [Header("Weapon Manager: ")]
     [SerializeField] private ObjectPool[] poolObject;
     [SerializeField] private WeaponData weaponData;
-    [SerializeField] private GameObject weaponManager;
+    [SerializeField] private GameObject weaponHolder;
+    [SerializeField] private WeaponSpawner weaponSpawner;
     [Header("Data Manager: ")]
     [SerializeField] private SaveData saveData;
     [SerializeField] private ZoneData zoneData;
@@ -63,7 +65,7 @@ public class GameManager : Singleton<GameManager>
     public ObjectPool[] PoolObject { get => poolObject; set => poolObject = value; }
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public SaveData SaveData { get => saveData; set => saveData = value; }
-    public GameObject WeaponManager { get => weaponManager; set => weaponManager = value; }
+    public GameObject WeaponHolder { get => weaponHolder; set => weaponHolder = value; }
     public UIManager UIManager { get => uIManager; set => uIManager = value; }
     public Player Player { get => player; set => player = value; }
     public int NumberOfBotsInGameLvel { get => numberOfBotsInGameLvel; set => numberOfBotsInGameLvel = value; }
@@ -71,6 +73,8 @@ public class GameManager : Singleton<GameManager>
     public Transform PlayerStartPoint { get => playerStartPoint; set => playerStartPoint = value; }
     public List<GiftBox> ListGiftBox { get => listGiftBox; set => listGiftBox = value; }
     public int GiftBoxNumber { get => giftBoxNumber; set => giftBoxNumber = value; }
+    public WeaponSpawner WeaponSpawner { get => weaponSpawner; set => weaponSpawner = value; }
+    public SoundManager SoundManager { get => soundManager; set => soundManager = value; }
 
     private void Start()
     {
@@ -100,6 +104,7 @@ public class GameManager : Singleton<GameManager>
             if (BotAIListEnable.Count == 0 && BotAIListStack.Count ==0)
             {
                 //Player Won!.....
+                SoundManager.EndWinSoundEffect.Play();
                 Player.SetEndGame();
                 uIManager.setEndGame(true);
                 Player.FloatingJoystick.OnReset();

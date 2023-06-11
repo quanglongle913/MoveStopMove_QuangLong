@@ -34,7 +34,7 @@ public class Character : MonoBehaviour
     [SerializeField] private bool isAttacking;
     [Header("--------------------------- ")]
     [SerializeField] private GameObject weaponRoot;
-    [SerializeField] private ObjectPool poolObject;
+    private ObjectPool poolObject;
     [Header("-------------Weapon-------------- ")]
     private WeaponType weaponType;
     private WeaponData weaponData;
@@ -48,7 +48,8 @@ public class Character : MonoBehaviour
     [Header("--------------------------- ")]
     [SerializeField] private string characterName;
     [SerializeField] private int characterLevel;
-    
+
+
     public float hp;
     public bool IsDeath => hp <= 0;
 
@@ -126,7 +127,7 @@ public class Character : MonoBehaviour
         {
             if (Weapons.Count <= 1)
             {
-                Weapons a_weapon = gameObject.GetComponent<WeaponSpawner>().GenerateWeapon(_GameManager.WeaponManager, PoolObject);
+                Weapons a_weapon = _GameManager.WeaponSpawner.GenerateWeapon(_GameManager.WeaponHolder, PoolObject);
                 //a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
                 Weapons.Add(a_weapon);
             }
@@ -137,7 +138,11 @@ public class Character : MonoBehaviour
         }
     }
     public virtual void Attack() 
-    {
+    {   
+        //SoundEffect
+        int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.WeaponThrowSoundEffect.Count);
+        _GameManager.SoundManager.WeaponThrowSoundEffect[randomNum].Play();
+
         ChangeAnim("Attack");
         IsAttacking = true;
         HideAllWeaponsInHand();
@@ -203,7 +208,8 @@ public class Character : MonoBehaviour
     {
         //ChangeAnim("Dead");
         //Invoke(nameof(OnDespawn), 2f);
-       
+        int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.DeadSoundEffect.Count);
+        _GameManager.SoundManager.DeadSoundEffect[randomNum].Play();
     }
     private void OnDrawGizmos()
     {
@@ -236,8 +242,10 @@ public class Character : MonoBehaviour
 
         if (!IsDeath)
         {
-            hp -= damage;
+            int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.WeaponHitSoundEffect.Count);
+            _GameManager.SoundManager.WeaponHitSoundEffect[randomNum].Play();
 
+            hp -= damage;
             if (IsDeath)
             {
                 hp = 0;
@@ -403,6 +411,9 @@ public class Character : MonoBehaviour
     }
     public void BufffCountDown(BuffData buffData)
     {
+        //int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.SizeUpSoundEffect.Count);
+        _GameManager.SoundManager.SizeUpSoundEffect[4].Play();
+
         if (buffData.BuffType == BuffType.AttackSpeed)
         {
             StartCoroutine(Waiter(1,InGamneAttackSpeed, buffData));

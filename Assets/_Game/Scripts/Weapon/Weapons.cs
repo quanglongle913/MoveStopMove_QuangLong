@@ -11,6 +11,7 @@ public class Weapons : MonoBehaviour
     [SerializeField] private WeaponType weaponType;
     [SerializeField] private GameObject bloodVfx;
     [SerializeField] private GameObject FireVfx;
+ 
     public GameObject _GameObject;
     public float rotationSpeed;
     public bool isFire;

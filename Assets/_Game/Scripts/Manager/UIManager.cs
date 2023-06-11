@@ -305,16 +305,23 @@ public class UIManager : MonoBehaviour
     IEnumerator Waiter(TMPro.TextMeshProUGUI text_CountDown)
     {
         text_CountDown.text = "5";
+        _GameManager.SoundManager.CountDownSoundEffect[0].Play();
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "4";
+        _GameManager.SoundManager.CountDownSoundEffect[1].Play();
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "3";
+        _GameManager.SoundManager.CountDownSoundEffect[0].Play();
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "2";
+        _GameManager.SoundManager.CountDownSoundEffect[1].Play();
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "1";
+        _GameManager.SoundManager.CountDownSoundEffect[0].Play();
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "0";
+        _GameManager.SoundManager.CountDownSoundEffect[2].Play();
+        _GameManager.SoundManager.LoseSoundEffect.Play();
         Show_Popup_Countine(false);
     }
 
@@ -707,5 +714,9 @@ public class UIManager : MonoBehaviour
         {
             weaponData.Weapon[i].Equipped = false;
         }
+    }
+    public void BtnClickSoundEffect()
+    {
+        _GameManager.SoundManager.BtnClickSoundEffect.Play();
     }
 }

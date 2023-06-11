@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8138760410304692284}
   - component: {fileID: -3908508708975476786}
   - component: {fileID: -2653447601242426674}
+  - component: {fileID: 916696505805837163}
   m_Layer: 0
   m_Name: candy_4
   m_TagString: Untagged
@@ -64,8 +65,8 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 7c23bf848306e76449eb58a1ee8be5a5, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 7c23bf848306e76449eb58a1ee8be5a5, type: 2}
+  - {fileID: 2100000, guid: 7c23bf848306e76449eb58a1ee8be5a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -120,3 +121,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &916696505805837163
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138760410302766844}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.017235592, y: 0.031477503, z: 0.0023885244}
+  m_Center: {x: -0.00003947178, y: -0.0046673845, z: 0}
