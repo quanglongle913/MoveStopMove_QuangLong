@@ -23,11 +23,11 @@ public class Character : MonoBehaviour
     [SerializeField] private float baseAttackSpeed = 60f;
     [SerializeField] private float baseMoveSpeed = 5.0f;
     [Header("--------------INGANE------------- ")]
-    [SerializeField] private float inGamneSizeCharacter = 1.0f;
-    [SerializeField] private float inGamneAttackRange = 7.0f;
-    [SerializeField] private float inGamneAttackSpeed = 60f;
+    [SerializeField] private float inGameSizeCharacter = 1.0f;
+    [SerializeField] private float inGameAttackRange = 7.0f;
+    [SerializeField] private float inGameAttackSpeed = 60f;
     [SerializeField] private float inGameMoveSpeed = 5.0f;
-    [SerializeField] private float inGamneGold = 50f;
+    [SerializeField] private float inGameGold = 50f;
     [SerializeField] private int inGamneZoneExp = 0;
 
     [SerializeField] private bool isTargerInRange;
@@ -73,11 +73,11 @@ public class Character : MonoBehaviour
     public ColorType ColorType { get => colorType; set => colorType = value; }
 
     public int InGamneExp { get => inGamneExp; set => inGamneExp = value; }
-    public float InGamneSizeCharacter { get => inGamneSizeCharacter; set => inGamneSizeCharacter = value; }
-    public float InGamneAttackRange { get => inGamneAttackRange; set => inGamneAttackRange = value; }
-    public float InGamneAttackSpeed { get => inGamneAttackSpeed; set => inGamneAttackSpeed = value; }
+    public float InGameSizeCharacter { get => inGameSizeCharacter; set => inGameSizeCharacter = value; }
+    public float InGameAttackRange { get => inGameAttackRange; set => inGameAttackRange = value; }
+    public float InGameAttackSpeed { get => inGameAttackSpeed; set => inGameAttackSpeed = value; }
     public float InGameMoveSpeed { get => inGameMoveSpeed; set => inGameMoveSpeed = value; }
-    public float InGamneGold { get => inGamneGold; set => inGamneGold = value; }
+    public float InGameGold { get => inGameGold; set => inGameGold = value; }
 
     public bool IsTargerInRange { get => isTargerInRange; set => isTargerInRange = value; }
     public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
@@ -163,7 +163,7 @@ public class Character : MonoBehaviour
     }
     private void moveWeaponWithDOMove(Character _character, Weapons _weapons)
     {
-        _weapons.transform.DOMove(_weapons.target, (float)Math.Round(60 / _character.InGamneAttackSpeed, 1))
+        _weapons.transform.DOMove(_weapons.target, (float)Math.Round(60 / _character.InGameAttackSpeed, 1))
                         .SetEase(Ease.InSine)
                         .SetLoops(0, LoopType.Restart)
                         .OnComplete(() =>
@@ -180,7 +180,7 @@ public class Character : MonoBehaviour
     private void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
-        CharactersInsideZone = Physics.OverlapSphere(this.transform.position, InGamneAttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
+        CharactersInsideZone = Physics.OverlapSphere(this.transform.position, InGameAttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersOutsideZone = CurrentCharacters.Except(CharactersInsideZone).ToArray();
     }
     private void DetectionCharacter(Collider[] colliders)
@@ -213,7 +213,7 @@ public class Character : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(this.transform.position, InGamneAttackRange);
+        Gizmos.DrawWireSphere(this.transform.position, InGameAttackRange);
 
     }
     public void RotateTowards(GameObject gameObject, Vector3 direction)
@@ -361,16 +361,16 @@ public class Character : MonoBehaviour
     public void setExp(int exp)
     {
         InGamneExp += exp / CharacterLevel + 40;
-        InGamneGold += 50;
+        InGameGold += 50;
         UpdateCharacterLvl();
     }
     public void OnReset()
     {
         //InGamneExp = 100;
-        InGamneGold = 50;
-        inGamneSizeCharacter = baseSizeCharacter;
-        inGamneAttackRange = baseAttackRange;
-        inGamneAttackSpeed = baseAttackSpeed;
+        InGameGold = 50;
+        inGameSizeCharacter = baseSizeCharacter;
+        inGameAttackRange = baseAttackRange;
+        inGameAttackSpeed = baseAttackSpeed;
         inGameMoveSpeed = baseMoveSpeed;
         UpdateCharacterLvl();
     }
@@ -383,29 +383,29 @@ public class Character : MonoBehaviour
 
         if (characterLevel == 1)
         {
-            inGamneSizeCharacter = baseSizeCharacter;
-            inGamneAttackRange = baseAttackRange;
-            inGamneAttackSpeed = baseAttackSpeed;
+            inGameSizeCharacter = baseSizeCharacter;
+            inGameAttackRange = baseAttackRange;
+            inGameAttackSpeed = baseAttackSpeed;
             inGameMoveSpeed = baseMoveSpeed;
         }
         else if (characterLevel <= 20)
         {
-            inGamneSizeCharacter = baseSizeCharacter + offsetSize * characterLevel;
-            inGamneAttackRange = baseAttackRange + offsetSize * characterLevel;
-            inGamneAttackSpeed = baseAttackSpeed + offsetAttackSpeed * characterLevel;
+            inGameSizeCharacter = baseSizeCharacter + offsetSize * characterLevel;
+            inGameAttackRange = baseAttackRange + offsetSize * characterLevel;
+            inGameAttackSpeed = baseAttackSpeed + offsetAttackSpeed * characterLevel;
             inGameMoveSpeed = baseMoveSpeed + offsetMoveSpeed * characterLevel;
         }
-        transform.localScale = new Vector3(inGamneSizeCharacter, inGamneSizeCharacter, inGamneSizeCharacter);
+        transform.localScale = new Vector3(inGameSizeCharacter, inGameSizeCharacter, inGameSizeCharacter);
     }
     public void UpdateCharacterAcessories()
     {  //Weapons buff
         if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
         {
-            InGamneAttackSpeed = InGamneAttackSpeed + (InGamneAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+            InGameAttackSpeed = InGameAttackSpeed + (InGameAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         else if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
         {
-            inGamneAttackRange = InGamneAttackRange + (InGamneAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+            inGameAttackRange = InGameAttackRange + (InGameAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         //Acessories buff
     }
@@ -416,8 +416,8 @@ public class Character : MonoBehaviour
 
         if (buffData.BuffType == BuffType.AttackSpeed)
         {
-            StartCoroutine(Waiter(1,InGamneAttackSpeed, buffData));
-            InGamneAttackSpeed = InGamneAttackSpeed + (InGamneAttackSpeed * buffData.BuffIndex / 100);
+            StartCoroutine(Waiter(1,InGameAttackSpeed, buffData));
+            InGameAttackSpeed = InGameAttackSpeed + (InGameAttackSpeed * buffData.BuffIndex / 100);
             //TODO Effect BUff
         }
         if (buffData.BuffType == BuffType.MoveSpeed)
@@ -428,8 +428,8 @@ public class Character : MonoBehaviour
         }
         if (buffData.BuffType == BuffType.Range)
         {
-            StartCoroutine(Waiter(0,InGamneAttackRange, buffData));
-            InGamneAttackRange = InGamneAttackRange + (InGamneAttackRange * buffData.BuffIndex / 100);
+            StartCoroutine(Waiter(0,InGameAttackRange, buffData));
+            InGameAttackRange = InGameAttackRange + (InGameAttackRange * buffData.BuffIndex / 100);
             //TODO Effect BUff
         }
     }
@@ -442,7 +442,7 @@ public class Character : MonoBehaviour
         yield return new WaitForSeconds(3f);
         if (buffData.BuffType == BuffType.AttackSpeed)
         {
-            InGamneAttackSpeed = backUp;
+            InGameAttackSpeed = backUp;
             Destroy(newBuffVfx);
 
         }
@@ -453,7 +453,7 @@ public class Character : MonoBehaviour
         }
         if (buffData.BuffType == BuffType.Range)
         {
-            InGamneAttackRange = backUp;
+            InGameAttackRange = backUp;
             Destroy(newBuffVfx);
         }
     }

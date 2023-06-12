@@ -2424,7 +2424,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0.15
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!114 &5088578861743276337
 MonoBehaviour:
@@ -2472,11 +2472,11 @@ MonoBehaviour:
   baseAttackRange: 7
   baseAttackSpeed: 60
   baseMoveSpeed: 5
-  inGamneSizeCharacter: 1
-  inGamneAttackRange: 7
-  inGamneAttackSpeed: 60
+  inGameSizeCharacter: 1
+  inGameAttackRange: 7
+  inGameAttackSpeed: 60
   inGameMoveSpeed: 5
-  inGamneGold: 50
+  inGameGold: 50
   inGamneZoneExp: 0
   isTargerInRange: 0
   isAttacking: 0
@@ -2502,6 +2502,7 @@ MonoBehaviour:
   hp: 1
   IsHaveWeapon: 0
   circleAttack: {fileID: 4197063280569115508}
+  IsWall: 0
 --- !u!1 &8397228602898670547
 GameObject:
   m_ObjectHideFlags: 0

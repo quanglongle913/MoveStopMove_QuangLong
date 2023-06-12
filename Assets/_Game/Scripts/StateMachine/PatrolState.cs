@@ -6,42 +6,35 @@ using UnityEngine;
 public class PatrolState : IState<BotAI>
 {
     Vector3 newTarget;
+    float timer;
     public void OnEnter(BotAI t)
     {
         t.ChangeAnim("Run");
         //t.Anim.speed = (float)Math.Round(t.MoveSpeed / 10, 1);
-        newTarget = t.generateTargetTransform();
+        //newTarget = t.generateTargetTransform();
+        newTarget = t.RandomNavmeshLocation(t.InGameAttackRange*2);
+        timer = 0;
     }
 
     public void OnExecute(BotAI t)
     {
+        timer += Time.deltaTime;
         t.moveToTarget(newTarget);
-        //UNDONE
-        /*RaycastHit hit;
-        if (Physics.Raycast(t.transform.position, t.transform.TransformDirection(Vector3.forward), out hit, Constant.RAYCAST_HIT_RANGE_WALL, LayerMask.GetMask(Constant.LAYOUT_WALL)))
+        if (Constant.IsDes(t.transform.position, newTarget, 0.1f))
         {
-            Debug.Log("Wall");
+            //Debug.Log("timer:" + timer);
             t.ChangeState(new IdleState());
-        }else if (Physics.Raycast(t.transform.position, t.transform.TransformDirection(1.5f, 0, 1), out hit, Constant.RAYCAST_HIT_RANGE_WALL, LayerMask.GetMask(Constant.LAYOUT_WALL)))
+        }
+        else if (timer > 4f)
         {
-            Debug.Log("Wall");
-            t.ChangeState(new IdleState());
-        }else if (Physics.Raycast(t.transform.position, t.transform.TransformDirection(-1.5f, 0, 1), out hit, Constant.RAYCAST_HIT_RANGE_WALL, LayerMask.GetMask(Constant.LAYOUT_WALL)))
-        {
-            Debug.Log("Wall");
-            t.ChangeState(new IdleState());
-        }*/
-        //
-
-        if (Constant.IsDes(t.transform.position, newTarget,0.1f))
-        {
-            t.ChangeState(new IdleState());
+            timer = 0;
+            Debug.Log("Error Wall: " + t.gameObject.name);
         }
     }
 
     public void OnExit(BotAI t)
     {
-        t.isStopped(true);
+
     }
 
 }

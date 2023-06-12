@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEditor.Presets;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -43,6 +44,7 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
+       
         ChangeState(new IdleStateP());
         //this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0);
         this.WeaponIndex = GetWeaponsEquippedIndex(_GameManager.WeaponData);
@@ -79,7 +81,7 @@ public class Player : Character
         base.FixedUpdate();
         if (cylinder != null)
         {
-            cylinder.transform.localScale = new Vector3(InGamneAttackRange * 2 / InGamneSizeCharacter, 0.001f, InGamneAttackRange * 2 / InGamneSizeCharacter);
+            cylinder.transform.localScale = new Vector3(InGameAttackRange * 2 / InGameSizeCharacter, 0.001f, InGameAttackRange * 2 / InGameSizeCharacter);
         }
         Horizontal = FloatingJoystick.Horizontal;
         Vertical = FloatingJoystick.Vertical;

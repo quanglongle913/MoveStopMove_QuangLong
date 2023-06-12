@@ -60,7 +60,7 @@ public class Weapons : MonoBehaviour
             }
             Character character = _GameObject.GetComponent<Character>();
             //Move Weapon with transform.....
-            if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGamneAttackRange))
+            if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGameAttackRange))
             {
                 Vector3 TargetPoint = new Vector3(transform.position.x + direction.x * 1f * Time.deltaTime, transform.position.y, transform.position.z + direction.z * 1f * Time.deltaTime);
                 transform.position = TargetPoint;
@@ -138,7 +138,8 @@ public class Weapons : MonoBehaviour
         newBloodVfx.GetComponent<ParticleSystem>().Play();
         //Debug.Log(newBloodVfx.name);
         yield return new WaitForSeconds(1.5f);
-        Destroy(newBloodVfx);
+        Debug.Log(newBloodVfx.name);
+        DestroyImmediate(newBloodVfx);
     }
     private void SetRotation(Vector3 upwards)
     {

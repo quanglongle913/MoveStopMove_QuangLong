@@ -120,6 +120,7 @@ public class UIManager : MonoBehaviour
     public void setLoading()
     {
         _GameManager.OnInit();
+        _GameManager.Player.InGamneExp = 100;
     }
     public void setGameMenu()
     {
@@ -255,8 +256,8 @@ public class UIManager : MonoBehaviour
         text_KillerName.color = _GameManager.Player.ColorData.GetMat(_GameManager.Player.KillerColorType).color;
         text_PlayerRank.text = "#" + _GameManager.Player.Rank;
         text_PlayerKillCount.text ="" + _GameManager.Player.KilledCount;
-        text_GoldEarned.text = "" + _GameManager.Player.InGamneGold;
-        int coin = PlayerPrefs.GetInt(Constant.PLAYER_COIN) + (int)_GameManager.Player.InGamneGold;
+        text_GoldEarned.text = "" + _GameManager.Player.InGameGold;
+        int coin = PlayerPrefs.GetInt(Constant.PLAYER_COIN) + (int)_GameManager.Player.InGameGold;
         PlayerPrefs.SetInt(Constant.PLAYER_COIN, coin);
         PlayerPrefs.Save();
         int zoneType = (int)_GameManager.ZoneData.PlayerZoneType;
@@ -305,26 +306,32 @@ public class UIManager : MonoBehaviour
     IEnumerator Waiter(TMPro.TextMeshProUGUI text_CountDown)
     {
         text_CountDown.text = "5";
-        _GameManager.SoundManager.CountDownSoundEffect[0].Play();
+        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[0], _GameManager.Player.IsDeath);
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "4";
-        _GameManager.SoundManager.CountDownSoundEffect[1].Play();
+        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[1], _GameManager.Player.IsDeath);
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "3";
-        _GameManager.SoundManager.CountDownSoundEffect[0].Play();
+        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[0], _GameManager.Player.IsDeath);
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "2";
-        _GameManager.SoundManager.CountDownSoundEffect[1].Play();
+        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[1], _GameManager.Player.IsDeath);
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "1";
-        _GameManager.SoundManager.CountDownSoundEffect[0].Play();
+        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[0], _GameManager.Player.IsDeath);
         yield return new WaitForSeconds(1f);
         text_CountDown.text = "0";
-        _GameManager.SoundManager.CountDownSoundEffect[2].Play();
-        _GameManager.SoundManager.LoseSoundEffect.Play();
+        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[2],_GameManager.Player.IsDeath);
+        PlaySoundEffect(_GameManager.SoundManager.LoseSoundEffect, _GameManager.Player.IsDeath);
         Show_Popup_Countine(false);
     }
-
+    public void PlaySoundEffect(AudioSource audioSource,bool isBool)
+    {
+        if (isBool)
+        {
+            audioSource.Play();
+        }
+    }
     //================GAME MENU WEAPONSHOP ===================
     public void Show_Popup_WeaponShop()
     {

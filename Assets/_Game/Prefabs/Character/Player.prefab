@@ -2296,11 +2296,11 @@ MonoBehaviour:
   baseAttackRange: 7
   baseAttackSpeed: 60
   baseMoveSpeed: 9
-  inGamneSizeCharacter: 1
-  inGamneAttackRange: 7
-  inGamneAttackSpeed: 60
+  inGameSizeCharacter: 1
+  inGameAttackRange: 7
+  inGameAttackSpeed: 60
   inGameMoveSpeed: 5
-  inGamneGold: 50
+  inGameGold: 50
   inGamneZoneExp: 0
   isTargerInRange: 0
   isAttacking: 0

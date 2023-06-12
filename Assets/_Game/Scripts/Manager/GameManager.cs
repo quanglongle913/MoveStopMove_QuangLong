@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private Player player;
     [SerializeField] private Transform playerStartPoint;
+
     [Header("BotAI: ")]
     [Tooltip("Number Bot in Map < Bot in Game")]
     [SerializeField] private int numberOfBotsOnMap;
@@ -33,6 +34,8 @@ public class GameManager : Singleton<GameManager>
     [Header("Data Manager: ")]
     [SerializeField] private SaveData saveData;
     [SerializeField] private ZoneData zoneData;
+    [SerializeField] private List<GameObject> obstacles;
+
 
     private List<Indicator> indicatorList;
     private List<CharacterInfo> characterInfoList;
@@ -45,6 +48,7 @@ public class GameManager : Singleton<GameManager>
     private int totalBotAI_InGame;
     private int totalBotAI;
     public int LevelExpAverage;
+    public List<GameObject> Obstacles { get => obstacles; set => obstacles = value; }
     public List<BotAI> BotAIListEnable { get => botAIListEnable; set => botAIListEnable = value; }
     public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
@@ -85,7 +89,8 @@ public class GameManager : Singleton<GameManager>
         listGiftBox = new List<GiftBox>();
         SaveData.ReadJsonFile(); // read Json Data Bot
         OnInit();
-       
+        //TEST
+        obstacles= GetObstacles();
         //Debug.Log("" + gameState);
     }
     public void OnInit()
@@ -111,20 +116,20 @@ public class GameManager : Singleton<GameManager>
             }
             else 
             {
-                /* int totalLevel = player.InGamneExp;
-                 for (int i = 0; i < BotAIListEnable.Count; i ++)
-                 {
-                     totalLevel += botAIListEnable[i].InGamneExp;
-                 }
-                 LevelExpAverage = totalLevel/(BotAIListEnable.Count+1);
-                 if (LevelExpAverage < Player.InGamneExp)
-                 {
-                     LevelExpAverage = Player.InGamneExp;
-                 }*/
                 LevelExpAverage = Player.InGamneExp;
             }
 
         }
+    }
+    private List<GameObject> GetObstacles()
+    {
+        List<GameObject> newList = new List<GameObject>();
+        var gameObjects = (TransparentObstacle[])GameObject.FindObjectsOfType(typeof(TransparentObstacle));
+        for (int i = 0; i < gameObjects.Length; i++)
+        {
+            newList.Add(gameObjects[i].gameObject);
+        }
+        return newList;
     }
     IEnumerator SetGameStateMenu()
     {

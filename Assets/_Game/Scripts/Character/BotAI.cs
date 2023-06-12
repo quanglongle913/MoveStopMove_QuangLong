@@ -6,17 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class BotAI : Character
 {
     [Header("------------BotAI--------------- ")]
     [SerializeField] private GameObject circleAttack;
-    private IState<BotAI> currentState;
+    [SerializeField] private IState<BotAI> currentState;
     private NavMeshAgent agent;
     private Transform targetTransform;
     //public bool IsKilledPlayer=false;
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
     public Transform TargetTransform { get => targetTransform; set => targetTransform = value; }
+    public bool IsWall;
+
     public override void Awake()
     {
         base.Awake();
@@ -83,8 +87,8 @@ public class BotAI : Character
     }
     public void moveToTarget(Vector3 targetTransform)
     {
-        //agent.SetDestination(targetTransform);
-        agent.destination = targetTransform;
+        agent.SetDestination(targetTransform);
+        //agent.destination = targetTransform;
     }
     public void isStopped(bool check)
     {
@@ -93,21 +97,55 @@ public class BotAI : Character
             agent.isStopped = check;
         }
     }
-    public Vector3 generateTargetTransform()
+    /*public Vector3 generateTargetTransform()
     {
         Vector3 target = transform.position;
         bool isCheck=false;
         while (!isCheck)
         {
-            float posX = transform.position.x + UnityEngine.Random.Range(-InGamneAttackRange * 2, InGamneAttackRange * 2);
-            float posZ = transform.position.z + UnityEngine.Random.Range(-InGamneAttackRange * 2, InGamneAttackRange * 2);
+            float offset = 2.0f;
+            float posX = transform.position.x + UnityEngine.Random.Range(-InGameAttackRange *offset, InGameAttackRange * offset);
+            float posZ = transform.position.z + UnityEngine.Random.Range(-InGameAttackRange * offset, InGameAttackRange * offset);
             target = new Vector3(posX, transform.position.y, posZ);
-            isCheck = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, new NavMeshPath());
+            isCheck = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas ,new NavMeshPath());
         }
         return target;
+    }*/
+    public Vector3 RandomNavmeshLocation(float radius)
+    {
+        
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        bool isCheck = false;
+        while (!isCheck)
+        {
+            if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+            {
+                finalPosition = new Vector3(hit.position.x, transform.position.y, hit.position.z);
+                //Debug.Log(""+ finalPosition);
+                isCheck = true;
+                //isCheck = NavMesh.CalculatePath(transform.position, finalPosition, NavMesh.AllAreas, new NavMeshPath());
+            }
+        }
+        return finalPosition;
+    }
+    public bool CheckWall()
+    {
+        RaycastHit hit;
+        bool isWall = false;
+        float range = Vector3.Distance(transform.position, Target.transform.position);
+        if (Physics.Raycast(gameObject.transform.position, gameObject.transform.TransformDirection(Vector3.forward), out hit, range, LayerMask.GetMask(Constant.LAYOUT_WALL)))
+        {
+            isWall = true;
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
+        }
+        return isWall;
     }
     public override void Attack()
     {
+
         base.Attack();
     }
     public void ChangeState(IState<BotAI> state)
@@ -167,4 +205,12 @@ public class BotAI : Character
             ChangeState(new DeadState());
         } 
     }
+    /*private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<TransparentObstacle>())
+        {
+            Debug.Log("is Wall");
+            ChangeState(new IdleState());
+        }
+    }*/
 }
