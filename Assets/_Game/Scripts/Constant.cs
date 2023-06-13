@@ -13,9 +13,7 @@ public class Constant
 
     public static string POPUP_COUNTINUE_STATUS_LOSE = "Too bad, try again......";
     public static string POPUP_COUNTINUE_STATUS_WIN = "Coming Soon!...";
-    /*public static string PLAYER_ZONE = "PlayerZone";
-    public static string PLAYER_ZONE_EXP = "PlayerZoneExp";*/
-    //public static string PLAYER_BEST = "PlayerBest";
+
     public static string PLAYER_COIN = "PlayerCoin";
     public static string PLAYER_NAME = "PlayerName";
     public static string PLAYER_ZOMBIEDAY = "PlayerZombieDay";
@@ -24,6 +22,10 @@ public class Constant
     public static string LAYOUT_WALL = "Wall";
     public static string LAYOUT_CHARACTER = "Character";
 
+    //============UI=============
+    public static string SOUND_TOGGLE_STATE = "SoundToggleState";
+    public static string VIBRATION_TOGGLE_STATE = "VibrationToggleState";
+    //===========================
 
     public static float RAYCAST_HIT_RANGE_WALL = 1.0f;
 

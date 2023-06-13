@@ -9,6 +9,7 @@ public class PatrolState : IState<BotAI>
     float timer;
     public void OnEnter(BotAI t)
     {
+        t.isStopped(false);
         t.ChangeAnim("Run");
         //t.Anim.speed = (float)Math.Round(t.MoveSpeed / 10, 1);
         //newTarget = t.generateTargetTransform();

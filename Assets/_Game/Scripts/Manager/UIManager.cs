@@ -10,7 +10,7 @@ using static UnityEditor.Progress;
 public class UIManager : MonoBehaviour
 {
     [Header("GameManager: ")]
-    [SerializeField] private GameManager _GameManager;
+    private GameManager _GameManager;
     [Header("Layout: ")]
     [SerializeField] private GameObject loading;
     [SerializeField] private GameObject inGame;
@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject endGame;
     [Header("GameMenu: ")]
     [SerializeField] private GameObject popup_GameMenuChild;
+    [SerializeField] private GameObject popup_GameMenuSetting;
     [SerializeField] private TMPro.TextMeshProUGUI textCoin;
     [SerializeField] private TMPro.TextMeshProUGUI textName;
     [SerializeField] private TMPro.TextMeshProUGUI textZone;
@@ -80,6 +81,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI text_KillerName;
     [SerializeField] private TMPro.TextMeshProUGUI text_GoldEarned;
     private bool IsRevive = false;
+    private void Start()
+    {
+        _GameManager = GameManager.Instance;
+    }
     private void Update()
     {
         if (_GameManager.GameState == GameState.GameMenu)
@@ -155,6 +160,14 @@ public class UIManager : MonoBehaviour
         {
             endGame.SetActive(false);
         }
+        if (PlayerPrefs.GetInt(Constant.SOUND_TOGGLE_STATE, 0) == 0) //default toggle is ON
+        {
+            _GameManager.SoundManager.SetSoundON();
+        }
+        else
+        {
+            _GameManager.SoundManager.SetSoundOFF();
+        }
     }
     private void GameMenu()
     {
@@ -172,6 +185,7 @@ public class UIManager : MonoBehaviour
             popup_GameMenuChild.SetActive(true);
             popup_WeaponShop.SetActive(false);
             popup_SkinShop.SetActive(false);
+            HidePopupGameMenuSetting();
         }
         if (inGame.activeSelf)
         {
@@ -340,6 +354,16 @@ public class UIManager : MonoBehaviour
             audioSource.Play();
         }
     }
+    //================GAME MENU SETTING ======================
+    public void ShowPopupGameMenuSetting()
+    {
+        popup_GameMenuSetting.SetActive(true);
+    }
+    public void HidePopupGameMenuSetting()
+    {
+        popup_GameMenuSetting.SetActive(false);
+    }
+
     //================GAME MENU WEAPONSHOP ===================
     public void Show_Popup_WeaponShop()
     {
@@ -570,7 +594,11 @@ public class UIManager : MonoBehaviour
     }
     private void OnShopItemBtnClicked(int itemIndex)
     {
+
+        //Sound
+        _GameManager.SoundManager.PlaySoundBtnClick();
         skinShop.ItemsOnClicked(itemIndex);
+
         if (skinShop.Items[0].SkinType == SkinType.Hat)
         {
             _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.SetfullData);
@@ -667,6 +695,7 @@ public class UIManager : MonoBehaviour
     }
     public void OnClickBtnBuySkinShop()
     {
+        
         if (skinShop.Items[0].SkinType == SkinType.Hat)
         {
             UnEquippedAllAccessoriesSkinShop(_GameManager.SetfullData);
@@ -729,9 +758,5 @@ public class UIManager : MonoBehaviour
         {
             weaponData.Weapon[i].Equipped = false;
         }
-    }
-    public void BtnClickSoundEffect()
-    {
-        _GameManager.SoundManager.BtnClickSoundEffect.Play();
     }
 }

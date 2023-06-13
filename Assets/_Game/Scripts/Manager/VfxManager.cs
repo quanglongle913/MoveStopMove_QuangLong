@@ -53,25 +53,29 @@ public class VfxManager : MonoBehaviour
     }
     public void CharacterBufffCountDown(Character character, int randomBuff)
     {
-        _GameManager.SoundManager.SizeUpSoundEffect[4].Play();
-        if (buffDataInGiftBox[randomBuff].BuffType == BuffType.AttackSpeed)
+        if (!character.IsBuffed)
         {
-            StartCoroutine(Waiter(character.InGameAttackSpeed, buffDataInGiftBox[randomBuff], character));
-            character.InGameAttackSpeed = character.InGameAttackSpeed + (character.InGameAttackSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
-            //TODO Effect BUff
+            _GameManager.SoundManager.SizeUpSoundEffect[4].Play();
+            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.AttackSpeed)
+            {
+                StartCoroutine(Waiter(character.InGameAttackSpeed, buffDataInGiftBox[randomBuff], character));
+                character.InGameAttackSpeed = character.InGameAttackSpeed + (character.InGameAttackSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+                //TODO Effect BUff
+            }
+            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.MoveSpeed)
+            {
+                StartCoroutine(Waiter(character.InGameMoveSpeed, buffDataInGiftBox[randomBuff], character));
+                character.InGameMoveSpeed = character.InGameMoveSpeed + (character.InGameMoveSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+                //TODO Effect BUff
+            }
+            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.Range)
+            {
+                StartCoroutine(Waiter(character.InGameAttackRange, buffDataInGiftBox[randomBuff], character));
+                character.InGameAttackRange = character.InGameAttackRange + (character.InGameAttackRange * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+                //TODO Effect BUff
+            }
         }
-        if (buffDataInGiftBox[randomBuff].BuffType == BuffType.MoveSpeed)
-        {
-            StartCoroutine(Waiter(character.InGameMoveSpeed, buffDataInGiftBox[randomBuff], character));
-            character.InGameMoveSpeed = character.InGameMoveSpeed + (character.InGameMoveSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
-            //TODO Effect BUff
-        }
-        if (buffDataInGiftBox[randomBuff].BuffType == BuffType.Range)
-        {
-            StartCoroutine(Waiter(character.InGameAttackRange, buffDataInGiftBox[randomBuff], character));
-            character.InGameAttackRange = character.InGameAttackRange + (character.InGameAttackRange * buffDataInGiftBox[randomBuff].BuffIndex / 100);
-            //TODO Effect BUff
-        }
+        
     }
     IEnumerator Waiter(float indexType, BuffData buffData, Character character)
     {
@@ -79,6 +83,7 @@ public class VfxManager : MonoBehaviour
         GameObject newBuffVfx = Instantiate(BuffVfxInCharacter[(int)buffData.BuffType], character.gameObject.transform.position, character.gameObject.transform.rotation);
         newBuffVfx.transform.parent = character.gameObject.transform;
         newBuffVfx.GetComponent<ParticleSystem>().Play();
+        character.IsBuffed=true;
         yield return new WaitForSeconds(3f);
         if (buffData.BuffType == BuffType.AttackSpeed)
         {
@@ -96,5 +101,6 @@ public class VfxManager : MonoBehaviour
             character.InGameAttackRange = backUp;
             Destroy(newBuffVfx);
         }
+        character.IsBuffed = false;
     }
 }

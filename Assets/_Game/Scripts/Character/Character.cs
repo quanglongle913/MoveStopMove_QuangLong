@@ -50,7 +50,9 @@ public class Character : MonoBehaviour
 
 
     public float hp;
+    private bool isBuffed;
     public bool IsDeath => hp <= 0;
+    private GameManager gameManager;
 
     private Animator anim;
     private Rigidbody rb;
@@ -61,7 +63,7 @@ public class Character : MonoBehaviour
     protected Collider[] CharactersInsideZone;
     protected Collider[] CharactersOutsideZone;
     
-    private GameManager gameManager;
+    
 
     public bool IsHaveWeapon;
 
@@ -94,7 +96,9 @@ public class Character : MonoBehaviour
     public int WeaponIndex { get => weaponIndex; set => weaponIndex = value; }
     public SkinnedMeshRenderer PantsSkin { get => pantsSkin; set => pantsSkin = value; }
     public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
-    
+    public bool IsBuffed { get => isBuffed; set => isBuffed = value; }
+
+
     // Start is called before the first frame update
     public virtual void Awake()
     {

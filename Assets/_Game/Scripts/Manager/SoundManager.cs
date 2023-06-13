@@ -41,6 +41,26 @@ public class SoundManager : MonoBehaviour
             audioSource.Add(listSoundEffect[i]);
         }
     }
+    public void SetSoundOFF() 
+    {
+        AudioListener.volume = 0;
+        for (int i = 0; i < audioSource.Count; i++)
+        {
+            /*audioSource[i].volume = 0;
+            audioSource[i].mute = true;*/
+            AudioListener.volume=0;
+        }
+    }
+    public void SetSoundON()
+    {
+        for (int i = 0; i < audioSource.Count; i++)
+        {
+
+            /* audioSource[i].mute = false;
+             audioSource[i].volume = 1;*/
+            AudioListener.volume = 1;
+        }
+    }
     public void OffVolumeCountDownSoundEffect()
     {
         for (int i = 0; i < countDownSoundEffect.Count; i++)
@@ -54,5 +74,9 @@ public class SoundManager : MonoBehaviour
         {
             countDownSoundEffect[i].volume = 1;
         }
+    }
+    public void PlaySoundBtnClick()
+    {
+        BtnClickSoundEffect.Play();
     }
 }
