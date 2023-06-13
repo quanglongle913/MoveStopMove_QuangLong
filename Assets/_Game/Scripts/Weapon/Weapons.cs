@@ -9,29 +9,25 @@ using UnityEngine.TextCore.Text;
 public class Weapons : MonoBehaviour
 {
     [SerializeField] private WeaponType weaponType;
-    [SerializeField] private GameObject bloodVfx;
     [SerializeField] private GameObject FireVfx;
- 
+    
     public GameObject _GameObject;
     public float rotationSpeed;
     public bool isFire;
     public Vector3 target;
     public Vector3 startPoint;
     public Vector3 direction;
+    GameManager _GameManager;
     GameObject newFireVfx;
     float rotY;
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
+    public GameObject NewFireVfx { get => newFireVfx; set => newFireVfx = value; }
+
     // Update is called once per frame
     private void Start()
     {
-
-        newFireVfx = Instantiate(FireVfx);
-        newFireVfx.transform.parent = gameObject.transform;
-        newFireVfx.transform.localPosition = Vector3.zero;
-        newFireVfx.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
-        
-        //newFireVfx.gameObject.transform.eulerAngles += new Vector3(-90, 0, 0);
-        newFireVfx.SetActive(false);
+        _GameManager= _GameObject.GetComponent<Character>()._GameManager;
+        _GameManager.VfxManager.GenerateFireVfx(this);
 
     }
     void Update()
@@ -100,8 +96,8 @@ public class Weapons : MonoBehaviour
                     _GameObject.GetComponent<Player>().KilledCount++;
                 }
             }
-
-            StartCoroutine(BloodVfx());
+            _GameManager.VfxManager.ShowBloodVfx(this);
+           
             Character character = _GameObject.GetComponent<Character>();
             ReleaseWeapon(character);
         }
@@ -119,6 +115,7 @@ public class Weapons : MonoBehaviour
     IEnumerator Waiter()
     {
         yield return new WaitForSeconds(1f);
+
         this.gameObject.SetActive(false);
         this.GetComponent<PooledObject>().Release();
     }
@@ -130,16 +127,6 @@ public class Weapons : MonoBehaviour
         this.gameObject.SetActive(false);
         this.isFire = false;
         this.GetComponent<PooledObject>().Release();
-    }
-    IEnumerator BloodVfx()
-    {
-       
-        GameObject newBloodVfx = Instantiate(bloodVfx, gameObject.transform.position, gameObject.transform.rotation);
-        newBloodVfx.GetComponent<ParticleSystem>().Play();
-        //Debug.Log(newBloodVfx.name);
-        yield return new WaitForSeconds(1.5f);
-        Debug.Log(newBloodVfx.name);
-        DestroyImmediate(newBloodVfx);
     }
     private void SetRotation(Vector3 upwards)
     {

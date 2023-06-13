@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameState gameState;
     [SerializeField] private UIManager uIManager;
     [SerializeField] private SoundManager soundManager;
+    [SerializeField] private VfxManager vfxManager;
     [SerializeField] private Player player;
     [SerializeField] private Transform playerStartPoint;
 
@@ -48,6 +49,8 @@ public class GameManager : Singleton<GameManager>
     private int totalBotAI_InGame;
     private int totalBotAI;
     public int LevelExpAverage;
+    public List<GameObject> newBloodsVfx;
+    public List<GameObject> loodsVfx;
     public List<GameObject> Obstacles { get => obstacles; set => obstacles = value; }
     public List<BotAI> BotAIListEnable { get => botAIListEnable; set => botAIListEnable = value; }
     public bool IsInit { get => isInit; set => isInit = value; }
@@ -79,6 +82,7 @@ public class GameManager : Singleton<GameManager>
     public int GiftBoxNumber { get => giftBoxNumber; set => giftBoxNumber = value; }
     public WeaponSpawner WeaponSpawner { get => weaponSpawner; set => weaponSpawner = value; }
     public SoundManager SoundManager { get => soundManager; set => soundManager = value; }
+    public VfxManager VfxManager { get => vfxManager; set => vfxManager = value; }
 
     private void Start()
     {
@@ -87,6 +91,8 @@ public class GameManager : Singleton<GameManager>
         indicatorList = new List<Indicator>();
         characterInfoList = new List<CharacterInfo>();
         listGiftBox = new List<GiftBox>();
+
+        newBloodsVfx = new List<GameObject>();
         SaveData.ReadJsonFile(); // read Json Data Bot
         OnInit();
         //TEST

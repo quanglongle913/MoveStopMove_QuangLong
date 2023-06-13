@@ -15,12 +15,7 @@ public class GiftBoxSpawner : PooledObject
 
     private void Update()
     {
-        if (_GameManager.GameState == GameState.Loading && !_GameManager.IsInitBotAI)
-        {
-
-            //GenerateGiftBox(_GameManager.TotalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, _GameManager.TotalBotAI));
-        }
-        else if (_GameManager.GameState == GameState.InGame && _GameManager.ListGiftBox.Count < _GameManager.GiftBoxNumber && _GameManager.IsInitBotAI)
+        if (_GameManager.GameState == GameState.InGame && _GameManager.ListGiftBox.Count < _GameManager.GiftBoxNumber && _GameManager.IsInitBotAI)
         {
             GenerateGiftBox(1, GeneratePoolObjectPosition(poolMaster.transform.position, debugNumberGiftBox));
         }

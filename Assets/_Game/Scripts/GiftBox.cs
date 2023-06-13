@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class GiftBox : MonoBehaviour
 {
-    [SerializeField] private List<BuffData> buffData;
-    [SerializeField] private List<GameObject> buffEffectVfx;
     private GameManager _GameManager;
-    [SerializeField] private int randomBuff;
+    private int randomBuff;
     GameObject newbuffEffectVfx;
     float timer;
-    public List<BuffData> BuffData { get => buffData; set => buffData = value; }
+    public int RandomBuff { get => randomBuff; set => randomBuff = value; }
+    public GameObject NewbuffEffectVfx { get => newbuffEffectVfx; set => newbuffEffectVfx = value; }
+    public float Timer { get => timer; set => timer = value; }
+
     public virtual void Start()
     {
         _GameManager = GameManager.Instance;
-        randomBuff = Random.Range(0, buffData.Count);
-        newbuffEffectVfx = Instantiate(buffEffectVfx[randomBuff], gameObject.transform.position, gameObject.transform.rotation);
-        newbuffEffectVfx.transform.parent = gameObject.transform;
-        newbuffEffectVfx.GetComponent<ParticleSystem>().Play();
-        timer=0;
+        _GameManager.VfxManager.ShowEffectVfxInGiftBox(this);
     }
     private void Update()
     {
@@ -26,13 +23,7 @@ public class GiftBox : MonoBehaviour
         timer += Time.deltaTime;
         if (timer > 10f)
         {
-            timer = 0;
-            Destroy(newbuffEffectVfx);
-            randomBuff = Random.Range(0, buffData.Count);
-            newbuffEffectVfx = Instantiate(buffEffectVfx[randomBuff], gameObject.transform.position, gameObject.transform.rotation);
-            newbuffEffectVfx.transform.parent = gameObject.transform;
-            newbuffEffectVfx.GetComponent<ParticleSystem>().Play();
-            
+            _GameManager.VfxManager.ShowEffectVfxInGiftBox(this);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -40,7 +31,7 @@ public class GiftBox : MonoBehaviour
         Character character = other.GetComponent<Character>();
         if (character)
         {
-            character.BufffCountDown(buffData[randomBuff]);
+            _GameManager.VfxManager.CharacterBufffCountDown(character, randomBuff);
             _GameManager.ListGiftBox.Remove(gameObject.GetComponent<GiftBox>());
             gameObject.GetComponent<PooledObject>().Release();
         }

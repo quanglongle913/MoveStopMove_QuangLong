@@ -43,8 +43,7 @@ public class Character : MonoBehaviour
     [SerializeField] private List<GameObject> listSheilds;
     [SerializeField] private List<GameObject> listSetFull;
     [SerializeField] private GameObject Pants;
-    [Header("-------------Buff Vfx-------------- ")]
-    [SerializeField] private List<GameObject> BuffVfx;
+
     [Header("--------------------------- ")]
     [SerializeField] private string characterName;
     [SerializeField] private int characterLevel;
@@ -408,53 +407,5 @@ public class Character : MonoBehaviour
             inGameAttackRange = InGameAttackRange + (InGameAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         //Acessories buff
-    }
-    public void BufffCountDown(BuffData buffData)
-    {
-        //int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.SizeUpSoundEffect.Count);
-        _GameManager.SoundManager.SizeUpSoundEffect[4].Play();
-
-        if (buffData.BuffType == BuffType.AttackSpeed)
-        {
-            StartCoroutine(Waiter(1,InGameAttackSpeed, buffData));
-            InGameAttackSpeed = InGameAttackSpeed + (InGameAttackSpeed * buffData.BuffIndex / 100);
-            //TODO Effect BUff
-        }
-        if (buffData.BuffType == BuffType.MoveSpeed)
-        {
-            StartCoroutine(Waiter(2,InGameMoveSpeed, buffData));
-            InGameMoveSpeed = InGameMoveSpeed + (InGameMoveSpeed * buffData.BuffIndex / 100);
-            //TODO Effect BUff
-        }
-        if (buffData.BuffType == BuffType.Range)
-        {
-            StartCoroutine(Waiter(0,InGameAttackRange, buffData));
-            InGameAttackRange = InGameAttackRange + (InGameAttackRange * buffData.BuffIndex / 100);
-            //TODO Effect BUff
-        }
-    }
-    IEnumerator Waiter(int indexVfx, float indexType, BuffData buffData)
-    {
-        float backUp = indexType;
-        GameObject newBuffVfx = Instantiate(BuffVfx[indexVfx], gameObject.transform.position, gameObject.transform.rotation);
-        newBuffVfx.transform.parent = gameObject.transform;
-        newBuffVfx.GetComponent<ParticleSystem>().Play();
-        yield return new WaitForSeconds(3f);
-        if (buffData.BuffType == BuffType.AttackSpeed)
-        {
-            InGameAttackSpeed = backUp;
-            Destroy(newBuffVfx);
-
-        }
-        if (buffData.BuffType == BuffType.MoveSpeed)
-        {
-            InGameMoveSpeed = backUp;
-            Destroy(newBuffVfx);
-        }
-        if (buffData.BuffType == BuffType.Range)
-        {
-            InGameAttackRange = backUp;
-            Destroy(newBuffVfx);
-        }
     }
 }

@@ -41,4 +41,18 @@ public class SoundManager : MonoBehaviour
             audioSource.Add(listSoundEffect[i]);
         }
     }
+    public void OffVolumeCountDownSoundEffect()
+    {
+        for (int i = 0; i < countDownSoundEffect.Count; i++)
+        {
+            countDownSoundEffect[i].volume = 0;
+        }
+    }
+    public void OnVolumeCountDownSoundEffect()
+    {
+        for (int i = 0; i < countDownSoundEffect.Count; i++)
+        {
+            countDownSoundEffect[i].volume = 1;
+        }
+    }
 }

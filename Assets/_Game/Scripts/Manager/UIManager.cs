@@ -244,6 +244,8 @@ public class UIManager : MonoBehaviour
     }
     public void Show_Popup_Countine(bool IsWin)
     {
+        _GameManager.SoundManager.OffVolumeCountDownSoundEffect();
+
         text_Status.text = Constant.POPUP_COUNTINUE_STATUS_LOSE;
         popup_PlayerWin.SetActive(IsWin);
         popup_PlayerLose.SetActive(!IsWin);
@@ -267,7 +269,7 @@ public class UIManager : MonoBehaviour
         text_ZoneTypeNext.text = _GameManager.ZoneData.Zones[zoneType].ZoneName;
         image_ZoneTypeNext.texture = _GameManager.ZoneData.Zones[zoneType].Texture;
 
-        popup_TryAgain.SetActive(false);
+        Hide_Popup_Tryagain();
         popup_Countine.SetActive(true);    
     }
     public void Hide_Popup_Countine()
@@ -305,6 +307,8 @@ public class UIManager : MonoBehaviour
     }
     IEnumerator Waiter(TMPro.TextMeshProUGUI text_CountDown)
     {
+        _GameManager.SoundManager.OnVolumeCountDownSoundEffect();
+
         text_CountDown.text = "5";
         PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[0], _GameManager.Player.IsDeath);
         yield return new WaitForSeconds(1f);
@@ -323,9 +327,13 @@ public class UIManager : MonoBehaviour
         text_CountDown.text = "0";
         PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[2],_GameManager.Player.IsDeath);
         PlaySoundEffect(_GameManager.SoundManager.LoseSoundEffect, _GameManager.Player.IsDeath);
-        Show_Popup_Countine(false);
+        if (_GameManager.Player.IsDeath)
+        {
+            Show_Popup_Countine(false);
+        }
+       
     }
-    public void PlaySoundEffect(AudioSource audioSource,bool isBool)
+    public void PlaySoundEffect(AudioSource audioSource, bool isBool)
     {
         if (isBool)
         {
