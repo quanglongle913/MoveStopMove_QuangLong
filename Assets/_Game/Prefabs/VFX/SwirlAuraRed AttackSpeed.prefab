@@ -4850,7 +4850,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ab859fcb90badd940b0e8b6dce88da42, type: 2}
-  - {fileID: 2100000, guid: 0b59653ce9e956d4782498a8159babd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9733,7 +9732,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 6e2f71a91acc7f843ac06a73a041d92d, type: 2}
-  - {fileID: 2100000, guid: 6e2f71a91acc7f843ac06a73a041d92d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9795,7 +9793,6 @@ GameObject:
   - component: {fileID: 4049413222877106}
   - component: {fileID: 198143853999744172}
   - component: {fileID: 199282826972636228}
-  - component: {fileID: -4035590656886757481}
   m_Layer: 0
   m_Name: SwirlAuraRed AttackSpeed
   m_TagString: Untagged
@@ -10388,7 +10385,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 200
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -14637,7 +14634,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ab859fcb90badd940b0e8b6dce88da42, type: 2}
-  - {fileID: 2100000, guid: 0b59653ce9e956d4782498a8159babd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14688,16 +14684,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &-4035590656886757481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1238277619920902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbb5b08834875ab42b43a3d843b0f038, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 0}

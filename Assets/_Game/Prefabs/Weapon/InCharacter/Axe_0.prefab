@@ -98,7 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 0
-  bloodVfx: {fileID: 1365626343157702567, guid: 2dea81dd7d915814b96e3ee79bd777d3, type: 3}
   FireVfx: {fileID: 271093378344025040, guid: b2d5504def568a645a2020ee089ee8c0, type: 3}
   _GameObject: {fileID: 0}
   rotationSpeed: 1000

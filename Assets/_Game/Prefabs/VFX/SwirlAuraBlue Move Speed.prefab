@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4534538901752891714}
   - component: {fileID: 4342312048096942958}
   - component: {fileID: 4341063442742513524}
-  - component: {fileID: 6771613524284546723}
   m_Layer: 0
   m_Name: SwirlAuraBlue Move Speed
   m_TagString: Untagged
@@ -604,7 +603,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 200
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -4903,19 +4902,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6771613524284546723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4537889017766032016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbb5b08834875ab42b43a3d843b0f038, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 0}
 --- !u!1 &4538243446588089442
 GameObject:
   m_ObjectHideFlags: 0

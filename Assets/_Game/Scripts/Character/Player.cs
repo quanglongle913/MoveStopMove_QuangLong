@@ -78,6 +78,8 @@ public class Player : Character
     }
     public override void FixedUpdate()
     {
+        GenerateZone();
+        DetectionCharacter(CharactersInsideZone);
         base.FixedUpdate();
         if (cylinder != null)
         {
@@ -98,7 +100,7 @@ public class Player : Character
     {
        base.Attack();
     }
-
+    
     public void Moving()
     {
         if (Mathf.Abs(horizontal) >= 0.03 || Mathf.Abs(vertical) >= 0.03)
@@ -178,13 +180,13 @@ public class Player : Character
             _GameManager.ZoneData.PlayerZoneType = (ZoneType)zoneIndex;
         }
     }
-    //Number of AccessorisBuyed in Accessories[]
+    /*//Number of AccessorisBuyed in Accessories[]
     public int GetAccessorisBuyedIndex(AccessoriesData accessoriesData)
     {
         int index = 99;
         for (int i = 0; i < accessoriesData.Accessories.Length; i++)
         {
-            if (!accessoriesData.Accessories[i].Buyed)
+            if (accessoriesData.Accessories[i].Buyed)
             {
                 index = i;
                 break;
@@ -196,7 +198,7 @@ public class Player : Character
             Debug.Log("You don't have any Skin");
         }
         return index;
-    }
+    }*/
     public int GetWeaponsEquippedIndex(WeaponData weaponData)
     {
         int index = 0;
@@ -352,6 +354,8 @@ public class Player : Character
                 }
             }
         }
+        //
+        UpdateCharacterAcessories();
     }
     public void UpdateUIAccessoris(AccessoriesData accessoriesData)
     {

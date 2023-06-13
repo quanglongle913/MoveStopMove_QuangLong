@@ -575,8 +575,9 @@ public class UIManager : MonoBehaviour
         accessoriesData.Accessories[index].Selected = true;
         skinShop.AccessoriesData = accessoriesData;
         skinShop.IsUpdate = true;
+        textSkinBuffInfo.text = "+" + accessoriesData.Accessories[index].BuffData.BuffIndex + "% " + accessoriesData.Accessories[index].BuffData.BuffType;
         StartCoroutine(SetButtonCouroutime());
-        Debug.Log(""+ index);
+        //Debug.Log(""+ index);
     }
     IEnumerator SetButtonCouroutime()
     {
@@ -605,6 +606,8 @@ public class UIManager : MonoBehaviour
             _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.HatsData);
             _GameManager.HatsData.Accessories[itemIndex].Selected = true;
 
+            textSkinBuffInfo.text ="+"+ _GameManager.HatsData.Accessories[itemIndex].BuffData.BuffIndex+ "% " + _GameManager.HatsData.Accessories[itemIndex].BuffData.BuffType;
+
             _GameManager.Player.UpdateAccessoriesSkinShop();
             BtnSkinShopUpdate(_GameManager.HatsData,itemIndex);
         }
@@ -614,7 +617,9 @@ public class UIManager : MonoBehaviour
             _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.PantsData);
             _GameManager.PantsData.Accessories[itemIndex].Selected = true;
             _GameManager.Player.SetPantsSkin(_GameManager.PantsData);
-           
+
+            textSkinBuffInfo.text = "+" + _GameManager.PantsData.Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.PantsData.Accessories[itemIndex].BuffData.BuffType;
+
             _GameManager.Player.UpdateAccessoriesSkinShop();
             BtnSkinShopUpdate(_GameManager.PantsData, itemIndex);
         }
@@ -623,6 +628,8 @@ public class UIManager : MonoBehaviour
             _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.SetfullData);
             _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.ShieldData);
             _GameManager.ShieldData.Accessories[itemIndex].Selected = true;
+
+            textSkinBuffInfo.text = "+" + _GameManager.ShieldData.Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.ShieldData.Accessories[itemIndex].BuffData.BuffType;
 
             _GameManager.Player.UpdateAccessoriesSkinShop();
             BtnSkinShopUpdate(_GameManager.ShieldData, itemIndex);
@@ -634,7 +641,9 @@ public class UIManager : MonoBehaviour
             _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.ShieldData);
             _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.SetfullData);
             _GameManager.SetfullData.Accessories[itemIndex].Selected = true;
-      
+
+            textSkinBuffInfo.text = "+" + _GameManager.SetfullData.Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.SetfullData.Accessories[itemIndex].BuffData.BuffType;
+
             _GameManager.Player.UpdateAccessoriesSkinShop();
             BtnSkinShopUpdate(_GameManager.SetfullData, itemIndex);
         }

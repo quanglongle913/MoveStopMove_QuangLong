@@ -22,12 +22,14 @@ public class Character : MonoBehaviour
     [SerializeField] private float baseAttackRange = 7f;
     [SerializeField] private float baseAttackSpeed = 60f;
     [SerializeField] private float baseMoveSpeed = 5.0f;
+    [SerializeField] private float baseGoldEarn = 50f;
     [Header("--------------INGANE------------- ")]
     [SerializeField] private float inGameSizeCharacter = 1.0f;
     [SerializeField] private float inGameAttackRange = 7.0f;
     [SerializeField] private float inGameAttackSpeed = 60f;
     [SerializeField] private float inGameMoveSpeed = 5.0f;
     [SerializeField] private float inGameGold = 50f;
+    [SerializeField] private float inGameGoldEarn = 50f;
     [SerializeField] private int inGamneZoneExp = 0;
 
     [SerializeField] private bool isTargerInRange;
@@ -97,6 +99,7 @@ public class Character : MonoBehaviour
     public SkinnedMeshRenderer PantsSkin { get => pantsSkin; set => pantsSkin = value; }
     public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
     public bool IsBuffed { get => isBuffed; set => isBuffed = value; }
+    public float InGameGoldEarn { get => inGameGoldEarn; set => inGameGoldEarn = value; }
 
 
     // Start is called before the first frame update
@@ -124,8 +127,8 @@ public class Character : MonoBehaviour
     
     public virtual void FixedUpdate()
     {
-        GenerateZone();
-        DetectionCharacter(CharactersInsideZone);
+        //GenerateZone();
+        //DetectionCharacter(CharactersInsideZone);
         if (this._GameManager.GameState == GameState.InGame)
         {
             if (Weapons.Count <= 1)
@@ -180,13 +183,13 @@ public class Character : MonoBehaviour
 
                         });
     }
-    private void GenerateZone()
+    protected void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersInsideZone = Physics.OverlapSphere(this.transform.position, InGameAttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersOutsideZone = CurrentCharacters.Except(CharactersInsideZone).ToArray();
     }
-    private void DetectionCharacter(Collider[] colliders)
+    protected  void DetectionCharacter(Collider[] colliders)
     {
         for (int i = 0; i < colliders.Length; i++) 
         {
@@ -364,17 +367,17 @@ public class Character : MonoBehaviour
     public void setExp(int exp)
     {
         InGamneExp += exp / CharacterLevel + 40;
-        InGameGold += 50;
+        InGameGold += InGameGoldEarn;
         UpdateCharacterLvl();
     }
     public void OnReset()
     {
-        //InGamneExp = 100;
-        InGameGold = 50;
+        InGameGold = 0;
         inGameSizeCharacter = baseSizeCharacter;
         inGameAttackRange = baseAttackRange;
         inGameAttackSpeed = baseAttackSpeed;
         inGameMoveSpeed = baseMoveSpeed;
+        inGameGoldEarn = baseGoldEarn;
         UpdateCharacterLvl();
     }
     public void UpdateCharacterLvl()
@@ -404,12 +407,61 @@ public class Character : MonoBehaviour
     {  //Weapons buff
         if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
         {
-            InGameAttackSpeed = InGameAttackSpeed + (InGameAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+            InGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         else if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
         {
-            inGameAttackRange = InGameAttackRange + (InGameAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+            inGameAttackRange = baseAttackRange + (baseAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         //Acessories buff
+        int equippedIndexHatsData = GetAccessorisEquippedIndex(_GameManager.HatsData);
+        int equippedIndexPantsData = GetAccessorisEquippedIndex(_GameManager.PantsData);
+        int equippedIndexShieldData = GetAccessorisEquippedIndex(_GameManager.ShieldData);
+        int equippedIndexSetfullData = GetAccessorisEquippedIndex(_GameManager.SetfullData);
+        UpdateSkinBuffData(equippedIndexHatsData, _GameManager.HatsData);
+        UpdateSkinBuffData(equippedIndexPantsData, _GameManager.PantsData);
+        UpdateSkinBuffData(equippedIndexShieldData, _GameManager.ShieldData);
+        UpdateSkinBuffData(equippedIndexSetfullData, _GameManager.SetfullData);
+    }
+    private void UpdateSkinBuffData(int index, AccessoriesData accessoriesData)
+    {
+        if (index != 99)
+        {
+            if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.AttackSpeed)
+            {
+                InGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
+            }
+            else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.MoveSpeed)
+            {
+                InGameMoveSpeed = baseMoveSpeed + (baseMoveSpeed * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
+            }
+            else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.Range)
+            {
+                InGameAttackRange = baseAttackRange + (baseAttackRange * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
+            }
+            else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.Gold)
+            {
+                InGameGoldEarn = baseGoldEarn + (baseGoldEarn * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
+            }
+
+        }
+    }
+    public int GetAccessorisEquippedIndex(AccessoriesData accessoriesData)
+    {
+        int index = 99;
+        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        {
+            if (accessoriesData.Accessories[i].Equipped)
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == 99)
+        {
+            //You don't have any Skin
+            //Debug.Log("You don't have any Skin");
+        }
+        return index;
     }
 }

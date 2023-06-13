@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5664541423272603125}
   - component: {fileID: 5490532882822711575}
   - component: {fileID: 5497005878420722843}
-  - component: {fileID: 7466210373072183905}
   m_Layer: 0
   m_Name: SwirlAuraGreen Range
   m_TagString: Untagged
@@ -604,7 +603,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 200
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -4903,19 +4902,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &7466210373072183905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5658898246157764797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbb5b08834875ab42b43a3d843b0f038, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 0}
 --- !u!1 &5659802413114234911
 GameObject:
   m_ObjectHideFlags: 0

@@ -78,8 +78,48 @@ public class BotAI : Character
         }
 
     }
-    public override void FixedUpdate() { 
+    public override void FixedUpdate()
+    {
+        DetectionCharacter(_GameManager.BotAIListEnable);
         base.FixedUpdate();
+    }
+    protected void DetectionCharacter(List<BotAI> botAIListEnable)
+    {
+        Player player = _GameManager.Player;
+        if (!player.IsDeath && ColorType != player.ColorType)
+        {
+            if (Constant.IsDes(gameObject.transform.position, player.gameObject.transform.position, InGameAttackRange))
+            {
+                IsTargerInRange = true;
+                Target = player.gameObject;
+            }
+            else
+            {
+                IsTargerInRange = false;
+            }
+        }
+        if (!IsTargerInRange)
+        {
+            for (int i = 0; i < botAIListEnable.Count; i++)
+            {
+
+                if (!botAIListEnable[i].IsDeath && botAIListEnable[i].gameObject != this.gameObject && ColorType != botAIListEnable[i].ColorType)
+                {
+                    if (Constant.IsDes(gameObject.transform.position, botAIListEnable[i].gameObject.transform.position, InGameAttackRange))
+                    {
+                        IsTargerInRange = true;
+                        Target = botAIListEnable[i].gameObject;
+                        break;
+                    }
+                }
+                else
+                {
+                    IsTargerInRange = false;
+                }
+            }
+        }
+        
+        //Debug.Log("DetectionCharacter:"+ IsTargerInRange);
     }
     public override void OnHit(float damage)
     {
