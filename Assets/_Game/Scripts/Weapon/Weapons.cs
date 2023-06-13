@@ -22,16 +22,20 @@ public class Weapons : MonoBehaviour
     float rotY;
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public GameObject NewFireVfx { get => newFireVfx; set => newFireVfx = value; }
-
+    private bool isCharacter =false;
+    Character character;
     // Update is called once per frame
     private void Start()
     {
-        _GameManager= _GameObject.GetComponent<Character>()._GameManager;
+        _GameManager= GameManager.Instance;
         _GameManager.VfxManager.GenerateFireVfx(this);
-
     }
     void Update()
     {
+        if (!character)
+        {
+            character = _GameObject.GetComponent<Character>();
+        }
         if (isFire)
         {
             if (weaponType == WeaponType.Knife || weaponType == WeaponType.Arrow)/////
@@ -54,7 +58,7 @@ public class Weapons : MonoBehaviour
                 rotY += Time.deltaTime * rotationSpeed;
                 transform.rotation = Quaternion.Euler(90, rotY, 0);
             }
-            Character character = _GameObject.GetComponent<Character>();
+        
             //Move Weapon with transform.....
             if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGameAttackRange))
             {
@@ -76,36 +80,33 @@ public class Weapons : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Character enemy = other.GetComponent<Character>();
-        Character characterRoot = _GameObject.GetComponent<Character>();
-        if (enemy && other.gameObject != _GameObject && enemy.ColorType != characterRoot.ColorType)
+        if (enemy && other.gameObject != _GameObject && enemy.ColorType != character.ColorType)
         {
             if (other.gameObject.GetComponent<Player>())
             {
                 enemy.OnHit(1f);
-                characterRoot.setExp(enemy.InGamneExp);
-                other.gameObject.GetComponent<Player>().KilledByName = characterRoot.CharacterName;
-                other.gameObject.GetComponent<Player>().KillerColorType = characterRoot.ColorType;
+                character.setExp(enemy.InGamneExp);
+                other.gameObject.GetComponent<Player>().KilledByName = character.CharacterName;
+                other.gameObject.GetComponent<Player>().KillerColorType = character.ColorType;
                 other.gameObject.GetComponent<Player>().SetEndGame();
             }
             else
             {
                 enemy.OnHit(1f);
-                characterRoot.setExp(enemy.InGamneExp);
+                character.setExp(enemy.InGamneExp);
                 if (_GameObject.GetComponent<Player>())
                 {
                     _GameObject.GetComponent<Player>().KilledCount++;
                 }
             }
             _GameManager.VfxManager.ShowBloodVfx(this);
-           
-            Character character = _GameObject.GetComponent<Character>();
+  
             ReleaseWeapon(character);
         }
         if (other.GetComponent<TransparentObstacle>())
         {
             //Debug.Log("Obstacle");
             this.isFire = false;
-            Character character = _GameObject.GetComponent<Character>();
             character.Weapons.Remove(this);
             character.ShowWeaponIndex((int)WeaponType);
             character.IsAttacking = false;

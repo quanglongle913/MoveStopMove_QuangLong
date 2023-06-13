@@ -193,8 +193,8 @@ public class Character : MonoBehaviour
     {
         for (int i = 0; i < colliders.Length; i++) 
         {
-
-            if (!colliders[i].GetComponent<Character>().IsDeath && colliders[i].gameObject != this.gameObject && colorType != colliders[i].GetComponent<Character>().colorType)
+            Character character = colliders[i].GetComponent<Character>();
+            if (!character.IsDeath && colliders[i].gameObject != this.gameObject && colorType != character.colorType)
             {
                 IsTargerInRange = true;
                 Target = colliders[i].gameObject;

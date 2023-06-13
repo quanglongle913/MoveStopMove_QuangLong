@@ -28,12 +28,16 @@ public class GiftBox : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Character character = other.GetComponent<Character>();
-        if (!character.IsBuffed)
+        if (other.GetComponent<Character>())
         {
-            _GameManager.VfxManager.CharacterBufffCountDown(character, randomBuff);
-            _GameManager.ListGiftBox.Remove(gameObject.GetComponent<GiftBox>());
-            gameObject.GetComponent<PooledObject>().Release();
+            Character character = other.GetComponent<Character>();
+            if (!character.IsBuffed)
+            {
+                _GameManager.VfxManager.CharacterBufffCountDown(character, randomBuff);
+                _GameManager.ListGiftBox.Remove(gameObject.GetComponent<GiftBox>());
+                gameObject.GetComponent<PooledObject>().Release();
+            }
+            
         }
     }
     private void OnDestroy()
