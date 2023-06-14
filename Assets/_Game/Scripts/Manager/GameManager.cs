@@ -12,7 +12,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private VfxManager vfxManager;
     [SerializeField] private Player player;
     [SerializeField] private Transform playerStartPoint;
-
+    [SerializeField] Camera mainCam;
+    [SerializeField] Camera radarCam;
     [Header("BotAI: ")]
     [Tooltip("Number Bot in Map < Bot in Game")]
     [SerializeField] private int numberOfBotsOnMap;
@@ -83,6 +84,8 @@ public class GameManager : Singleton<GameManager>
     public WeaponSpawner WeaponSpawner { get => weaponSpawner; set => weaponSpawner = value; }
     public SoundManager SoundManager { get => soundManager; set => soundManager = value; }
     public VfxManager VfxManager { get => vfxManager; set => vfxManager = value; }
+    public Camera MainCam { get => mainCam; set => mainCam = value; }
+    public Camera RadarCam { get => radarCam; set => radarCam = value; }
 
     private void Start()
     {
@@ -101,7 +104,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void OnInit()
     {
-        StartCoroutine(loading());
+        StartCoroutine(Loading());
         //Debug.Log("" + gameState);
     }
     private void Update()
@@ -115,7 +118,7 @@ public class GameManager : Singleton<GameManager>
             if (BotAIListEnable.Count == 0 && BotAIListStack.Count ==0)
             {
                 //Player Won!.....
-                SoundManager.EndWinSoundEffect.Play();
+                SoundManager.PlayEndWinSoundEffect();
                 Player.SetEndGame();
                 uIManager.setEndGame(true);
                 Player.FloatingJoystick.OnReset();
@@ -151,7 +154,7 @@ public class GameManager : Singleton<GameManager>
         
 
     }
-    IEnumerator loading()
+    IEnumerator Loading()
     {
         if (botAIListEnable.Count > 0)
         {

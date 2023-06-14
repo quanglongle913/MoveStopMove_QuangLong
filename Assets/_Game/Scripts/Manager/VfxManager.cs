@@ -55,24 +55,21 @@ public class VfxManager : MonoBehaviour
     {
         if (!character.IsBuffed)
         {
-            _GameManager.SoundManager.SizeUpSoundEffect[4].Play();
+            _GameManager.SoundManager.PlaySizeUpSoundEffect();
             if (buffDataInGiftBox[randomBuff].BuffType == BuffType.AttackSpeed)
             {
                 StartCoroutine(Waiter(character.InGameAttackSpeed, buffDataInGiftBox[randomBuff], character));
                 character.InGameAttackSpeed = character.InGameAttackSpeed + (character.InGameAttackSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
-                //TODO Effect BUff
             }
             if (buffDataInGiftBox[randomBuff].BuffType == BuffType.MoveSpeed)
             {
                 StartCoroutine(Waiter(character.InGameMoveSpeed, buffDataInGiftBox[randomBuff], character));
                 character.InGameMoveSpeed = character.InGameMoveSpeed + (character.InGameMoveSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
-                //TODO Effect BUff
             }
             if (buffDataInGiftBox[randomBuff].BuffType == BuffType.Range)
             {
                 StartCoroutine(Waiter(character.InGameAttackRange, buffDataInGiftBox[randomBuff], character));
                 character.InGameAttackRange = character.InGameAttackRange + (character.InGameAttackRange * buffDataInGiftBox[randomBuff].BuffIndex / 100);
-                //TODO Effect BUff
             }
         }
         

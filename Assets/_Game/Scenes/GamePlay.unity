@@ -1312,6 +1312,8 @@ MonoBehaviour:
   vfxManager: {fileID: 1334219256}
   player: {fileID: 1678857062}
   playerStartPoint: {fileID: 105759265}
+  mainCam: {fileID: 303999681}
+  radarCam: {fileID: 1298030181}
   numberOfBotsOnMap: 20
   numberOfBotsInGameLvel: 30
   giftBoxNumber: 10
@@ -20300,7 +20302,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenBoundOffset: 0.9
-  mainCam: {fileID: 303999681}
   radarCam: {fileID: 1298030181}
   player: {fileID: 1678857054}
   poolMaster: {fileID: 758027350}

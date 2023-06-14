@@ -14,15 +14,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource btnClickSoundEffect;
     [SerializeField] private AudioSource loseSoundEffect;
     public List<AudioSource> AudioSource { get => audioSource; set => audioSource = value; }
-    public List<AudioSource> WeaponThrowSoundEffect { get => weaponThrowSoundEffect; set => weaponThrowSoundEffect = value; }
-    public List<AudioSource> WeaponHitSoundEffect { get => weaponHitSoundEffect; set => weaponHitSoundEffect = value; }
-    public List<AudioSource> CountDownSoundEffect { get => countDownSoundEffect; set => countDownSoundEffect = value; }
-    public List<AudioSource> DeadSoundEffect { get => deadSoundEffect; set => deadSoundEffect = value; }
-    public List<AudioSource> SizeUpSoundEffect { get => sizeUpSoundEffect; set => sizeUpSoundEffect = value; }
-    public AudioSource BtnClickSoundEffect { get => btnClickSoundEffect; set => btnClickSoundEffect = value; }
-    public AudioSource EndWinSoundEffect { get => endWinSoundEffect; set => endWinSoundEffect = value; }
-    public AudioSource LoseSoundEffect { get => loseSoundEffect; set => loseSoundEffect = value; }
-
     private void Start()
     {
         audioSource = new List<AudioSource>();
@@ -30,7 +21,7 @@ public class SoundManager : MonoBehaviour
         addSoundEffect(weaponHitSoundEffect);
         addSoundEffect(countDownSoundEffect);
         addSoundEffect(deadSoundEffect);
-        addSoundEffect(SizeUpSoundEffect);
+        addSoundEffect(sizeUpSoundEffect);
         audioSource.Add(endWinSoundEffect);
         audioSource.Add(btnClickSoundEffect);
     }
@@ -77,6 +68,37 @@ public class SoundManager : MonoBehaviour
     }
     public void PlaySoundBtnClick()
     {
-        BtnClickSoundEffect.Play();
+        btnClickSoundEffect.Play();
+    }
+    public void PlayWeaponThrowSoundEffect()
+    {
+        int randomNum = UnityEngine.Random.Range(0, weaponThrowSoundEffect.Count);
+        weaponThrowSoundEffect[randomNum].Play();
+    }
+    public void PlayDeadSoundEffect()
+    {
+        int randomNum = UnityEngine.Random.Range(0, deadSoundEffect.Count);
+        deadSoundEffect[randomNum].Play();
+    }
+    public void PlayWeaponHitSoundEffect()
+    {
+        int randomNum = UnityEngine.Random.Range(0, weaponHitSoundEffect.Count);
+        weaponHitSoundEffect[randomNum].Play();
+    }
+    public void PlaySizeUpSoundEffect()
+    {
+        sizeUpSoundEffect[4].Play();
+    }
+    public void PlayEndWinSoundEffect()
+    {
+        endWinSoundEffect.Play();
+    }
+    public void PlayLoseSoundEffect()
+    {
+        loseSoundEffect.Play();
+    }
+    public void PlayCountDownSoundEffect(int index)
+    {
+        countDownSoundEffect[index].Play();
     }
 }

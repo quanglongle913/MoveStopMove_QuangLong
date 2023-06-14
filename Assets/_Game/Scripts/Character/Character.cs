@@ -146,8 +146,8 @@ public class Character : MonoBehaviour
     public virtual void Attack() 
     {   
         //SoundEffect
-        int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.WeaponThrowSoundEffect.Count);
-        _GameManager.SoundManager.WeaponThrowSoundEffect[randomNum].Play();
+        
+        _GameManager.SoundManager.PlayWeaponThrowSoundEffect();
 
         ChangeAnim("Attack");
         IsAttacking = true;
@@ -206,6 +206,17 @@ public class Character : MonoBehaviour
             }
         }
     }
+    public bool InCamera(Camera camera)
+    {
+        bool check=false;
+        Vector3 viewPos = camera.WorldToViewportPoint(gameObject.transform.position);
+        if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && (viewPos.z > 0))
+        {
+            // Your object is in the range of the camera, you can apply your behaviour(.)
+            check =true;
+        }
+        return check;
+    }
     public virtual void OnDespawn()
     {
 
@@ -214,8 +225,8 @@ public class Character : MonoBehaviour
     {
         //ChangeAnim("Dead");
         //Invoke(nameof(OnDespawn), 2f);
-        int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.DeadSoundEffect.Count);
-        _GameManager.SoundManager.DeadSoundEffect[randomNum].Play();
+        _GameManager.SoundManager.PlayDeadSoundEffect();
+
     }
     private void OnDrawGizmos()
     {
@@ -248,8 +259,7 @@ public class Character : MonoBehaviour
 
         if (!IsDeath)
         {
-            int randomNum = UnityEngine.Random.Range(0, _GameManager.SoundManager.WeaponHitSoundEffect.Count);
-            _GameManager.SoundManager.WeaponHitSoundEffect[randomNum].Play();
+            _GameManager.SoundManager.PlayWeaponHitSoundEffect();
 
             hp -= damage;
             if (IsDeath)

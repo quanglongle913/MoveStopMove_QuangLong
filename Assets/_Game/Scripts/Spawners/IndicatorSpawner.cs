@@ -11,13 +11,7 @@ public class IndicatorSpawner : PooledObject
     [Range(0.5f, 0.9f)]
     [Tooltip("Distance offset of the indicators from the centre of the screen")]
     [SerializeField] private float screenBoundOffset = 0.9f;
-
-    private Vector3 screenCentre;
-    private Vector3 screenBounds;
-
-    [SerializeField] Camera mainCam;
-    [SerializeField] Camera radarCam;
-    [SerializeField] GameObject player;
+    //[SerializeField] GameObject player;
     [SerializeField] GameObject poolMaster;
     [SerializeField] int total;
     [SerializeField] private float rangeDetection;
@@ -27,63 +21,68 @@ public class IndicatorSpawner : PooledObject
     [Header("----------CharacterInfo------------- ")]
     [SerializeField] private ObjectPool poolObjectCharacterInfo;
     [SerializeField] private float axisY;
-    private GameManager gameManager;
+    private GameManager _GameManager;
+    private Camera mainCam;
+    private Camera radarCam;
+    private Vector3 screenCentre;
+    private Vector3 screenBounds;
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameManager.Instance;
-        //
+        _GameManager = GameManager.Instance;
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
+        mainCam = _GameManager.MainCam;
+        radarCam= _GameManager.RadarCam;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
 
-        if (!gameManager.IsInitIndicator && gameManager.TotalBotAI_InGame > 0)
+        if (!_GameManager.IsInitIndicator && _GameManager.TotalBotAI_InGame > 0)
         {
-            total = gameManager.TotalBotAI_InGame;
+            total = _GameManager.TotalBotAI_InGame;
             GenerateDetection(total);
             GenerateCharacterInfo(total + 1);
-            gameManager.IsInitIndicator = true;
-            gameManager.IsInit = true; //hoan tat IsInit
+            _GameManager.IsInitIndicator = true;
+            _GameManager.IsInit = true; //hoan tat IsInit
         }
-        if (gameManager.IsInitIndicator && gameManager.GameState == GameState.InGame)
+        if (_GameManager.IsInitIndicator && _GameManager.GameState == GameState.InGame)
         {
-            if (gameManager.BotAIListEnable.Count > 0)
+            if (_GameManager.BotAIListEnable.Count > 0)
             {
                 Vector3 newPos = new Vector3(0, 0, -rangeDetection);
                 if (radarCam.transform.localPosition != newPos)
                 {
                     radarCam.transform.localPosition = newPos;
                 }
-                if (gameManager != null && gameManager.IndicatorList.Count > 0)
+                if (_GameManager != null && _GameManager.IndicatorList.Count > 0)
                 {
-                    GenerateRadar(mainCam, radarCam, gameManager, player);
+                    GenerateIndicator(mainCam, radarCam, _GameManager.Player.gameObject);
 
-                    GenerateCharacterInfoPlayer(mainCam, gameManager, player);
+                    GenerateCharacterInfoPlayer(mainCam, _GameManager.Player);
                 }
-                if (gameManager.CharacterInfoList.Count + 1 > gameManager.BotAIListEnable.Count)
+                if (_GameManager.CharacterInfoList.Count + 1 > _GameManager.BotAIListEnable.Count)
                 {
-                    for (int i = gameManager.BotAIListEnable.Count + 1; i < gameManager.CharacterInfoList.Count; i++)
+                    for (int i = _GameManager.BotAIListEnable.Count + 1; i < _GameManager.CharacterInfoList.Count; i++)
                     {
-                        gameManager.CharacterInfoList[i].gameObject.SetActive(false);
+                        _GameManager.CharacterInfoList[i].gameObject.SetActive(false);
                     }
                 }
-                if (gameManager.IndicatorList.Count > gameManager.BotAIListEnable.Count)
+                if (_GameManager.IndicatorList.Count > _GameManager.BotAIListEnable.Count)
                 {
-                    for (int i = gameManager.BotAIListEnable.Count; i < gameManager.IndicatorList.Count; i++)
+                    for (int i = _GameManager.BotAIListEnable.Count; i < _GameManager.IndicatorList.Count; i++)
                     {
-                        gameManager.IndicatorList[i].gameObject.SetActive(false);
+                        _GameManager.IndicatorList[i].gameObject.SetActive(false);
                     }
                 }
             }
             else
             {
-                for (int i = 1; i < gameManager.CharacterInfoList.Count; i++)
+                for (int i = 1; i < _GameManager.CharacterInfoList.Count; i++)
                 {
-                    gameManager.CharacterInfoList[i].gameObject.SetActive(false);
+                    _GameManager.CharacterInfoList[i].gameObject.SetActive(false);
                 }
             }
 
@@ -95,15 +94,15 @@ public class IndicatorSpawner : PooledObject
         for (int i = 0; i < total; i++)
         {
             PooledObject DetectionObject = Spawner(poolObject, poolMaster);
-            gameManager.IndicatorList.Add(DetectionObject.GetComponent<Indicator>());
+            _GameManager.IndicatorList.Add(DetectionObject.GetComponent<Indicator>());
             //Debug.Log("Indicator:" + i);
         }
     }
     private void ClearnDetection()
     {
-        for (int i = 0; i < gameManager.IndicatorList.Count; i++)
+        for (int i = 0; i < _GameManager.IndicatorList.Count; i++)
         {
-            gameManager.IndicatorList[i].GetComponent<PooledObject>().Release();
+            _GameManager.IndicatorList[i].GetComponent<PooledObject>().Release();
         }
     }
     private void GenerateCharacterInfo(int total)
@@ -112,41 +111,35 @@ public class IndicatorSpawner : PooledObject
         for (int i = 0; i < total; i++)
         {
             PooledObject CharacterInfoObject = Spawner(poolObjectCharacterInfo, poolMaster);
-            gameManager.CharacterInfoList.Add(CharacterInfoObject.GetComponent<CharacterInfo>());
+            _GameManager.CharacterInfoList.Add(CharacterInfoObject.GetComponent<CharacterInfo>());
         }
     }
     private void ClearnCharacterInfo()
     {
-        for (int i = 0; i < gameManager.CharacterInfoList.Count; i++)
+        for (int i = 0; i < _GameManager.CharacterInfoList.Count; i++)
         {
-            gameManager.CharacterInfoList[i].GetComponent<PooledObject>().Release();
+            _GameManager.CharacterInfoList[i].GetComponent<PooledObject>().Release();
         }
     }
-    private void GenerateCharacterInfoPlayer(Camera mainCam, GameManager gameManager, GameObject player)
+    private void GenerateCharacterInfoPlayer(Camera mainCam, Player player)
     {
         if (mainCam != null)
         {
-            showCharacterInfoPlayer(mainCam, gameManager, player);
-            showCharacterInfoEnemy(mainCam, gameManager);
+            ShowCharacterInfoPlayer(mainCam, player);
+            ShowCharacterInfoEnemy(mainCam);
         }
     }
-    private void showCharacterInfoPlayer(Camera mainCam, GameManager gameManager, GameObject player)
+    private void ShowCharacterInfoPlayer(Camera mainCam, Player player)
     {
-        Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.transform.position);
-        Vector3 viewPosCharacterInfo = mainCam.WorldToScreenPoint(player.transform.position);
-        CharacterInfo characterInfo = gameManager.CharacterInfoList[0];
-        
-        if (viewPosPlayer.x >= 0 && viewPosPlayer.x <= 1 && viewPosPlayer.y >= 0 && viewPosPlayer.y <= 1 && (viewPosPlayer.z > 0))
-        {// Your object is in the range of the mainCam, you can apply your behaviour(.)
-            //characterInfo.MainCam = mainCam;
-            //characterInfo.Target = player;
-            Character character = player.GetComponent<Character>();
-            characterInfo.setCharacterName(character.CharacterName);
-            characterInfo.setCharacterLevel("" + character.CharacterLevel);
-            characterInfo.ChangeColor(character.ColorType, character.ColorData);
+        Vector3 viewPosCharacterInfo = mainCam.WorldToScreenPoint(player.gameObject.transform.position);
+        CharacterInfo characterInfo = _GameManager.CharacterInfoList[0];
+        if (player.InCamera(mainCam))
+        {
+            characterInfo.setCharacterName(player.CharacterName);
+            characterInfo.setCharacterLevel("" + player.CharacterLevel);
+            characterInfo.ChangeColor(player.ColorType, player.ColorData);
             characterInfo.gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
             characterInfo.gameObject.SetActive(true);
-
         }
         else
         {
@@ -154,20 +147,15 @@ public class IndicatorSpawner : PooledObject
         }
     }
     
-    private void showCharacterInfoEnemy(Camera mainCam, GameManager gameManager)
+    private void ShowCharacterInfoEnemy(Camera mainCam)
     {
 
-        for (int i = 0; i < gameManager.BotAIListEnable.Count; i++)
+        for (int i = 0; i < _GameManager.BotAIListEnable.Count; i++)
         {
-            Vector3 viewPos = mainCam.WorldToViewportPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
-            Vector3 viewPosCharacterInfoBotAI = mainCam.WorldToScreenPoint(gameManager.BotAIListEnable[i].gameObject.transform.position);
-            CharacterInfo characterInfo = gameManager.CharacterInfoList[i + 1];
-            // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
-            if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && (viewPos.z > 0))
-            {
-                //characterInfo.MainCam = mainCam;
-                //characterInfo.Target = gameManager.BotAIListEnable[i].gameObject;
-                Character character = gameManager.BotAIListEnable[i].gameObject.GetComponent<Character>();
+            CharacterInfo characterInfo = _GameManager.CharacterInfoList[i + 1];
+            if (_GameManager.BotAIListEnable[i].InCamera(_GameManager.MainCam)) {
+                Vector3 viewPosCharacterInfoBotAI = mainCam.WorldToScreenPoint(_GameManager.BotAIListEnable[i].gameObject.transform.position);
+                Character character = _GameManager.BotAIListEnable[i].gameObject.GetComponent<Character>();
                 characterInfo.setCharacterName(character.CharacterName);
                 characterInfo.setCharacterLevel("" + character.CharacterLevel);
                 characterInfo.ChangeColor(character.ColorType, character.ColorData);
@@ -187,42 +175,30 @@ public class IndicatorSpawner : PooledObject
                 characterInfo.gameObject.SetActive(false);
 
             }
+
         }
     }
-    private void GenerateRadar(Camera mainCam, Camera radarCam, GameManager gameManager, GameObject player)
+    private void GenerateIndicator(Camera mainCam, Camera radarCam, GameObject player)
     {
-        if (mainCam != null && gameManager.BotAIListEnable.Count>0)
+        if (mainCam != null && _GameManager.BotAIListEnable.Count>0)
         {
-            //Debug.Log("BotAI:" + gameManager.BotAIListEnable.Count);
-            for (int i = 0; i < gameManager.BotAIListEnable.Count; i++)
+            for (int i = 0; i < _GameManager.BotAIListEnable.Count; i++)
             {
-                Indicator indicator = gameManager.IndicatorList[i];
-                GameObject target = gameManager.BotAIListEnable[i].gameObject;
-
-                //indicator.Player = player;
-                //indicator.Target = gameManager.BotAIListEnable[i].gameObject;
-                //indicator.MainCam = mainCam;
-                //indicator.RadarCam = radarCam;
-
-                Vector3 viewPos = mainCam.WorldToViewportPoint(target.transform.position);
-                Vector3 viewPosRadar = radarCam.WorldToViewportPoint(target.transform.position);
-
-                //Debug.Log("target is viewPos.x:" + viewPos.x + " viewPos.y:" + viewPos.y + " viewPos.z:" + viewPos.z);
-                if (viewPosRadar.x >= 0 && viewPosRadar.x <= 1 && viewPosRadar.y >= 0 && viewPosRadar.y <= 1 && (viewPosRadar.z > 0))
+                Indicator indicator = _GameManager.IndicatorList[i];
+                if (_GameManager.BotAIListEnable[i].InCamera(radarCam))
                 {
-                    // Your object is in the range of the cameraRadar, you can apply your behaviour(.)
-                    if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && (viewPos.z > 0))
+                    if (_GameManager.BotAIListEnable[i].InCamera(mainCam))
                     {
-                        // Your object is in the range of the camera, you can apply your behaviour (.)
                         indicator.gameObject.SetActive(false);
-                        //TODO  CharacterInfo set active true
                     }
                     else
                     {
-                        indicator.updateData(gameManager.BotAIListEnable[i].ColorType, gameManager.BotAIListEnable[i].CharacterLevel);
-                        indicator.gameObject.transform.position = OffScreenIndicatorCore.GetScreenPosition(mainCam, target,screenCentre,screenBounds);
+                        GameObject target = _GameManager.BotAIListEnable[i].gameObject;
+                        indicator.updateData(_GameManager.BotAIListEnable[i].ColorType, _GameManager.BotAIListEnable[i].CharacterLevel);
+                        indicator.gameObject.transform.position = OffScreenIndicatorCore.GetScreenPosition(mainCam, target ,screenCentre,screenBounds);
                         indicator.gameObject.SetActive(true);
                         Vector3 viewPosPlayer = mainCam.WorldToViewportPoint(player.gameObject.transform.position);
+                        Vector3 viewPos = mainCam.WorldToViewportPoint(target.transform.position);
                         Vector2 A = new Vector2(viewPos.x, viewPos.y);
                         Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
 

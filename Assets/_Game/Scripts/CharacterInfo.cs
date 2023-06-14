@@ -17,26 +17,6 @@ public class CharacterInfo : MonoBehaviour
 
     public Camera MainCam { get => mainCam; set => mainCam = value; }
     public GameObject Target { get => target; set => target = value; }
-
-   /* public void FixedUpdate()
-    {
-        if (gameObject.activeSelf)
-        {
-            Character character = target.GetComponent<Character>();
-            setCharacterName(character.CharacterName);
-            setCharacterLevel("" + character.CharacterLevel);
-            ChangeColor(character.ColorType, character.ColorData);
-            if (character.ColorType == ColorType.Yellow)
-            {
-                CharacterLevel.color = Color.black;
-            }
-            else
-            {
-                CharacterLevel.color = Color.white;
-            }
-        }
-    }*/
-
     public void ChangeColor(ColorType colorType, ColorData colorData)
     {
         imageLevelBG.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;

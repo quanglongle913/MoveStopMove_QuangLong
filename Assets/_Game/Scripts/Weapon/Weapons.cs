@@ -11,7 +11,7 @@ public class Weapons : MonoBehaviour
     [SerializeField] private WeaponType weaponType;
     [SerializeField] private GameObject FireVfx;
     
-    public GameObject _GameObject;
+    private GameObject _gameObject;
     public float rotationSpeed;
     public bool isFire;
     public Vector3 target;
@@ -22,6 +22,8 @@ public class Weapons : MonoBehaviour
     float rotY;
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public GameObject NewFireVfx { get => newFireVfx; set => newFireVfx = value; }
+    public GameObject _GameObject { get => _gameObject; set => _gameObject = value; }
+
     private bool isCharacter =false;
     Character character;
     // Update is called once per frame

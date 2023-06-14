@@ -1,4 +1,5 @@
 using DG.Tweening.Core.Easing;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -322,37 +323,44 @@ public class UIManager : MonoBehaviour
     IEnumerator Waiter(TMPro.TextMeshProUGUI text_CountDown)
     {
         _GameManager.SoundManager.OnVolumeCountDownSoundEffect();
-
         text_CountDown.text = "5";
-        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[0], _GameManager.Player.IsDeath);
-        yield return new WaitForSeconds(1f);
-        text_CountDown.text = "4";
-        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[1], _GameManager.Player.IsDeath);
-        yield return new WaitForSeconds(1f);
-        text_CountDown.text = "3";
-        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[0], _GameManager.Player.IsDeath);
-        yield return new WaitForSeconds(1f);
-        text_CountDown.text = "2";
-        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[1], _GameManager.Player.IsDeath);
-        yield return new WaitForSeconds(1f);
-        text_CountDown.text = "1";
-        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[0], _GameManager.Player.IsDeath);
-        yield return new WaitForSeconds(1f);
-        text_CountDown.text = "0";
-        PlaySoundEffect(_GameManager.SoundManager.CountDownSoundEffect[2],_GameManager.Player.IsDeath);
-        PlaySoundEffect(_GameManager.SoundManager.LoseSoundEffect, _GameManager.Player.IsDeath);
         if (_GameManager.Player.IsDeath)
         {
+            _GameManager.SoundManager.PlayCountDownSoundEffect(0);
+        }
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "4";
+        if (_GameManager.Player.IsDeath)
+        {
+            _GameManager.SoundManager.PlayCountDownSoundEffect(1);
+        }
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "3";
+        if (_GameManager.Player.IsDeath)
+        {
+            _GameManager.SoundManager.PlayCountDownSoundEffect(0);
+        }
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "2";
+        if (_GameManager.Player.IsDeath)
+        {
+            _GameManager.SoundManager.PlayCountDownSoundEffect(1);
+        }
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "1";
+        if (_GameManager.Player.IsDeath)
+        {
+            _GameManager.SoundManager.PlayCountDownSoundEffect(0);
+        }
+        yield return new WaitForSeconds(1f);
+        text_CountDown.text = "0";
+        if (_GameManager.Player.IsDeath)
+        {
+            _GameManager.SoundManager.PlayCountDownSoundEffect(2);
+            _GameManager.SoundManager.PlayLoseSoundEffect();
             Show_Popup_Countine(false);
         }
        
-    }
-    public void PlaySoundEffect(AudioSource audioSource, bool isBool)
-    {
-        if (isBool)
-        {
-            audioSource.Play();
-        }
     }
     //================GAME MENU SETTING ======================
     public void ShowPopupGameMenuSetting()
@@ -379,7 +387,6 @@ public class UIManager : MonoBehaviour
     public void Hide_Popup_WeaponShop()
     {
         popup_GameMenuChild.SetActive(true);
-        //gameManager.Player.GetComponent<Character>().ShowWeaponIndex(PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0));
         _GameManager.Player.gameObject.SetActive(true);
         HideAllWeaponsInWeaponShopUI();
         popup_WeaponShop.SetActive(false);

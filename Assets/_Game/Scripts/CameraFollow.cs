@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    [SerializeField] private float xAxis, yAxis, zAxis,axisX, axisY, axisZ;
+    [SerializeField] private float xAxis, yAxis = 21f, zAxis = -21f, axisX, axisY, axisZ;
     private GameManager gameManager;
 
 
