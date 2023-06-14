@@ -55,7 +55,10 @@ public class VfxManager : MonoBehaviour
     {
         if (!character.IsBuffed)
         {
-            _GameManager.SoundManager.PlaySizeUpSoundEffect();
+            if (character.InCamera(_GameManager.MainCam))
+            {
+                _GameManager.SoundManager.PlaySizeUpSoundEffect();
+            }
             if (buffDataInGiftBox[randomBuff].BuffType == BuffType.AttackSpeed)
             {
                 StartCoroutine(Waiter(character.InGameAttackSpeed, buffDataInGiftBox[randomBuff], character));

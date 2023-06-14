@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.TextCore.Text;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviour
@@ -145,10 +146,10 @@ public class Character : MonoBehaviour
     }
     public virtual void Attack() 
     {   
-        //SoundEffect
-        
-        _GameManager.SoundManager.PlayWeaponThrowSoundEffect();
-
+        if (InCamera(_GameManager.MainCam))
+        {
+            _GameManager.SoundManager.PlayWeaponThrowSoundEffect();
+        }
         ChangeAnim("Attack");
         IsAttacking = true;
         HideAllWeaponsInHand();
@@ -225,8 +226,10 @@ public class Character : MonoBehaviour
     {
         //ChangeAnim("Dead");
         //Invoke(nameof(OnDespawn), 2f);
-        _GameManager.SoundManager.PlayDeadSoundEffect();
-
+        if (InCamera(_GameManager.MainCam))
+        {
+            _GameManager.SoundManager.PlayDeadSoundEffect();
+        }
     }
     private void OnDrawGizmos()
     {
@@ -259,7 +262,10 @@ public class Character : MonoBehaviour
 
         if (!IsDeath)
         {
-            _GameManager.SoundManager.PlayWeaponHitSoundEffect();
+            if (InCamera(_GameManager.MainCam))
+            {
+                _GameManager.SoundManager.PlayWeaponHitSoundEffect();
+            }
 
             hp -= damage;
             if (IsDeath)
