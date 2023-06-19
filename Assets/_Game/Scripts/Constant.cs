@@ -19,6 +19,7 @@ public class Constant
     public static string PLAYER_ZOMBIEDAY = "PlayerZombieDay";
 
     public static string GAME_STATE = "GameState";
+    public static string GAME_MODE = "GameMode";
     public static string LAYOUT_WALL = "Wall";
     public static string LAYOUT_CHARACTER = "Character";
 

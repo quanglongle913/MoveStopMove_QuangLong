@@ -124,6 +124,10 @@ public class Player : Character
                 hitcollider.GetComponent<BotAI>().CircleAttack.SetActive(enable);
                 //target = hitcollider.gameObject;
             }
+            if (hitcollider.GetComponent<AnimalAI>())
+            {
+                hitcollider.GetComponent<AnimalAI>().CircleAttack.SetActive(enable);
+            }
         }
     }
     public void ChangeState(IState<Player> state)

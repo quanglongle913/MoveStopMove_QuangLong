@@ -154,7 +154,8 @@ public class Character : MonoBehaviour
         IsAttacking = true;
         HideAllWeaponsInHand();
         Weapons weaponAttack = Weapons[0];
-        weaponAttack.transform.position = WeaponRoot.transform.position;
+        weaponAttack.transform.position = new Vector3(WeaponRoot.transform.position.x,WeaponRoot.transform.position.y,WeaponRoot.transform.position.z);
+       
         weaponAttack._GameObject = gameObject;
         weaponAttack.WeaponType = this.WeaponType;
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
@@ -194,17 +195,35 @@ public class Character : MonoBehaviour
     {
         for (int i = 0; i < colliders.Length; i++) 
         {
-            Character character = colliders[i].GetComponent<Character>();
-            if (!character.IsDeath && colliders[i].gameObject != this.gameObject && colorType != character.colorType)
+            if (colliders[i].GetComponent<Character>())
             {
-                IsTargerInRange = true;
-                Target = colliders[i].gameObject;
-                break;
+                Character character = colliders[i].GetComponent<Character>();
+                if (!character.IsDeath && colliders[i].gameObject != this.gameObject && colorType != character.colorType)
+                {
+                    IsTargerInRange = true;
+                    Target = colliders[i].gameObject;
+                    break;
+                }
+                else
+                {
+                    IsTargerInRange = false;
+                }
             }
-            else
+            else if (colliders[i].GetComponent<AnimalAI>())
             {
-                IsTargerInRange = false;
+                AnimalAI animalAI = colliders[i].GetComponent<AnimalAI>();
+                if (!animalAI.IsDeath && colliders[i].gameObject != this.gameObject)
+                {
+                    IsTargerInRange = true;
+                    Target = colliders[i].gameObject;
+                    break;
+                }
+                else
+                {
+                    IsTargerInRange = false;
+                }
             }
+           
         }
     }
     public bool InCamera(Camera camera)

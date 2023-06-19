@@ -114,6 +114,14 @@ public class Weapons : MonoBehaviour
             character.IsAttacking = false;
             StartCoroutine(Waiter());
         }
+        if (other.GetComponent<AnimalAI>()) 
+        {
+            other.GetComponent<AnimalAI>().OnHit(1f);
+            //character.setExp(other.GetComponent<AnimalAI>().InGamneExp);
+            _GameManager.VfxManager.ShowBloodVfx(this);
+
+            ReleaseWeapon(character);
+        }
     }
     IEnumerator Waiter()
     {

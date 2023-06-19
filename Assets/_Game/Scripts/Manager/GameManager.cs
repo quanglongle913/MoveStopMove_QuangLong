@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private GameState gameState;
+
     [SerializeField] private UIManager uIManager;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private VfxManager vfxManager;
@@ -36,8 +36,10 @@ public class GameManager : Singleton<GameManager>
     [Header("Data Manager: ")]
     [SerializeField] private SaveData saveData;
     [SerializeField] private ZoneData zoneData;
-    [SerializeField] private List<GameObject> obstacles;
+    //[SerializeField] private List<GameObject> obstacles;
 
+    private GameState gameState;
+    private GameMode gameMode;
 
     private List<Indicator> indicatorList;
     private List<CharacterInfo> characterInfoList;
@@ -52,7 +54,7 @@ public class GameManager : Singleton<GameManager>
     public int LevelExpAverage;
     public List<GameObject> newBloodsVfx;
     public List<GameObject> loodsVfx;
-    public List<GameObject> Obstacles { get => obstacles; set => obstacles = value; }
+    //public List<GameObject> Obstacles { get => obstacles; set => obstacles = value; }
     public List<BotAI> BotAIListEnable { get => botAIListEnable; set => botAIListEnable = value; }
     public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
@@ -86,6 +88,7 @@ public class GameManager : Singleton<GameManager>
     public VfxManager VfxManager { get => vfxManager; set => vfxManager = value; }
     public Camera MainCam { get => mainCam; set => mainCam = value; }
     public Camera RadarCam { get => radarCam; set => radarCam = value; }
+    public GameMode GameMode { get => gameMode; set => gameMode = value; }
 
     private void Start()
     {
@@ -94,12 +97,11 @@ public class GameManager : Singleton<GameManager>
         indicatorList = new List<Indicator>();
         characterInfoList = new List<CharacterInfo>();
         listGiftBox = new List<GiftBox>();
-
         newBloodsVfx = new List<GameObject>();
         SaveData.ReadJsonFile(); // read Json Data Bot
         OnInit();
         //TEST
-        obstacles= GetObstacles();
+        //obstacles= GetObstacles();
         //Debug.Log("" + gameState);
     }
     public void OnInit()
