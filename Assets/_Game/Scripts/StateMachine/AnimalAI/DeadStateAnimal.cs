@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class DeadStateAnimal : IState<AnimalAI>
 {
+    float timer;
     public void OnEnter(AnimalAI t)
     {
         t.ChangeAnim("Dead");
+        timer = 0;
     }
 
     public void OnExecute(AnimalAI t)
     {
-        if (t._GameManager.GameState == GameState.InGame)
+        timer += Time.deltaTime;
+        if (timer > 1.5f)
         {
-
-        }
-        else
-        {
-            t.ChangeState(new IdleStateAnimal());
+            t.OnDespawn();
         }
     }
 

@@ -7,7 +7,7 @@ public class IdleStateAnimal : IState<AnimalAI>
     float timer;
     public void OnEnter(AnimalAI t)
     {
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
         t.ChangeAnim("Idle");
         timer = 2f;
     }

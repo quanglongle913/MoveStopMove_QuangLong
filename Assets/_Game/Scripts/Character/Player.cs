@@ -174,7 +174,7 @@ public class Player : Character
             PlayerPrefs.SetInt(Constant.BEST_RANK, Rank);
             PlayerPrefs.Save();
         }
-        _GameManager.ZoneData.PlayerZoneExp += _GameManager.NumberOfBotsInGameLvel - Rank + 1;
+        _GameManager.ZoneData.PlayerZoneExp += _GameManager.NumberOfBotsInGameLevel - Rank + 1;
         ZoneType playerZoneType = _GameManager.ZoneData.PlayerZoneType;
 
         if (_GameManager.ZoneData.PlayerZoneExp >= _GameManager.ZoneData.Zones[(int)playerZoneType].ZoneExp)

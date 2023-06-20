@@ -133,10 +133,18 @@ public class UIManager : MonoBehaviour
         GameMenu();
         _GameManager.GameState = GameState.GameMenu;
     }
-    public void setInGame()
+    public void setInGame(bool IsSurvival)
     {
         InGame();
         _GameManager.GameState = GameState.InGame;
+        if (IsSurvival)
+        {
+            _GameManager.GameMode = GameMode.Survival;
+        }
+        else
+        {
+            _GameManager.GameMode = GameMode.Normal;
+        }
     }
     public void setEndGame(bool isPlayerWon)
     {   

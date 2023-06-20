@@ -18,7 +18,7 @@ public class GameManager : Singleton<GameManager>
     [Tooltip("Number Bot in Map < Bot in Game")]
     [SerializeField] private int numberOfBotsOnMap;
     [Tooltip("Number Bot in Game > Bot in Map")]
-    [SerializeField] private int numberOfBotsInGameLvel;
+    [SerializeField] private int numberOfBotsInGameLevel;
     [Header("GiftBox: ")]
     [Tooltip("Number GiftBox in Game")]
     [SerializeField] private int giftBoxNumber;
@@ -46,6 +46,9 @@ public class GameManager : Singleton<GameManager>
     private List<BotAI> botAIListEnable;
     private List<BotAI> botAIListStack;
     private List<GiftBox> listGiftBox;
+
+    private List<AnimalAI> animalAIListEnable;
+    private List<AnimalAI> animalAIListStack;
 
     private bool isInit, isInitIndicator, isInitBotAI;
 
@@ -78,7 +81,7 @@ public class GameManager : Singleton<GameManager>
     public GameObject WeaponHolder { get => weaponHolder; set => weaponHolder = value; }
     public UIManager UIManager { get => uIManager; set => uIManager = value; }
     public Player Player { get => player; set => player = value; }
-    public int NumberOfBotsInGameLvel { get => numberOfBotsInGameLvel; set => numberOfBotsInGameLvel = value; }
+    public int NumberOfBotsInGameLevel { get => numberOfBotsInGameLevel; set => numberOfBotsInGameLevel = value; }
     public ZoneData ZoneData { get => zoneData; set => zoneData = value; }
     public Transform PlayerStartPoint { get => playerStartPoint; set => playerStartPoint = value; }
     public List<GiftBox> ListGiftBox { get => listGiftBox; set => listGiftBox = value; }
@@ -89,6 +92,8 @@ public class GameManager : Singleton<GameManager>
     public Camera MainCam { get => mainCam; set => mainCam = value; }
     public Camera RadarCam { get => radarCam; set => radarCam = value; }
     public GameMode GameMode { get => gameMode; set => gameMode = value; }
+    public List<AnimalAI> AnimalAIListEnable { get => animalAIListEnable; set => animalAIListEnable = value; }
+    public List<AnimalAI> AnimalAIListStack { get => animalAIListStack; set => animalAIListStack = value; }
 
     private void Start()
     {
@@ -107,6 +112,7 @@ public class GameManager : Singleton<GameManager>
     public void OnInit()
     {
         StartCoroutine(Loading());
+        gameMode = GameMode.Normal;
         //Debug.Log("" + gameState);
     }
     private void Update()
@@ -117,19 +123,34 @@ public class GameManager : Singleton<GameManager>
         }
         if (gameState == GameState.InGame && IsInit && !Player.IsDeath)
         {
-            if (BotAIListEnable.Count == 0 && BotAIListStack.Count ==0)
+            if (gameMode == GameMode.Normal) 
             {
-                //Player Won!.....
-                SoundManager.PlayEndWinSoundEffect();
-                Player.SetEndGame();
-                uIManager.setEndGame(true);
-                Player.FloatingJoystick.OnReset();
-            }
-            else 
-            {
-                LevelExpAverage = Player.InGamneExp;
-            }
 
+                if (BotAIListEnable.Count == 0 && BotAIListStack.Count == 0)
+                {
+                    //Player Won!.....
+                    SoundManager.PlayEndWinSoundEffect();
+                    Player.SetEndGame();
+                    uIManager.setEndGame(true);
+                    Player.FloatingJoystick.OnReset();
+                }
+                else
+                {
+                    LevelExpAverage = Player.InGamneExp;
+                }
+            }
+            else if (gameMode == GameMode.Survival)
+            {
+
+                if (this.Player.KilledCount == 1000)
+                {
+                    //Player Won!.....
+                    SoundManager.PlayEndWinSoundEffect();
+                    Player.SetEndGame();
+                    uIManager.setEndGame(true);
+                    Player.FloatingJoystick.OnReset();
+                }
+            }
         }
     }
     private List<GameObject> GetObstacles()
@@ -179,17 +200,32 @@ public class GameManager : Singleton<GameManager>
                 indicatorList[i].GetComponent<PooledObject>().Release();
             }
         }
+        //Clear Animal
+        if (animalAIListEnable!=null && animalAIListEnable.Count > 0)
+        {
+            for (int i = 0; i < animalAIListEnable.Count; i++)
+            {
+                animalAIListEnable[i].GetComponent<PooledObject>().Release();
+            }
+        }
         yield return new WaitForSeconds(0.5f);
         botAIListStack.Clear();
         botAIListEnable.Clear();
         indicatorList.Clear();
         characterInfoList.Clear();
+        if (animalAIListEnable != null )
+        {
+            animalAIListEnable.Clear();
+        }
+        
         IsInit = false;
         isInitIndicator = false;
         IsInitBotAI = false;
-        totalBotAI = numberOfBotsInGameLvel;
+        totalBotAI = numberOfBotsInGameLevel;
         totalBotAI_InGame = numberOfBotsOnMap;
         gameState = GameState.Loading;
+        
+
         uIManager.Loading();
     }
 }

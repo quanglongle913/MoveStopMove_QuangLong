@@ -96,10 +96,6 @@ public class AnimalAI : MonoBehaviour
         }
             
     }
-    public void Dead()
-    {
-        ChangeState(new DeadStateAnimal());
-    }
     public void Idle(bool check)
     {
         if (this.gameObject.activeSelf)
@@ -139,11 +135,18 @@ public class AnimalAI : MonoBehaviour
     }
     public  void OnDespawn()
     {
+        //OnReset();
+        gameObject.GetComponent<PooledObject>().Release();
+        OnInit();
 
     }
     protected  void OnDeath()
     {
-        Dead();
+        if (_GameManager.AnimalAIListEnable.Count > 0)
+        {
+            _GameManager.AnimalAIListEnable.Remove(this.gameObject.GetComponent<AnimalAI>());
+            ChangeState(new DeadStateAnimal());
+        }
     }
     public void RotateTowards(GameObject gameObject, Vector3 direction)
     {

@@ -15,10 +15,14 @@ public class GiftBoxSpawner : PooledObject
 
     private void Update()
     {
-        if (_GameManager.GameState == GameState.InGame && _GameManager.ListGiftBox.Count < _GameManager.GiftBoxNumber && _GameManager.IsInitBotAI)
+        if (_GameManager.GameMode == GameMode.Normal)
         {
-            GenerateGiftBox(1, GeneratePoolObjectPosition(poolMaster.transform.position, debugNumberGiftBox));
+            if (_GameManager.GameState == GameState.InGame && _GameManager.ListGiftBox.Count < _GameManager.GiftBoxNumber && _GameManager.IsInitBotAI)
+            {
+                GenerateGiftBox(1, GeneratePoolObjectPosition(poolMaster.transform.position, debugNumberGiftBox));
+            }
         }
+       
     }
     // Start is called before the first frame update
     protected List<Vector3> GeneratePoolObjectPosition(Vector3 a_root, int numCount)

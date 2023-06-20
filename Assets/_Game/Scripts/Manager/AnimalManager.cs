@@ -1,39 +1,54 @@
-using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class BotAISpawner : PooledObject
+public class AnimalManager : PooledObject
 {
-    [SerializeField] GameObject poolMaster;
     [SerializeField] private ObjectPool poolObject;
-    [SerializeField] float offset;
+    [SerializeField] private GameObject poolMaster;
+    [SerializeField] int animalNum;
+    [SerializeField] float offset=20;
     [SerializeField] private float size_x;
     [SerializeField] private float size_z;
-    [SerializeField] private GameManager _GameManager;
 
+    GameManager _GameManager;
+    bool isInit=false;
+   
+    private void Start()
+    {
+        _GameManager = GameManager.Instance;
+        _GameManager.AnimalAIListEnable = new List<AnimalAI>();
+        _GameManager.AnimalAIListStack = new List<AnimalAI>();
+    }
     private void Update()
     {
-        if (_GameManager.GameState == GameState.Loading && !_GameManager.IsInitBotAI)
+        if (_GameManager.GameState == GameState.Loading && !isInit)
         {
-  
-            GenerateBotAI(_GameManager.TotalBotAI, GeneratePoolObjectPosition(poolMaster.transform.position, _GameManager.TotalBotAI));
-            _GameManager.IsInitBotAI = true;
+            GenerateBotAI(animalNum, GeneratePoolObjectPosition(poolMaster.transform.position, 10));
+            isInit = true;
         }
-        else if (_GameManager.GameState == GameState.InGame && _GameManager.BotAIListEnable.Count < _GameManager.TotalBotAI_InGame && _GameManager.IsInitBotAI)
+        else if (_GameManager.GameState == GameState.InGame)
         {
-            if (_GameManager.BotAIListStack.Count > 0)
+            //Debug.Log(_GameManager.GameMode);
+            if (_GameManager.Player.KilledCount < 100 && _GameManager.GameMode == GameMode.Survival)
             {
-                int randomIndex = Random.Range(0, _GameManager.BotAIListStack.Count);
-                _GameManager.BotAIListStack[randomIndex].InGamneExp = _GameManager.LevelExpAverage;
-                //Debug.Log(_GameManager.BotAIListStack[randomIndex].InGamneExp);
-                _GameManager.BotAIListStack[randomIndex].gameObject.SetActive(true);
-                _GameManager.BotAIListStack[randomIndex].UpdateCharacterLvl();
-                _GameManager.BotAIListEnable.Add(_GameManager.BotAIListStack[randomIndex]);
-                _GameManager.BotAIListStack.Remove(_GameManager.BotAIListStack[randomIndex]);
-                _GameManager.TotalBotAI--;
+                //Debug.Log(_GameManager.AnimalAIListEnable.Count);
+                //Debug.Log(_GameManager.AnimalAIListStack.Count);
+                if (_GameManager.AnimalAIListEnable.Count < animalNum && _GameManager.AnimalAIListStack.Count > 0)
+                {
+                    int randomIndex = Random.Range(0, _GameManager.AnimalAIListStack.Count);
+                    _GameManager.AnimalAIListStack[randomIndex].gameObject.SetActive(true);
+                    _GameManager.AnimalAIListEnable.Add(_GameManager.AnimalAIListStack[randomIndex]);
+                    _GameManager.AnimalAIListStack.Remove(_GameManager.AnimalAIListStack[randomIndex]);
+                    //Debug.Log(_GameManager.AnimalAIListEnable.Count);
+                    
+                    GenerateBotAI(1, GeneratePoolObjectPosition(poolMaster.transform.position, 10));
+                    //Debug.Log(_GameManager.AnimalAIListStack.Count);
+                }
             }
+            
         }
     }
     protected List<Vector3> GeneratePoolObjectPosition(Vector3 a_root, int numCount)
@@ -52,25 +67,24 @@ public class BotAISpawner : PooledObject
         }
         return listPoolObjectPosition;
     }
-    
+
     private void GenerateBotAI(int totalBotAI, List<Vector3> listPoolObjectPosition)
     {
         for (int i = 0; i < totalBotAI; i++)
         {
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
-            PooledObject botAIObject = Spawner(poolObject, poolMaster, false);
-            botAIObject.transform.position = listPoolObjectPosition[randomIndex];
+            PooledObject animalAIObj = Spawner(poolObject, poolMaster, false);
+            animalAIObj.transform.position = listPoolObjectPosition[randomIndex];
             listPoolObjectPosition.Remove(listPoolObjectPosition[randomIndex]);
-
-            BotAI botAI = botAIObject.GetComponent<BotAI>();
-            botAI.UpdateBotAIInfo(i,_GameManager);
-            _GameManager.BotAIListStack.Add(botAI);
+            AnimalAI animalAI = animalAIObj.GetComponent<AnimalAI>();
+            _GameManager.AnimalAIListStack.Add(animalAI);
         }
     }
     void OnDrawGizmos()
     {
+
         Gizmos.color = Color.blue;
-        int Row = Mathf.CeilToInt(Mathf.Sqrt(_GameManager.TotalBotAI));
+        int Row = Mathf.CeilToInt(Mathf.Sqrt(10));
         int Column = Row;
         for (int i = 0; i < Row; i++)
         {
@@ -81,7 +95,6 @@ public class BotAISpawner : PooledObject
                 drawRectangle(objectPosition);
             }
         }
-
     }
     private void drawRectangle(Vector3 point)
     {
