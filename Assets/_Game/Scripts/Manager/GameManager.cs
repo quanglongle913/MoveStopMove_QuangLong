@@ -112,7 +112,6 @@ public class GameManager : Singleton<GameManager>
     public void OnInit()
     {
         StartCoroutine(Loading());
-        gameMode = GameMode.Normal;
         //Debug.Log("" + gameState);
     }
     private void Update()
@@ -224,8 +223,7 @@ public class GameManager : Singleton<GameManager>
         totalBotAI = numberOfBotsInGameLevel;
         totalBotAI_InGame = numberOfBotsOnMap;
         gameState = GameState.Loading;
-        
-
+        gameMode = GameMode.Normal;
         uIManager.Loading();
     }
 }

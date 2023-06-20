@@ -1314,8 +1314,8 @@ MonoBehaviour:
   playerStartPoint: {fileID: 105759265}
   mainCam: {fileID: 303999681}
   radarCam: {fileID: 1298030181}
-  numberOfBotsOnMap: 1
-  numberOfBotsInGameLevel: 0
+  numberOfBotsOnMap: 20
+  numberOfBotsInGameLevel: 30
   giftBoxNumber: 10
   hatsData: {fileID: 11400000, guid: eb40b6edeec131b489f5c92760a14834, type: 2}
   pantsData: {fileID: 11400000, guid: 109176987034c994cb9b3d49839c872b, type: 2}
