@@ -88,11 +88,15 @@ public class AnimalAI : MonoBehaviour
         //ChangeState(new AttackStateAnimal());
         ChangeAnim("Attack");
     }
-    public void Run()
+    public void Run(Transform transform)
     {
         if (_GameManager.GameState == GameState.InGame)
         {
-            agent.SetDestination(target.transform.position);
+            if (agent.isOnNavMesh)
+            {
+                agent.SetDestination(transform.position);
+            }
+            
         }
             
     }
@@ -136,6 +140,8 @@ public class AnimalAI : MonoBehaviour
     public  void OnDespawn()
     {
         //OnReset();
+        agent.ResetPath();
+        ChangeState(new IdleStateAnimal());
         gameObject.GetComponent<PooledObject>().Release();
         OnInit();
 

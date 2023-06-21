@@ -8,7 +8,7 @@ public class IdleStateAnimal : IState<AnimalAI>
     public void OnEnter(AnimalAI t)
     {
         //Debug.Log("Idle");
-        t.Agent.isStopped = true;
+        t.Run(t.gameObject.transform);
         t.ChangeAnim("Idle");
         timer = 2f;
     }

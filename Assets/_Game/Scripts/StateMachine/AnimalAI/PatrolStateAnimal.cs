@@ -7,7 +7,7 @@ public class PatrolStateAnimal : IState<AnimalAI>
     public void OnEnter(AnimalAI t)
     {
         t.ChangeAnim("Run");
-        t.Agent.isStopped = false;
+        
     }
 
     public void OnExecute(AnimalAI t)
@@ -21,7 +21,7 @@ public class PatrolStateAnimal : IState<AnimalAI>
             }
             else
             {
-                t.Run();
+                t.Run(t.Target.transform);
             }
         }
         else

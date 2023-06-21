@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276813, g: 0.21589185, b: 0.29782563, a: 1}
+  m_IndirectSpecularColor: {r: 0.17279756, g: 0.21590558, b: 0.29787502, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1316,7 +1316,7 @@ MonoBehaviour:
   playerStartPoint: {fileID: 105759265}
   mainCam: {fileID: 303999681}
   radarCam: {fileID: 1298030181}
-  numberOfBotsOnMap: 20
+  numberOfBotsOnMap: 5
   numberOfBotsInGameLevel: 30
   giftBoxNumber: 10
   accessoriesDatas:
@@ -1341,6 +1341,8 @@ MonoBehaviour:
   weaponHolder: {fileID: 438064805}
   weaponSpawner: {fileID: 438064807}
   saveData: {fileID: 1919276969}
+  BotAIData: {fileID: 0}
+  PlayerData: {fileID: 0}
   zoneData: {fileID: 11400000, guid: 67ecbdd998230410ea99824e069b8842, type: 2}
   LevelExpAverage: 100
   newBloodsVfx: []
@@ -6799,6 +6801,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5143315201007492096, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6634591204407091510, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7103784184538236537, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7250368867540274380, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8159361664601157139, guid: e1cd8413a10de624ab8540e0d422027c, type: 3}
@@ -35226,7 +35240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &2681594238292723573
 GameObject:
   m_ObjectHideFlags: 0

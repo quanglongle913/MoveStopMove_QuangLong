@@ -211,6 +211,8 @@ public class GameManager : Singleton<GameManager>
         {
             for (int i = 0; i < botAIListEnable.Count; i++)
             {
+                botAIListEnable[i].Agent.ResetPath();
+                botAIListEnable[i].ChangeState(new IdleState());
                 botAIListEnable[i].GetComponent<PooledObject>().Release();
             }
         }
@@ -233,6 +235,8 @@ public class GameManager : Singleton<GameManager>
         {
             for (int i = 0; i < animalAIListEnable.Count; i++)
             {
+                animalAIListEnable[i].Agent.ResetPath();
+                animalAIListEnable[i].ChangeState(new IdleStateAnimal());
                 animalAIListEnable[i].GetComponent<PooledObject>().Release();
             }
         }

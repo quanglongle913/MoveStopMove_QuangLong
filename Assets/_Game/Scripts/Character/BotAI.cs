@@ -19,6 +19,8 @@ public class BotAI : Character
     //public bool IsKilledPlayer=false;
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
     public Transform TargetTransform { get => targetTransform; set => targetTransform = value; }
+    public NavMeshAgent Agent { get => agent; set => agent = value; }
+
     public bool IsWall;
 
     public override void Awake()
@@ -127,7 +129,11 @@ public class BotAI : Character
     }
     public void moveToTarget(Vector3 targetTransform)
     {
-        agent.SetDestination(targetTransform);
+        if (agent.isOnNavMesh)
+        {
+            agent.SetDestination(targetTransform);
+        }
+        
         //agent.destination = targetTransform;
     }
     public void isStopped(bool check)
@@ -232,6 +238,8 @@ public class BotAI : Character
     {
         base.OnDespawn();
         OnReset();
+        agent.ResetPath();
+        ChangeState(new IdleState());
         gameObject.GetComponent<PooledObject>().Release();
         OnInit();
 

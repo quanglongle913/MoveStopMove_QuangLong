@@ -7,7 +7,7 @@ public class DeadStateAnimal : IState<AnimalAI>
     float timer;
     public void OnEnter(AnimalAI t)
     {
-        t.Agent.isStopped = true;
+        t.Run(t.gameObject.transform);
         t.ChangeAnim("Dead");
         timer = 0;
     }

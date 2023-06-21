@@ -8,7 +8,7 @@ public class AttackStateAnimal : IState<AnimalAI>
     float timerAttack;
     public void OnEnter(AnimalAI t)
     {
-        t.Agent.isStopped = true;
+        t.Run(t.gameObject.transform);
         t.Attack();
         timerAttack = 1f;
     }
