@@ -72,8 +72,9 @@ public class Player : Character
             if (_GameManager.GameMode == GameMode.Survival && !isSurvivalInit)
             {
                 isSurvivalInit = true;
-                InGameAttackSpeed += 30;
-                InGameMoveSpeed += 1;
+                InGameAttackSpeed += 60;
+                InGameMoveSpeed += 2;
+                hp = 100;
 
             }
         } else

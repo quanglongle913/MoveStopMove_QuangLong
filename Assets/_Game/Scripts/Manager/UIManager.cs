@@ -139,12 +139,10 @@ public class UIManager : MonoBehaviour
         if (IsSurvival)
         {
             _GameManager.GameMode = GameMode.Survival;
-            _GameManager.Player.hp = 100;
         }
         else
         {
             _GameManager.GameMode = GameMode.Normal;
-            _GameManager.Player.hp = 1;
         }
     }
     public void setEndGame(bool isPlayerWon)
