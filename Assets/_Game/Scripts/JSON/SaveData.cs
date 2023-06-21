@@ -23,7 +23,8 @@ public class SaveData : MonoBehaviour
 
     public void ReadJsonFile()
     {
-        saveFile = Application.dataPath + "/StreamingAssets/BotAIData.json";
+        //saveFile = Application.dataPath + "/StreamingAssets/BotAIData.json";
+        saveFile = Constant.GetStreamingAssetsPath("BotAIData.json");
         // Does the file exist?
         if (File.Exists(saveFile))
         {
@@ -41,7 +42,8 @@ public class SaveData : MonoBehaviour
     }
     public void SaveIntoJson()
     {
-        saveFile = Application.dataPath + "/StreamingAssets/BotAIData.json";
+        //saveFile = Application.dataPath + "/StreamingAssets/BotAIData.json";
+        saveFile = Constant.GetStreamingAssetsPath("BotAIData.json");
         GenerateData();
         string potion = JsonUtility.ToJson(botAIData);
         //System.IO.File.WriteAllText(Application.streamingAssetsPath + "/BotAIData.json", potion);
@@ -49,7 +51,8 @@ public class SaveData : MonoBehaviour
     }
     public void SaveIntoJson2()
     {
-        saveFile = Application.dataPath + "/StreamingAssets/BotAIData.json";
+        //saveFile = Application.dataPath + "/StreamingAssets/BotAIData.json";
+        saveFile = Constant.GetStreamingAssetsPath("BotAIData.json");
         GenerateDataSetIndex();
         string potion = JsonUtility.ToJson(botAIData);
         //System.IO.File.WriteAllText(Application.streamingAssetsPath + "/BotAIData.json", potion);

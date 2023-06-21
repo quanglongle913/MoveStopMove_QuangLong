@@ -18,6 +18,6 @@ MonoBehaviour:
   mat: {fileID: 2100000, guid: 3ac030dedf487614aaf8a9bfe7a2253e, type: 2}
   price: 1000
   buffData: {fileID: 11400000, guid: f6dbfbd8ddbffba4db1b4017964b8935, type: 2}
-  selected: 1
+  selected: 0
   buyed: 1
-  equipped: 1
+  equipped: 0

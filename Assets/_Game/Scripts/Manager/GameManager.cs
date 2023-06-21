@@ -33,6 +33,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private WeaponSpawner weaponSpawner;
     [Header("Data Manager: ")]
     [SerializeField] private SaveData saveData;
+    [SerializeField] private TextAsset BotAIData;
+    [SerializeField] private TextAsset PlayerData;
     [SerializeField] private ZoneData zoneData;
     //[SerializeField] private List<GameObject> obstacles;
 
@@ -89,7 +91,7 @@ public class GameManager : Singleton<GameManager>
     public List<AnimalAI> AnimalAIListStack { get => animalAIListStack; set => animalAIListStack = value; }
     public DataManager DataManager { get => dataManager; set => dataManager = value; }
     public List<AccessoriesData> AccessoriesDatas { get => accessoriesDatas; set => accessoriesDatas = value; }
-
+   
     private void Start()
     {
         botAIListStack = new List<BotAI>();
@@ -99,7 +101,7 @@ public class GameManager : Singleton<GameManager>
         listGiftBox = new List<GiftBox>();
         newBloodsVfx = new List<GameObject>();
         SaveData.GenerateBotAIData(); // read Json Data Bot
-        Debug.Log(PlayerPrefs.GetInt(Constant.PLAYER_DATA_STATE, 0));
+        //Debug.Log(PlayerPrefs.GetInt(Constant.PLAYER_DATA_STATE, 0));
         if (PlayerPrefs.GetInt(Constant.PLAYER_DATA_STATE,0)==0)
         {
             UpdateData();
@@ -121,7 +123,7 @@ public class GameManager : Singleton<GameManager>
             }
             for (int i = 0; i < DataManager._PlayerData.ListAccessoriesData.Count; i++)
             {
-                Debug.Log(DataManager._PlayerData.ListAccessoriesData[i].Accessories.Count);
+                //Debug.Log(DataManager._PlayerData.ListAccessoriesData[i].Accessories.Count);
                 for (int j = 0; j < DataManager._PlayerData.ListAccessoriesData[i].Accessories.Count; j++)
                 {
                     AccessoriesDatas[i].Accessories[j].Buyed = DataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Buyed;
