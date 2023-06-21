@@ -223,7 +223,7 @@ public class BotAI : Character
         else
         {
             ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
-            SetAccessorisSkinMat(PantsSkin, gameManager.PantsData, botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
+            SetAccessorisSkinMat(PantsSkin, gameManager.AccessoriesDatas[1], botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
             ShowPantsSkin();
             ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
         }

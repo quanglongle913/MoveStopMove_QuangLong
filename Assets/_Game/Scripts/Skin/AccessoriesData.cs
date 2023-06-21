@@ -6,8 +6,8 @@ using UnityEngine;
 public class AccessoriesData : ScriptableObject
 {
     [SerializeField] private SkinType skinType;
-    [SerializeField] private Accessories[] accessories;
+    [SerializeField] private List<Accessories> accessories;
 
     public SkinType SkinType { get => skinType; set => skinType = value; }
-    public Accessories[] Accessories { get => accessories; set => accessories = value; }
+    public List<Accessories> Accessories { get => accessories; set => accessories = value; }
 }

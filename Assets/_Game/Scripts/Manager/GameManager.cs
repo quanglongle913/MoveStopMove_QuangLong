@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
 {
 
     [SerializeField] private UIManager uIManager;
+    [SerializeField] private DataManager dataManager;
     [SerializeField] private SoundManager soundManager;
     [SerializeField] private VfxManager vfxManager;
     [SerializeField] private Player player;
@@ -23,10 +24,7 @@ public class GameManager : Singleton<GameManager>
     [Tooltip("Number GiftBox in Game")]
     [SerializeField] private int giftBoxNumber;
     [Header("Character Skins Data: ")]
-    [SerializeField] private AccessoriesData hatsData;
-    [SerializeField] private AccessoriesData pantsData;
-    [SerializeField] private AccessoriesData setfullData;
-    [SerializeField] private AccessoriesData shieldData;
+    [SerializeField] private List<AccessoriesData> accessoriesDatas;
     
     [Header("Weapon Manager: ")]
     [SerializeField] private ObjectPool[] poolObject;
@@ -70,11 +68,6 @@ public class GameManager : Singleton<GameManager>
     public List<CharacterInfo> CharacterInfoList { get => characterInfoList; set => characterInfoList = value; }
     public List<BotAI> BotAIListStack { get => botAIListStack; set => botAIListStack = value; }
 
-    public AccessoriesData PantsData { get => pantsData; set => pantsData = value; }
-    public AccessoriesData SetfullData { get => setfullData; set => setfullData = value; }
-    public AccessoriesData ShieldData { get => shieldData; set => shieldData = value; }
-    public AccessoriesData HatsData { get => hatsData; set => hatsData = value; }
-
     public ObjectPool[] PoolObject { get => poolObject; set => poolObject = value; }
     public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public SaveData SaveData { get => saveData; set => saveData = value; }
@@ -94,6 +87,8 @@ public class GameManager : Singleton<GameManager>
     public GameMode GameMode { get => gameMode; set => gameMode = value; }
     public List<AnimalAI> AnimalAIListEnable { get => animalAIListEnable; set => animalAIListEnable = value; }
     public List<AnimalAI> AnimalAIListStack { get => animalAIListStack; set => animalAIListStack = value; }
+    public DataManager DataManager { get => dataManager; set => dataManager = value; }
+    public List<AccessoriesData> AccessoriesDatas { get => accessoriesDatas; set => accessoriesDatas = value; }
 
     private void Start()
     {
@@ -103,7 +98,39 @@ public class GameManager : Singleton<GameManager>
         characterInfoList = new List<CharacterInfo>();
         listGiftBox = new List<GiftBox>();
         newBloodsVfx = new List<GameObject>();
-        SaveData.ReadJsonFile(); // read Json Data Bot
+        SaveData.GenerateBotAIData(); // read Json Data Bot
+        Debug.Log(PlayerPrefs.GetInt(Constant.PLAYER_DATA_STATE, 0));
+        if (PlayerPrefs.GetInt(Constant.PLAYER_DATA_STATE,0)==0)
+        {
+            UpdateData();
+            PlayerPrefs.SetInt(Constant.PLAYER_DATA_STATE, 1);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            //UNDONE
+            //Set ScriptableObject data ......
+            DataManager.ReadData();
+            for (int i = 0; i < DataManager._PlayerData.weapons.Count; i++)
+            {
+                WeaponData.Weapon[i].WeaponType = DataManager._PlayerData.weapons[i].WeaponType;
+                WeaponData.Weapon[i].WeaponName = DataManager._PlayerData.weapons[i].WeaponName;
+                WeaponData.Weapon[i].WeaponPrice = DataManager._PlayerData.weapons[i].WeaponPrice;
+                WeaponData.Weapon[i].Buyed = DataManager._PlayerData.weapons[i].Buyed;
+                WeaponData.Weapon[i].Equipped = DataManager._PlayerData.weapons[i].Equipped;
+            }
+            for (int i = 0; i < DataManager._PlayerData.ListAccessoriesData.Count; i++)
+            {
+                Debug.Log(DataManager._PlayerData.ListAccessoriesData[i].Accessories.Count);
+                for (int j = 0; j < DataManager._PlayerData.ListAccessoriesData[i].Accessories.Count; j++)
+                {
+                    AccessoriesDatas[i].Accessories[j].Buyed = DataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Buyed;
+                    AccessoriesDatas[i].Accessories[j].Equipped = DataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Equipped;
+                    AccessoriesDatas[i].Accessories[j].Selected = DataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Selected;
+                }
+            }
+        }
+        
         OnInit();
         //TEST
         //obstacles= GetObstacles();
@@ -225,5 +252,10 @@ public class GameManager : Singleton<GameManager>
         gameState = GameState.Loading;
         gameMode = GameMode.Normal;
         uIManager.Loading();
+    }
+    public void UpdateData()
+    {
+        Debug.Log("UpdateData");
+        this.DataManager.GenerateData(this.WeaponData, this.AccessoriesDatas);
     }
 }

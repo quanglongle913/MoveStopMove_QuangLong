@@ -82,7 +82,7 @@ public class Weapons : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Character enemy = other.GetComponent<Character>();
-        if (enemy && other.gameObject != _GameObject && enemy.ColorType != character.ColorType)
+        if (enemy && other.gameObject != _GameObject && enemy.ColorType != character.ColorType && !enemy.IsDeath)
         {
             if (other.gameObject.GetComponent<Player>())
             {
@@ -98,7 +98,8 @@ public class Weapons : MonoBehaviour
                 character.setExp(enemy.InGamneExp);
                 if (_GameObject.GetComponent<Player>())
                 {
-                    _GameObject.GetComponent<Player>().KilledCount++;
+                    Player player = _GameObject.GetComponent<Player>();
+                    player.KilledCount++;
                 }
             }
             _GameManager.VfxManager.ShowBloodVfx(this);
@@ -114,10 +115,10 @@ public class Weapons : MonoBehaviour
             character.IsAttacking = false;
             StartCoroutine(Waiter());
         }
-        if (other.GetComponent<AnimalAI>()) 
+        if (other.GetComponent<AnimalAI>() && !other.GetComponent<AnimalAI>().IsDeath) 
         {
             other.GetComponent<AnimalAI>().OnHit(1f);
-            //character.setExp(other.GetComponent<AnimalAI>().InGamneExp);
+            _GameObject.GetComponent<Player>().SetSurvivalExp(other.GetComponent<AnimalAI>().InGamneExp);
             _GameManager.VfxManager.ShowBloodVfx(this);
 
             ReleaseWeapon(character);

@@ -55,6 +55,11 @@ public class SaveData : MonoBehaviour
         //System.IO.File.WriteAllText(Application.streamingAssetsPath + "/BotAIData.json", potion);
         File.WriteAllText(saveFile, potion);
     }
+    public void GenerateBotAIData()
+    {
+        SaveIntoJson2();
+        ReadJsonFile();
+    }
     public void GenerateData()
     {
         //Tạo data và kiểu BotAIInfo.weapon là số weapon có trong game
@@ -79,8 +84,8 @@ public class SaveData : MonoBehaviour
         {
             BotAIInfo botAIInfo = new BotAIInfo();
             botAIInfo.BotAI_name = "" + (BotAINameType)i;
-            int randomSKinShopState = UnityEngine.Random.Range(0, 3);
-            botAIInfo.playerSkinShopState = (PlayerSkinShopState)randomSKinShopState;
+            int randomSkinShopState = UnityEngine.Random.Range(0, 3);
+            botAIInfo.playerSkinShopState = (PlayerSkinShopState)randomSkinShopState;
             int randomWeapon = UnityEngine.Random.Range(0, numberOfWeapon);
             botAIInfo.Weapon = randomWeapon;
             List<CharacterSkin> characterSkin = new List<CharacterSkin>();

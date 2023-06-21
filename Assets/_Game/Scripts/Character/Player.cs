@@ -29,7 +29,7 @@ public class Player : Character
    
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
-    
+    bool isSurvivalInit=false;
 
     public override void Awake()
     {
@@ -59,7 +59,6 @@ public class Player : Character
         UpdateCharacterLvl();
         UpdateCharacterAcessories();
         UpdateAccessoriesSkinShopOnInit();
-
     }
     
     void Update()
@@ -71,10 +70,18 @@ public class Player : Character
             {
                 currentState.OnExecute(this);
             }
+            if (_GameManager.GameMode == GameMode.Survival && !isSurvivalInit)
+            {
+                isSurvivalInit = true;
+                InGameAttackSpeed += 30;
+                InGameMoveSpeed += 1;
+
+            }
         } else
         { 
             ChangeState(new IdleStateP());
         }
+
     }
     public override void FixedUpdate()
     {
@@ -94,6 +101,16 @@ public class Player : Character
     {
         EnableCircleAttack(CharactersInsideZone, true);
         EnableCircleAttack(CharactersOutsideZone, false);
+    }
+    public void SetSurvivalExp(int exp)
+    {
+        InGamneExp += exp;
+
+        if (InGamneExp >= CharacterLevel * 50)
+        {
+            CharacterLevel++;
+            InGamneExp = 0;
+        }
     }
     //public Ease ease;
     public override void Attack()
@@ -206,7 +223,7 @@ public class Player : Character
     public int GetWeaponsEquippedIndex(WeaponData weaponData)
     {
         int index = 0;
-        for (int i = 0; i < weaponData.Weapon.Length; i++)
+        for (int i = 0; i < weaponData.Weapon.Count; i++)
         {
             if (weaponData.Weapon[i].Equipped)
             {
@@ -220,7 +237,7 @@ public class Player : Character
     public int GetNumberOfWeaponsHave(WeaponData weaponData)
     {
         int index = 0;
-        for (int i = 0; i < weaponData.Weapon.Length; i++)
+        for (int i = 0; i < weaponData.Weapon.Count; i++)
         {
             if (weaponData.Weapon[i].Buyed)
             {
@@ -232,7 +249,7 @@ public class Player : Character
     public int GetAccessorisSelectedIndex(AccessoriesData accessoriesData)
     {
         int index = 0;
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             if (accessoriesData.Accessories[i].Selected)
             {
@@ -245,7 +262,7 @@ public class Player : Character
     }
     public void UnSelectedAccessoris(AccessoriesData accessoriesData)
     {
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             accessoriesData.Accessories[i].Selected=false;
         }
@@ -258,33 +275,33 @@ public class Player : Character
     {
         HideAllSkin();
         HideAllSetFullsSkin();
-        if (GetAccessoriesEquipped(_GameManager.SetfullData))
+        if (GetAccessoriesEquipped(_GameManager.AccessoriesDatas[3]))
         {
-            UpdatePlayerAccessoris(_GameManager.SetfullData);
+            UpdatePlayerAccessoris(_GameManager.AccessoriesDatas[3]);
             PlayerSkinShopState = PlayerSkinShopState.SetFull;
         }
         else
         {
-            if (!GetAccessoriesEquipped(_GameManager.HatsData) && !GetAccessoriesEquipped(_GameManager.PantsData) && !GetAccessoriesEquipped(_GameManager.ShieldData))
+            if (!GetAccessoriesEquipped(_GameManager.AccessoriesDatas[0]) && !GetAccessoriesEquipped(_GameManager.AccessoriesDatas[1]) && !GetAccessoriesEquipped(_GameManager.AccessoriesDatas[2]))
             {
                 PlayerSkinShopState = PlayerSkinShopState.None;
 
             }
-            if (GetAccessoriesEquipped(_GameManager.HatsData))
+            if (GetAccessoriesEquipped(_GameManager.AccessoriesDatas[0]))
             {
-                UpdatePlayerAccessoris(_GameManager.HatsData);
+                UpdatePlayerAccessoris(_GameManager.AccessoriesDatas[0]);
 
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
-            if (GetAccessoriesEquipped(_GameManager.PantsData))
+            if (GetAccessoriesEquipped(_GameManager.AccessoriesDatas[1]))
             {
-                UpdatePlayerAccessoris(_GameManager.PantsData);
+                UpdatePlayerAccessoris(_GameManager.AccessoriesDatas[1]);
 
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
-            if (GetAccessoriesEquipped(_GameManager.ShieldData))
+            if (GetAccessoriesEquipped(_GameManager.AccessoriesDatas[2]))
             {
-                UpdatePlayerAccessoris(_GameManager.ShieldData);
+                UpdatePlayerAccessoris(_GameManager.AccessoriesDatas[2]);
 
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
@@ -294,36 +311,36 @@ public class Player : Character
     {
         HideAllSkin();
         HideAllSetFullsSkin();
-        if (GetAccessoriesSelected(_GameManager.SetfullData))
+        if (GetAccessoriesSelected(_GameManager.AccessoriesDatas[3]))
         {
-            UpdateUIAccessoris(_GameManager.SetfullData);
+            UpdateUIAccessoris(_GameManager.AccessoriesDatas[3]);
         
             PlayerSkinShopState = PlayerSkinShopState.SetFull;
 
         }
         else
         {
-            if (!GetAccessoriesSelected(_GameManager.HatsData) && !GetAccessoriesSelected(_GameManager.PantsData) && !GetAccessoriesSelected(_GameManager.ShieldData))
+            if (!GetAccessoriesSelected(_GameManager.AccessoriesDatas[0]) && !GetAccessoriesSelected(_GameManager.AccessoriesDatas[1]) && !GetAccessoriesSelected(_GameManager.AccessoriesDatas[2]))
             {
                 PlayerSkinShopState = PlayerSkinShopState.None;
                 
             }
-            if (GetAccessoriesSelected(_GameManager.HatsData))
+            if (GetAccessoriesSelected(_GameManager.AccessoriesDatas[0]))
             {
-                UpdateUIAccessoris(_GameManager.HatsData);
+                UpdateUIAccessoris(_GameManager.AccessoriesDatas[0]);
           
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
-            if (GetAccessoriesSelected(_GameManager.PantsData))
+            if (GetAccessoriesSelected(_GameManager.AccessoriesDatas[1]))
             {
 
-                UpdateUIAccessoris(_GameManager.PantsData);
+                UpdateUIAccessoris(_GameManager.AccessoriesDatas[1]);
             
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
-            if (GetAccessoriesSelected(_GameManager.ShieldData))
+            if (GetAccessoriesSelected(_GameManager.AccessoriesDatas[2]))
             {
-                UpdateUIAccessoris(_GameManager.ShieldData);
+                UpdateUIAccessoris(_GameManager.AccessoriesDatas[2]);
            
                 PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
@@ -331,7 +348,7 @@ public class Player : Character
     }
     public void UpdatePlayerAccessoris(AccessoriesData accessoriesData)
     {
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             if (accessoriesData.Accessories[i].Equipped)
             {
@@ -343,7 +360,7 @@ public class Player : Character
                 else if (accessoriesData.SkinType == SkinType.Pant)
                 {
                     HideAllSetFullsSkin();
-                    SetPantsSkin(_GameManager.PantsData);
+                    SetPantsSkin(_GameManager.AccessoriesDatas[1]);
                     ShowPantsSkin();
                 }
                 else if (accessoriesData.SkinType == SkinType.Sheild)
@@ -363,7 +380,7 @@ public class Player : Character
     }
     public void UpdateUIAccessoris(AccessoriesData accessoriesData)
     {
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             if (accessoriesData.Accessories[i].Selected)
             {
@@ -375,7 +392,7 @@ public class Player : Character
                 else if (accessoriesData.SkinType == SkinType.Pant)
                 {
                     HideAllSetFullsSkin();
-                    SetPantsSkin(_GameManager.PantsData);
+                    SetPantsSkin(_GameManager.AccessoriesDatas[1]);
                     ShowPantsSkin();
                 }
                 else if (accessoriesData.SkinType == SkinType.Sheild)
@@ -395,7 +412,7 @@ public class Player : Character
     private bool GetAccessoriesEquipped(AccessoriesData accessoriesData)
     {
         bool isCheck = false;
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             if (accessoriesData.Accessories[i].Equipped)
             {
@@ -409,7 +426,7 @@ public class Player : Character
     private bool GetAccessoriesSelected(AccessoriesData accessoriesData)
     {
         bool isCheck = false;
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             if (accessoriesData.Accessories[i].Selected)
             {
@@ -422,7 +439,7 @@ public class Player : Character
     }
     public void SetAllAccessoriesUnSelected(AccessoriesData accessoriesData)
     {
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             accessoriesData.Accessories[i].Selected = false;
 

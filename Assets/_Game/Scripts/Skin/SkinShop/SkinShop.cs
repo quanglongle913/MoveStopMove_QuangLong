@@ -23,7 +23,7 @@ public class SkinShop : MonoBehaviour
     {
         if (IsUpdate)
         {            
-            for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+            for (int i = 0; i < accessoriesData.Accessories.Count; i++)
             {
                 g = Instantiate(ItemTemplate, ShopScrollView);
                 ShopItem shopItem = g.gameObject.GetComponent<ShopItem>();

@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5a0d79cfa9658d4b809663f20e40cf5, type: 3}
   m_Name: FullBody 2
   m_EditorClassIdentifier: 
-  accessoriesName: 2
+  accessoriesName: Angel
   prefabsAccessories: {fileID: 0}
   imageItem: {fileID: 2800000, guid: 9f8e6f5ea0f849447b464193072ab6f3, type: 3}
   mat: {fileID: 2100000, guid: 99d3c69af8986b3408f8fb1bbf34e40b, type: 2}
+  price: 0
   buffData: {fileID: 11400000, guid: 87d51d786464d274db2e4c33eb5579f6, type: 2}
   selected: 0
   buyed: 0
+  equipped: 0

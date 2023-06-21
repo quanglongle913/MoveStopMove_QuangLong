@@ -5,7 +5,7 @@ using UnityEngine;
 public class Constant
 {
 
-  
+    public static string PLAYER_DATA_STATE = "PlayerDataSate";
     public static string PLAYER_MAP = "PlayerMap";
     public static string ZOMBIEDAYS = "ZombieDays";
 

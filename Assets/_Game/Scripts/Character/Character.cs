@@ -449,14 +449,14 @@ public class Character : MonoBehaviour
             inGameAttackRange = baseAttackRange + (baseAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         //Acessories buff
-        int equippedIndexHatsData = GetAccessorisEquippedIndex(_GameManager.HatsData);
-        int equippedIndexPantsData = GetAccessorisEquippedIndex(_GameManager.PantsData);
-        int equippedIndexShieldData = GetAccessorisEquippedIndex(_GameManager.ShieldData);
-        int equippedIndexSetfullData = GetAccessorisEquippedIndex(_GameManager.SetfullData);
-        UpdateSkinBuffData(equippedIndexHatsData, _GameManager.HatsData);
-        UpdateSkinBuffData(equippedIndexPantsData, _GameManager.PantsData);
-        UpdateSkinBuffData(equippedIndexShieldData, _GameManager.ShieldData);
-        UpdateSkinBuffData(equippedIndexSetfullData, _GameManager.SetfullData);
+        int equippedIndexHatsData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[0]);
+        int equippedIndexPantsData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[1]);
+        int equippedIndexShieldData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[2]);
+        int equippedIndexSetfullData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[3]);
+        UpdateSkinBuffData(equippedIndexHatsData, _GameManager.AccessoriesDatas[0]);
+        UpdateSkinBuffData(equippedIndexPantsData, _GameManager.AccessoriesDatas[1]);
+        UpdateSkinBuffData(equippedIndexShieldData, _GameManager.AccessoriesDatas[2]);
+        UpdateSkinBuffData(equippedIndexSetfullData, _GameManager.AccessoriesDatas[3]);
     }
     private void UpdateSkinBuffData(int index, AccessoriesData accessoriesData)
     {
@@ -484,7 +484,7 @@ public class Character : MonoBehaviour
     public int GetAccessorisEquippedIndex(AccessoriesData accessoriesData)
     {
         int index = 99;
-        for (int i = 0; i < accessoriesData.Accessories.Length; i++)
+        for (int i = 0; i < accessoriesData.Accessories.Count; i++)
         {
             if (accessoriesData.Accessories[i].Equipped)
             {

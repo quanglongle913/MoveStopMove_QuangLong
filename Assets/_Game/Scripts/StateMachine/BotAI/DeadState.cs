@@ -7,6 +7,7 @@ public class DeadState : IState<BotAI>
     float timer;
     void IState<BotAI>.OnEnter(BotAI t)
     {
+        t.isStopped(true);
         t.ChangeAnim("Dead");
         timer = 0;
     }

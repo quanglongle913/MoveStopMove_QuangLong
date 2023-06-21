@@ -471,7 +471,7 @@ public class UIManager : MonoBehaviour
     }
     public void PrevWeapon() 
     {
-        Debug.Log(itemSelelected);
+        //Debug.Log(itemSelelected);
         if (itemSelelected > 0)
         {
             //Debug.Log(itemSelelected);
@@ -488,8 +488,8 @@ public class UIManager : MonoBehaviour
         //TOTO UN Equipped ALL WEapon
         UnEquippedAllWeapon(_GameManager.WeaponData);
         _GameManager.WeaponData.Weapon[itemSelelected].Equipped = true;
-       
-        _GameManager.Player.WeaponIndex= itemSelelected;
+        _GameManager.Player.WeaponIndex = itemSelelected;
+        _GameManager.UpdateData();
         Hide_Popup_WeaponShop();
     }
     public void OnClickBtnBuyWeapon()
@@ -503,6 +503,7 @@ public class UIManager : MonoBehaviour
             UnEquippedAllWeapon(_GameManager.WeaponData);
             _GameManager.WeaponData.Weapon[itemSelelected].Equipped = true;
             _GameManager.Player.WeaponIndex = itemSelelected;
+            _GameManager.UpdateData();
             Hide_Popup_WeaponShop();
         }
         else
@@ -542,10 +543,10 @@ public class UIManager : MonoBehaviour
         frame_TopPantsSkinShop.SetActive(true);
         frame_TopSheildSkinShop.SetActive(true);
         frame_TopSetFullSkinShop.SetActive(true);
-        InitSkinShop(_GameManager.HatsData);
+        InitSkinShop(_GameManager.AccessoriesDatas[0]);
         _GameManager.Player.UpdateAccessoriesSkinShop();
         //UPdate Selected Items
-        BtnSkinShopUpdate(_GameManager.HatsData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.HatsData));
+        BtnSkinShopUpdate(_GameManager.AccessoriesDatas[0], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[0]));
     }
     public void OnSlelectedPaintSkinShop()
     {
@@ -553,11 +554,11 @@ public class UIManager : MonoBehaviour
         frame_TopPantsSkinShop.SetActive(false);
         frame_TopSheildSkinShop.SetActive(true);
         frame_TopSetFullSkinShop.SetActive(true);
-        InitSkinShop(_GameManager.PantsData);
+        InitSkinShop(_GameManager.AccessoriesDatas[1]);
 
         _GameManager.Player.UpdateAccessoriesSkinShop();
         //UPdate Selected Items
-        BtnSkinShopUpdate(_GameManager.PantsData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.PantsData));
+        BtnSkinShopUpdate(_GameManager.AccessoriesDatas[1], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[1]));
     }
     public void OnSlelectedSheildSkinShop()
     {
@@ -565,12 +566,12 @@ public class UIManager : MonoBehaviour
         frame_TopPantsSkinShop.SetActive(true);
         frame_TopSheildSkinShop.SetActive(false);
         frame_TopSetFullSkinShop.SetActive(true);
-        InitSkinShop(_GameManager.ShieldData);
+        InitSkinShop(_GameManager.AccessoriesDatas[2]);
      
         _GameManager.Player.UpdateAccessoriesSkinShop();
 
         //UPdate Selected Items
-        BtnSkinShopUpdate(_GameManager.ShieldData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.ShieldData));
+        BtnSkinShopUpdate(_GameManager.AccessoriesDatas[2], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[2]));
     }
     public void OnSlelectedSetFullSkinShop()
     {
@@ -578,10 +579,10 @@ public class UIManager : MonoBehaviour
         frame_TopPantsSkinShop.SetActive(true);
         frame_TopSheildSkinShop.SetActive(true);
         frame_TopSetFullSkinShop.SetActive(false);
-        InitSkinShop(_GameManager.SetfullData);
+        InitSkinShop(_GameManager.AccessoriesDatas[3]);
 
         _GameManager.Player.UpdateAccessoriesSkinShop();
-        BtnSkinShopUpdate(_GameManager.SetfullData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.SetfullData));
+        BtnSkinShopUpdate(_GameManager.AccessoriesDatas[3], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[3]));
     }
     private void InitSkinShop(AccessoriesData accessoriesData)
     {
@@ -617,50 +618,50 @@ public class UIManager : MonoBehaviour
 
         if (skinShop.Items[0].SkinType == SkinType.Hat)
         {
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.SetfullData);
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.HatsData);
-            _GameManager.HatsData.Accessories[itemIndex].Selected = true;
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[3]);
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[0]);
+            _GameManager.AccessoriesDatas[0].Accessories[itemIndex].Selected = true;
 
-            textSkinBuffInfo.text ="+"+ _GameManager.HatsData.Accessories[itemIndex].BuffData.BuffIndex+ "% " + _GameManager.HatsData.Accessories[itemIndex].BuffData.BuffType;
+            textSkinBuffInfo.text ="+"+ _GameManager.AccessoriesDatas[0].Accessories[itemIndex].BuffData.BuffIndex+ "% " + _GameManager.AccessoriesDatas[0].Accessories[itemIndex].BuffData.BuffType;
 
             _GameManager.Player.UpdateAccessoriesSkinShop();
-            BtnSkinShopUpdate(_GameManager.HatsData,itemIndex);
+            BtnSkinShopUpdate(_GameManager.AccessoriesDatas[0], itemIndex);
         }
         else if (skinShop.Items[0].SkinType == SkinType.Pant)
         {
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.SetfullData);
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.PantsData);
-            _GameManager.PantsData.Accessories[itemIndex].Selected = true;
-            _GameManager.Player.SetPantsSkin(_GameManager.PantsData);
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[3]);
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[1]);
+            _GameManager.AccessoriesDatas[1].Accessories[itemIndex].Selected = true;
+            _GameManager.Player.SetPantsSkin(_GameManager.AccessoriesDatas[1]);
 
-            textSkinBuffInfo.text = "+" + _GameManager.PantsData.Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.PantsData.Accessories[itemIndex].BuffData.BuffType;
+            textSkinBuffInfo.text = "+" + _GameManager.AccessoriesDatas[1].Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.AccessoriesDatas[1].Accessories[itemIndex].BuffData.BuffType;
 
             _GameManager.Player.UpdateAccessoriesSkinShop();
-            BtnSkinShopUpdate(_GameManager.PantsData, itemIndex);
+            BtnSkinShopUpdate(_GameManager.AccessoriesDatas[1], itemIndex);
         }
         else if (skinShop.Items[0].SkinType == SkinType.Sheild)
         {
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.SetfullData);
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.ShieldData);
-            _GameManager.ShieldData.Accessories[itemIndex].Selected = true;
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[3]);
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[2]);
+            _GameManager.AccessoriesDatas[2].Accessories[itemIndex].Selected = true;
 
-            textSkinBuffInfo.text = "+" + _GameManager.ShieldData.Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.ShieldData.Accessories[itemIndex].BuffData.BuffType;
+            textSkinBuffInfo.text = "+" + _GameManager.AccessoriesDatas[2].Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.AccessoriesDatas[2].Accessories[itemIndex].BuffData.BuffType;
 
             _GameManager.Player.UpdateAccessoriesSkinShop();
-            BtnSkinShopUpdate(_GameManager.ShieldData, itemIndex);
+            BtnSkinShopUpdate(_GameManager.AccessoriesDatas[2], itemIndex);
         }
         else if (skinShop.Items[0].SkinType == SkinType.SetFull)
         {
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.HatsData);
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.PantsData);
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.ShieldData);
-            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.SetfullData);
-            _GameManager.SetfullData.Accessories[itemIndex].Selected = true;
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[0]);
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[1]);
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[2]);
+            _GameManager.Player.SetAllAccessoriesUnSelected(_GameManager.AccessoriesDatas[3]);
+            _GameManager.AccessoriesDatas[3].Accessories[itemIndex].Selected = true;
 
-            textSkinBuffInfo.text = "+" + _GameManager.SetfullData.Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.SetfullData.Accessories[itemIndex].BuffData.BuffType;
+            textSkinBuffInfo.text = "+" + _GameManager.AccessoriesDatas[3].Accessories[itemIndex].BuffData.BuffIndex + "% " + _GameManager.AccessoriesDatas[3].Accessories[itemIndex].BuffData.BuffType;
 
             _GameManager.Player.UpdateAccessoriesSkinShop();
-            BtnSkinShopUpdate(_GameManager.SetfullData, itemIndex);
+            BtnSkinShopUpdate(_GameManager.AccessoriesDatas[3], itemIndex);
         }
     }
    
@@ -696,25 +697,26 @@ public class UIManager : MonoBehaviour
        
         if (skinShop.Items[0].SkinType == SkinType.Hat)
         {
-            setSelected(_GameManager.HatsData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.HatsData));
+            setSelected(_GameManager.AccessoriesDatas[0], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[0]));
         }
         else if (skinShop.Items[0].SkinType == SkinType.Pant)
         {   
-            setSelected(_GameManager.PantsData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.PantsData));
+            setSelected(_GameManager.AccessoriesDatas[1], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[1]));
         }
         else if (skinShop.Items[0].SkinType == SkinType.Sheild)
         {
-            setSelected(_GameManager.ShieldData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.ShieldData));
+            setSelected(_GameManager.AccessoriesDatas[2], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[2]));
         }
         else if (skinShop.Items[0].SkinType == SkinType.SetFull)
         {
-            setSelected(_GameManager.SetfullData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.SetfullData));
+            setSelected(_GameManager.AccessoriesDatas[3], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[3]));
         }
     }
     private void setSelected(AccessoriesData accessoriesData, int indexItems)
     {
         UnEquippedAllAccessoriesSkinShop(accessoriesData);
         accessoriesData.Accessories[indexItems].Equipped = true;
+        _GameManager.UpdateData();
         BtnSkinShopUpdate(accessoriesData, indexItems);
     }
     public void OnClickBtnBuySkinShop()
@@ -722,23 +724,23 @@ public class UIManager : MonoBehaviour
         
         if (skinShop.Items[0].SkinType == SkinType.Hat)
         {
-            UnEquippedAllAccessoriesSkinShop(_GameManager.SetfullData);
-            SetBuy(_GameManager.HatsData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.HatsData), false);
+            UnEquippedAllAccessoriesSkinShop(_GameManager.AccessoriesDatas[3]);
+            SetBuy(_GameManager.AccessoriesDatas[0], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[0]), false);
         }
         else if (skinShop.Items[0].SkinType == SkinType.Pant)
         {
-            UnEquippedAllAccessoriesSkinShop(_GameManager.SetfullData);
-            SetBuy(_GameManager.PantsData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.PantsData), false);
+            UnEquippedAllAccessoriesSkinShop(_GameManager.AccessoriesDatas[3]);
+            SetBuy(_GameManager.AccessoriesDatas[1], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[1]), false);
         }
         else if (skinShop.Items[0].SkinType == SkinType.Sheild)
         {
             
-            SetBuy(_GameManager.ShieldData, _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.ShieldData), false);
+            SetBuy(_GameManager.AccessoriesDatas[2], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[2]), false);
         }
         else if (skinShop.Items[0].SkinType == SkinType.SetFull)
         {
             
-            SetBuy(_GameManager.SetfullData,_GameManager.Player.GetAccessorisSelectedIndex(_GameManager.SetfullData),true);
+            SetBuy(_GameManager.AccessoriesDatas[3], _GameManager.Player.GetAccessorisSelectedIndex(_GameManager.AccessoriesDatas[3]),true);
         }
     }
     private void SetBuy(AccessoriesData accessoriesData, int indexItems,bool isSetfull)
@@ -755,14 +757,15 @@ public class UIManager : MonoBehaviour
             BtnSkinShopUpdate(accessoriesData, indexItems);
             if (isSetfull)
             {
-                UnEquippedAllAccessoriesSkinShop(_GameManager.HatsData);
-                UnEquippedAllAccessoriesSkinShop(_GameManager.PantsData);
-                UnEquippedAllAccessoriesSkinShop(_GameManager.ShieldData);
+                UnEquippedAllAccessoriesSkinShop(_GameManager.AccessoriesDatas[0]);
+                UnEquippedAllAccessoriesSkinShop(_GameManager.AccessoriesDatas[1]);
+                UnEquippedAllAccessoriesSkinShop(_GameManager.AccessoriesDatas[2]);
             }
             else
             {
-                UnEquippedAllAccessoriesSkinShop(_GameManager.SetfullData);
+                UnEquippedAllAccessoriesSkinShop(_GameManager.AccessoriesDatas[3]);
             }
+            _GameManager.UpdateData();
         }
         else
         {
@@ -771,14 +774,14 @@ public class UIManager : MonoBehaviour
     }
     private void UnEquippedAllAccessoriesSkinShop(AccessoriesData accessoriesData) 
     {
-        for (int i=0; i<accessoriesData.Accessories.Length;i++)
+        for (int i=0; i<accessoriesData.Accessories.Count; i++)
         {
             accessoriesData.Accessories[i].Equipped = false;
         }
     }
     private void UnEquippedAllWeapon(WeaponData weaponData)
     {
-        for (int i = 0; i < weaponData.Weapon.Length; i++)
+        for (int i = 0; i < weaponData.Weapon.Count; i++)
         {
             weaponData.Weapon[i].Equipped = false;
         }

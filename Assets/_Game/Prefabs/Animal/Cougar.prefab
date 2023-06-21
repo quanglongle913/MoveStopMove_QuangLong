@@ -1496,8 +1496,9 @@ MonoBehaviour:
   circleAttack: {fileID: 1052985047447804825}
   attackBox: {fileID: 47396084672919741}
   animal: {fileID: 1912039032}
-  inGamneExp: 100
+  inGamneExp: 10
   hp: 0
+  target: {fileID: 0}
   IsTargerInRange: 0
   Direction: {x: 0, y: 0, z: 0}
 --- !u!195 &4531525046598385288
