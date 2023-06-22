@@ -31,7 +31,7 @@ public class Character : MonoBehaviour
     [SerializeField] private float inGameMoveSpeed = 5.0f;
     [SerializeField] private float inGameGold = 50f;
     [SerializeField] private float inGameGoldEarn = 50f;
-    [SerializeField] private int inGamneZoneExp = 0;
+    //[SerializeField] private int inGamneZoneExp = 0;
 
     [SerializeField] private bool isTargerInRange;
     [SerializeField] private bool isAttacking;
@@ -132,7 +132,7 @@ public class Character : MonoBehaviour
         //DetectionCharacter(CharactersInsideZone);
         if (this._GameManager.GameState == GameState.InGame)
         {
-            if (Weapons.Count <= 1)
+            if (Weapons.Count <= 4)
             {
                 Weapons a_weapon = _GameManager.WeaponSpawner.GenerateWeapon(_GameManager.WeaponHolder, PoolObject);
                 //a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
@@ -153,21 +153,33 @@ public class Character : MonoBehaviour
         ChangeAnim("Attack");
         IsAttacking = true;
         HideAllWeaponsInHand();
-        Weapons weaponAttack = Weapons[0];
-        weaponAttack.transform.position = new Vector3(WeaponRoot.transform.position.x,WeaponRoot.transform.position.y,WeaponRoot.transform.position.z);
-       
-        weaponAttack._GameObject = gameObject;
-        weaponAttack.WeaponType = this.WeaponType;
-        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack.transform.position.y, Target.transform.position.z);
-        Vector3 _Direction = new Vector3(newTarget.x - weaponAttack.transform.position.x, _Rigidbody.velocity.y, newTarget.z - weaponAttack.transform.position.z);
+        Vector3 newTarget = new Vector3(Target.transform.position.x, WeaponRoot.transform.position.y, Target.transform.position.z);
+        Vector3 _Direction = new Vector3(newTarget.x - WeaponRoot.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponRoot.transform.position.z).normalized;
         RotateTowards(this.gameObject, _Direction);
-        weaponAttack.isFire = true;
-        weaponAttack.gameObject.SetActive(true);
-        weaponAttack.direction = _Direction;
-        weaponAttack.target = newTarget;
-        weaponAttack.startPoint = gameObject.transform.position;
+        GenerateWeapon(weapons[0], _Direction);
+        if (_GameManager.GameMode == GameMode.Survival)
+        {
+            GenerateWeapon(weapons[1], transform.TransformDirection(0.5f, 0, 1).normalized);
+            GenerateWeapon(weapons[2], transform.TransformDirection(-0.5f, 0, 1).normalized);
+        }
         //Move Weapon with DOMove
         //moveWeaponWithDOMove(gameObject.GetComponent<Character>(), weaponAttack);
+    }
+    private void GenerateWeapon(Weapons weapons,Vector3 _Direction)
+    {
+        
+        Weapons weaponAttack2 = weapons;
+        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack2.transform.position.y, Target.transform.position.z);
+        Weapons.Remove(weapons);
+        weaponAttack2.transform.position = WeaponRoot.transform.position;
+        weaponAttack2._GameObject = gameObject;
+        weaponAttack2.WeaponType = this.WeaponType;
+        weaponAttack2.direction = _Direction;
+        weaponAttack2.gameObject.SetActive(true);
+        weaponAttack2.startPoint = gameObject.transform.position;
+        weaponAttack2.target = newTarget;
+        weaponAttack2.bulletSpeed = InGameAttackSpeed / 30;
+        weaponAttack2.isFire = true;
     }
     private void moveWeaponWithDOMove(Character _character, Weapons _weapons)
     {

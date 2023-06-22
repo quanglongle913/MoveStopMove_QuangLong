@@ -13,6 +13,7 @@ public class Weapons : MonoBehaviour
     
     private GameObject _gameObject;
     public float rotationSpeed;
+    public float bulletSpeed=2f;
     public bool isFire;
     public Vector3 target;
     public Vector3 startPoint;
@@ -24,7 +25,7 @@ public class Weapons : MonoBehaviour
     public GameObject NewFireVfx { get => newFireVfx; set => newFireVfx = value; }
     public GameObject _GameObject { get => _gameObject; set => _gameObject = value; }
 
-    private bool isCharacter =false;
+    //private bool isCharacter =false;
     Character character;
     // Update is called once per frame
     private void Start()
@@ -64,7 +65,7 @@ public class Weapons : MonoBehaviour
             //Move Weapon with transform.....
             if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGameAttackRange))
             {
-                Vector3 TargetPoint = new Vector3(transform.position.x + direction.x * 1f * Time.deltaTime, transform.position.y, transform.position.z + direction.z * 1f * Time.deltaTime);
+                Vector3 TargetPoint = new Vector3(transform.position.x + direction.x * bulletSpeed * Time.deltaTime, transform.position.y, transform.position.z + direction.z * bulletSpeed * Time.deltaTime);
                 transform.position = TargetPoint;
             }
             else
@@ -133,7 +134,7 @@ public class Weapons : MonoBehaviour
     }
     private void ReleaseWeapon(Character character)
     {
-        character.Weapons.Remove(this);
+        //character.Weapons.Remove(this);
         character.ShowWeaponIndex((int)WeaponType);
         character.IsAttacking = false;
         this.gameObject.SetActive(false);
