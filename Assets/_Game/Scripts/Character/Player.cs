@@ -28,8 +28,10 @@ public class Player : Character
    
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
-    bool isSurvivalInit=false;
+    public int MaxHP { get => maxHP; set => maxHP = value; }
 
+    bool isSurvivalInit=false;
+    private int maxHP;
     public override void Awake()
     {
         base.Awake();
@@ -43,7 +45,7 @@ public class Player : Character
     public override void OnInit()
     {
         base.OnInit();
-       
+        isSurvivalInit = false;
         ChangeState(new IdleStateP());
         //this.WeaponIndex = PlayerPrefs.GetInt(Constant.WEAPONS_USE, 0);
         this.WeaponIndex = GetWeaponsEquippedIndex(_GameManager.WeaponData);
@@ -71,10 +73,14 @@ public class Player : Character
             }
             if (_GameManager.GameMode == GameMode.Survival && !isSurvivalInit)
             {
+                InGamneExp = 0;
+                CharacterLevel = 1;
                 isSurvivalInit = true;
-                InGameAttackSpeed += 60;
-                InGameMoveSpeed += 2;
-                hp = 100;
+                InGameAttackSpeed += 0;
+                InGameMoveSpeed += 0;
+                MaxHP = 100;
+                hp = MaxHP;
+                //_GameManager.UIManager.Show_Popup_LevelUp();
 
             }
         } else
@@ -109,6 +115,10 @@ public class Player : Character
         if (InGamneExp >= CharacterLevel * 50)
         {
             CharacterLevel++;
+            if (CharacterLevel % 5 == 0)
+            {
+                _GameManager.UIManager.Show_Popup_LevelUp();
+            }
             InGamneExp = 0;
         }
     }

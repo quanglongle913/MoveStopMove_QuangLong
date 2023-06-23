@@ -119,9 +119,10 @@ public class Weapons : MonoBehaviour
         if (other.GetComponent<AnimalAI>() && !other.GetComponent<AnimalAI>().IsDeath) 
         {
             other.GetComponent<AnimalAI>().OnHit(1f);
-            _GameObject.GetComponent<Player>().SetSurvivalExp(other.GetComponent<AnimalAI>().InGamneExp);
+            Player player = _GameObject.GetComponent<Player>();
+            player.SetSurvivalExp(other.GetComponent<AnimalAI>().InGamneExp);
+            player.KilledCount++;
             _GameManager.VfxManager.ShowBloodVfx(this);
-
             ReleaseWeapon(character);
         }
     }

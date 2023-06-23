@@ -102,6 +102,7 @@ MonoBehaviour:
   weaponType: 9
   FireVfx: {fileID: 271093378344025040, guid: b2d5504def568a645a2020ee089ee8c0, type: 3}
   rotationSpeed: 1000
+  bulletSpeed: 2
   isFire: 0
   target: {x: 0, y: 0, z: 0}
   startPoint: {x: 0, y: 0, z: 0}

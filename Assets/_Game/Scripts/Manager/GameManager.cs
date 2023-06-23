@@ -169,7 +169,28 @@ public class GameManager : Singleton<GameManager>
             }
             else if (gameMode == GameMode.Survival)
             {
+                if (characterInfoList.Count > 0)
+                {
+                    for (int i = 0; i < characterInfoList.Count; i++)
+                    {
+                        if (characterInfoList[i].gameObject.activeSelf)
+                        {
+                            characterInfoList[i].GetComponent<PooledObject>().Release();
+                        }
 
+                    }
+                }
+                if (indicatorList.Count > 0)
+                {
+                    for (int i = 0; i < indicatorList.Count; i++)
+                    {
+                        if (indicatorList[i].gameObject.activeSelf)
+                        {
+                            indicatorList[i].GetComponent<PooledObject>().Release();
+                        }
+                       
+                    }
+                }
                 if (this.Player.KilledCount == 1000)
                 {
                     //Player Won!.....

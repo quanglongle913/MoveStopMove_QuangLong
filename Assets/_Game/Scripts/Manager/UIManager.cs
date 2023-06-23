@@ -63,7 +63,12 @@ public class UIManager : MonoBehaviour
 
     [Header("InGame: ")]
     [SerializeField] private GameObject popup_Setting;
+    [SerializeField] private GameObject popup_LevelUp;
     [SerializeField] private TMPro.TextMeshProUGUI textAlive;
+    [SerializeField] private Slider sliderPlayerExp;
+    [SerializeField] private TMPro.TextMeshProUGUI textPlayerExp;
+    [SerializeField] private TMPro.TextMeshProUGUI textPlayerLevel;
+    [SerializeField] private Slider sliderHealthBar;
     [Header("EndGame: ")]
     [SerializeField] private GameObject popup_TryAgain;
     [SerializeField] private GameObject popup_Countine;
@@ -116,11 +121,37 @@ public class UIManager : MonoBehaviour
                 InGame();
                 IsRevive=false;
             }
-            
-            int total = _GameManager.TotalBotAI + _GameManager.BotAIListEnable.Count;
-            textAlive.text = ("Alive: " + total);
+            if (_GameManager.GameMode == GameMode.Normal)
+            {
+                int total = _GameManager.TotalBotAI + _GameManager.BotAIListEnable.Count;
+                textAlive.text = ("Alive: " + total);
+            }
+            else
+            {
+                //UNDONE
+                textAlive.text = ("Killed: " + _GameManager.Player.KilledCount);
+                float _value = (float)_GameManager.Player.InGamneExp / (float)(_GameManager.Player.CharacterLevel * 50);
+                sliderPlayerExp.value = _value;
+                textPlayerLevel.text = ""+_GameManager.Player.CharacterLevel;
+                textPlayerExp.text = "" + _GameManager.Player.InGamneExp + "/" + _GameManager.Player.CharacterLevel * 50;
+                ShowHealthBarPlayer(_GameManager.MainCam,_GameManager.Player);
+            }
+
         }
         
+    }
+    private void ShowHealthBarPlayer(Camera mainCam, Player player)
+    {
+        Vector3 viewPos = mainCam.WorldToScreenPoint(player.gameObject.transform.position);
+        if (player.InCamera(mainCam))
+        {
+            sliderHealthBar.value = (float)player.hp / (float)player.MaxHP;
+            sliderHealthBar.gameObject.transform.position = new Vector2(viewPos.x, viewPos.y - 0.2f * Screen.height / 10);
+        }
+        else
+        {
+            ///
+        }
     }
     public void setLoading()
     {
@@ -139,10 +170,16 @@ public class UIManager : MonoBehaviour
         if (IsSurvival)
         {
             _GameManager.GameMode = GameMode.Survival;
+            sliderPlayerExp.gameObject.SetActive(true);
+            sliderHealthBar.gameObject.SetActive(true);
+            popup_LevelUp.SetActive(false);
         }
         else
         {
             _GameManager.GameMode = GameMode.Normal;
+            sliderPlayerExp.gameObject.SetActive(false);
+            sliderHealthBar.gameObject.SetActive(false);
+            popup_LevelUp.SetActive(false);
         }
     }
     public void setEndGame(bool isPlayerWon)
@@ -253,15 +290,40 @@ public class UIManager : MonoBehaviour
         }
     }
     //================IN GAME===================
+    public void Show_Popup_LevelUp()
+    {
+        popup_Setting.SetActive(false);
+        popup_LevelUp.SetActive(true);
+        sliderHealthBar.gameObject.SetActive(false);
+    }
+    public void Popup_LevelUp_Choose(int buffType)
+    {
+        if (buffType == (int)BuffType.AttackSpeed)
+        {
+            _GameManager.Player.InGameAttackSpeed += _GameManager.Player.InGameAttackSpeed * 0.1f;
+        }
+        else if (buffType == (int)BuffType.MoveSpeed)
+        {
+            _GameManager.Player.InGameMoveSpeed += _GameManager.Player.InGameMoveSpeed * 0.1f;
+        }
+        else if (buffType == (int)BuffType.Range)
+        {
+            _GameManager.Player.InGameAttackRange += _GameManager.Player.InGameAttackRange * 0.1f;
+        }
+        popup_LevelUp.SetActive(false);
+        sliderHealthBar.gameObject.SetActive(true);
+    }
     public void Show_Popup_Setting()
     {
         popup_Setting.SetActive(true);
+        sliderHealthBar.gameObject.SetActive(false);
     }
     public void Hide_Popup_Setting()
     {
         if (popup_Setting.activeSelf)
         {
             popup_Setting.SetActive(false);
+            sliderHealthBar.gameObject.SetActive(true);
         }
     }
     public void Show_Popup_Countine(bool IsWin)
@@ -292,7 +354,8 @@ public class UIManager : MonoBehaviour
         image_ZoneTypeNext.texture = _GameManager.ZoneData.Zones[zoneType].Texture;
 
         Hide_Popup_Tryagain();
-        popup_Countine.SetActive(true);    
+        popup_Countine.SetActive(true);
+        sliderHealthBar.gameObject.SetActive(false);
     }
     public void Hide_Popup_Countine()
     {
@@ -314,6 +377,7 @@ public class UIManager : MonoBehaviour
 
     public void Show_Popup_Tryagain()
     {
+        sliderHealthBar.gameObject.SetActive(false);
         popup_Countine.SetActive(false);
         popup_TryAgain.SetActive(true);
         StartCoroutine(Waiter(text_CountDown));

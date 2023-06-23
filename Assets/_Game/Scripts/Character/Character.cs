@@ -135,7 +135,6 @@ public class Character : MonoBehaviour
             if (Weapons.Count <= 4)
             {
                 Weapons a_weapon = _GameManager.WeaponSpawner.GenerateWeapon(_GameManager.WeaponHolder, PoolObject);
-                //a_weapon.gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.localScale;
                 Weapons.Add(a_weapon);
             }
             for (int i = 0; i < Weapons.Count; i++)
@@ -178,7 +177,7 @@ public class Character : MonoBehaviour
         weaponAttack2.gameObject.SetActive(true);
         weaponAttack2.startPoint = gameObject.transform.position;
         weaponAttack2.target = newTarget;
-        weaponAttack2.bulletSpeed = InGameAttackSpeed / 30;
+        weaponAttack2.bulletSpeed = InGameAttackSpeed / 10.0f;
         weaponAttack2.isFire = true;
     }
     private void moveWeaponWithDOMove(Character _character, Weapons _weapons)

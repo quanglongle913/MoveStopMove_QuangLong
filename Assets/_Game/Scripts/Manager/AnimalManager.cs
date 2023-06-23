@@ -32,7 +32,7 @@ public class AnimalManager : PooledObject
         else if (_GameManager.GameState == GameState.InGame)
         {
             //Debug.Log(_GameManager.GameMode);
-            if (_GameManager.Player.KilledCount < 100 && _GameManager.GameMode == GameMode.Survival)
+            if (_GameManager.Player.KilledCount < 1000 && _GameManager.GameMode == GameMode.Survival)
             {
                 //Debug.Log(_GameManager.AnimalAIListEnable.Count);
                 //Debug.Log(_GameManager.AnimalAIListStack.Count);

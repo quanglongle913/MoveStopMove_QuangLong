@@ -11,7 +11,7 @@ public class Attack : MonoBehaviour
         if (other.gameObject.GetComponent<Player>() && !gameObjectRoot.GetComponent<AnimalAI>().IsDeath)
         {
             //Debug.Log("Attack");
-            other.gameObject.GetComponent<Player>().GetComponent<Player>().OnHit(1f);
+            other.gameObject.GetComponent<Player>().GetComponent<Player>().OnHit(2f);
             other.gameObject.GetComponent<Player>().KilledByName = gameObjectRoot.name;
             other.gameObject.GetComponent<Player>().KillerColorType = ColorType.Red;
             other.gameObject.GetComponent<Player>().SetEndGame();
