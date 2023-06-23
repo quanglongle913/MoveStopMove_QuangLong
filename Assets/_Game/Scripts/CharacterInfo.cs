@@ -19,7 +19,7 @@ public class CharacterInfo : MonoBehaviour
     public GameObject Target { get => target; set => target = value; }
     public void ChangeColor(ColorType colorType, ColorData colorData)
     {
-        imageLevelBG.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
+        imageLevelBG.color = colorData.GetMat(colorType).color;
         if (colorType == ColorType.Yellow)
         {
             CharacterLevel.color = Color.black;

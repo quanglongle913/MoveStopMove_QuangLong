@@ -65,8 +65,7 @@ public class Character : MonoBehaviour
     protected Collider[] CurrentCharacters;
     protected Collider[] CharactersInsideZone;
     protected Collider[] CharactersOutsideZone;
-    
-    
+
 
     public bool IsHaveWeapon;
 

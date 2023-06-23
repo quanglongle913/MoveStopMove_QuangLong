@@ -65,7 +65,7 @@ public class Player : Character
     void Update()
     {
 
-        if (this._GameManager.GameState == GameState.InGame)
+        if (this._GameManager.IsState(GameState.InGame))
         {
             if (currentState != null)
             {

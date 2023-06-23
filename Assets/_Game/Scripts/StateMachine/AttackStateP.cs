@@ -22,7 +22,7 @@ public class AttackStateP : IState<Player>
         
         if (timer > timerAttack)
         {
-            if (t.IsTargerInRange)
+            if (t.IsTargerInRange && !t.IsAttacking)
             {
                 t.Attack();
             }

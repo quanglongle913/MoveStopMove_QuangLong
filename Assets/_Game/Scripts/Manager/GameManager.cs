@@ -62,6 +62,8 @@ public class GameManager : Singleton<GameManager>
     public bool IsInit { get => isInit; set => isInit = value; }
     public GameState GameState { get => gameState; set => gameState = value; }
 
+    public bool IsState(GameState gameState) => this.gameState == gameState;
+
     public List<Indicator> IndicatorList { get => indicatorList; set => indicatorList = value; }
     public bool IsInitIndicator { get => isInitIndicator; set => isInitIndicator = value; }
     public bool IsInitBotAI { get => isInitBotAI; set => isInitBotAI = value; }

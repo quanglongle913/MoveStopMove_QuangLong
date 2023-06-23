@@ -145,9 +145,9 @@ public class Weapons : MonoBehaviour
     private void SetRotation(Vector3 upwards)
     {
         Quaternion lookRotation = Quaternion.LookRotation(direction, upwards);
-        gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
         newFireVfx.gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-        gameObject.transform.eulerAngles += new Vector3(0, 90, 0);
+        transform.eulerAngles += new Vector3(0, 90, 0);
         newFireVfx.gameObject.transform.eulerAngles += new Vector3(0, 90, 0);
     }
 }
