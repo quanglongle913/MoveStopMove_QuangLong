@@ -4821,7 +4821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &311678894
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7370,7 +7370,7 @@ GameObject:
   - component: {fileID: 515531190}
   - component: {fileID: 515531189}
   m_Layer: 5
-  m_Name: EndGame
+  m_Name: Canvas - EndGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15742,7 +15742,7 @@ GameObject:
   - component: {fileID: 1272178494}
   - component: {fileID: 1272178493}
   m_Layer: 5
-  m_Name: InGame
+  m_Name: Canvas - InGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15824,7 +15824,7 @@ GameObject:
   - component: {fileID: 1272200320}
   - component: {fileID: 1272200319}
   m_Layer: 5
-  m_Name: GameMenu
+  m_Name: Canvas - GameMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39272,7 +39272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2681594238292723578}
   m_Layer: 5
-  m_Name: Loading
+  m_Name: Canvas - Loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
