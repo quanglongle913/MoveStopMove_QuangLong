@@ -9,7 +9,7 @@ using UnityEngine.Pool;
 using UnityEngine.TextCore.Text;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Character : MonoBehaviour
+public class Character : GameUnit,IHit
 {
     [Header("Character: ")]
     [SerializeField] private SkinnedMeshRenderer mesh;
@@ -37,10 +37,8 @@ public class Character : MonoBehaviour
     [SerializeField] private bool isAttacking;
     [Header("--------------------------- ")]
     [SerializeField] private GameObject weaponRoot;
-    private ObjectPool poolObject;
     [Header("-------------Weapon-------------- ")]
     private WeaponType weaponType;
-    private WeaponData weaponData;
     [Header("-------------Skin-------------- ")]
     [SerializeField] private List<GameObject> listHats;
     [SerializeField] private List<GameObject> listSheilds;
@@ -51,11 +49,11 @@ public class Character : MonoBehaviour
     [SerializeField] private string characterName;
     [SerializeField] private int characterLevel;
 
-
-    public float hp;
+    public Indicator Indicator;
+    public CharacterInfo CharacterInfo;
+    private float hp;
     private bool isBuffed;
     public bool IsDeath => hp <= 0;
-    private GameManager gameManager;
 
     private Animator anim;
     private Rigidbody rb;
@@ -69,11 +67,10 @@ public class Character : MonoBehaviour
 
     public bool IsHaveWeapon;
 
-    private List<Weapons> weapons;
     private int weaponIndex;
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
     public ColorData ColorData { get => colorData; set => colorData = value; }
-    public ColorType ColorType { get => colorType; set => colorType = value; }
+    //public ColorType ColorType { get => colorType; set => colorType = value; }
 
     public int InGamneExp { get => inGamneExp; set => inGamneExp = value; }
     public float InGameSizeCharacter { get => inGameSizeCharacter; set => inGameSizeCharacter = value; }
@@ -84,22 +81,17 @@ public class Character : MonoBehaviour
 
     public bool IsTargerInRange { get => isTargerInRange; set => isTargerInRange = value; }
     public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
-
-    public GameManager _GameManager { get => gameManager; set => gameManager = value; }
     public Animator Anim { get => anim; set => anim = value; }
     public GameObject Target { get => target; set => target = value; }
-    public List<Weapons> Weapons { get => weapons; set => weapons = value; }
-    public ObjectPool PoolObject { get => poolObject; set => poolObject = value; }
     public GameObject WeaponRoot { get => weaponRoot; set => weaponRoot = value; }
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
-    public List<Weapons> ListWeaponsInHand { get => listWeaponsInHand; set => listWeaponsInHand = value; }
-    public WeaponData WeaponData { get => weaponData; set => weaponData = value; }
     public string CharacterName { get => characterName; set => characterName = value; }
     public int WeaponIndex { get => weaponIndex; set => weaponIndex = value; }
     public SkinnedMeshRenderer PantsSkin { get => pantsSkin; set => pantsSkin = value; }
-    public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
+
     public bool IsBuffed { get => isBuffed; set => isBuffed = value; }
     public float InGameGoldEarn { get => inGameGoldEarn; set => inGameGoldEarn = value; }
+
 
 
     // Start is called before the first frame update
@@ -111,66 +103,47 @@ public class Character : MonoBehaviour
     }
     public virtual void Start()
     {
-        _GameManager = GameManager.Instance;
-        Weapons = new List<Weapons>();
         OnInit();
     }
-    public virtual void OnInit()
+    public override void OnInit()
     {
-        IsAttacking = false;
-        IsTargerInRange = false;
-        hp = 1;
         OnReset();
-        ChangeColor(gameObject, ColorType);
-        this.WeaponData = _GameManager.WeaponData;
+        ChangeColor(gameObject, colorType);
     }
     
     public virtual void FixedUpdate()
     {
-        //GenerateZone();
-        //DetectionCharacter(CharactersInsideZone);
-        if (this._GameManager.GameState == GameState.InGame)
-        {
-            if (Weapons.Count <= 4)
-            {
-                Weapons a_weapon = _GameManager.WeaponSpawner.GenerateWeapon(_GameManager.WeaponHolder, PoolObject);
-                Weapons.Add(a_weapon);
-            }
-            for (int i = 0; i < Weapons.Count; i++)
-            {
-                Weapons[i].gameObject.transform.localScale = ListWeaponsInHand[(int)WeaponType].gameObject.transform.lossyScale;
-            }
-        }
+        GenerateZone();
+        DetectionCharacter();
     }
     public virtual void Attack() 
-    {   
-        if (InCamera(_GameManager.MainCam))
+    {
+        if (InCamera(GameManager.Instance.GetCamera()))
         {
-            _GameManager.SoundManager.PlayWeaponThrowSoundEffect();
+            GameManager.Instance.SoundManager().PlayWeaponThrowSoundEffect();
         }
         ChangeAnim("Attack");
         IsAttacking = true;
         HideAllWeaponsInHand();
-        Vector3 newTarget = new Vector3(Target.transform.position.x, WeaponRoot.transform.position.y, Target.transform.position.z);
-        Vector3 _Direction = new Vector3(newTarget.x - WeaponRoot.transform.position.x, _Rigidbody.velocity.y, newTarget.z - WeaponRoot.transform.position.z).normalized;
-        RotateTowards(this.gameObject, _Direction);
-        GenerateWeapon(weapons[0], _Direction);
-        if (_GameManager.GameMode == GameMode.Survival)
+        Vector3 _DirectionCharacter = new Vector3(Target.transform.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.transform.position.z - gameObject.transform.position.z).normalized;
+        Vector3 _DirectionWeapon = new Vector3(Target.transform.position.x - WeaponRoot.transform.position.x, _Rigidbody.velocity.y, Target.transform.position.z - WeaponRoot.transform.position.z).normalized;
+        RotateTowards(this.gameObject, _DirectionCharacter);
+        
+        GenerateWeapon(_DirectionWeapon);
+        /*if (_GameManager.GameMode == GameMode.Survival)
         {
             GenerateWeapon(weapons[1], transform.TransformDirection(0.5f, 0, 1).normalized);
             GenerateWeapon(weapons[2], transform.TransformDirection(-0.5f, 0, 1).normalized);
-        }
-        //Move Weapon with DOMove
-        //moveWeaponWithDOMove(gameObject.GetComponent<Character>(), weaponAttack);
+        }*/
     }
-    private void GenerateWeapon(Weapons weapons,Vector3 _Direction)
+    private void GenerateWeapon(Vector3 _Direction)
     {
-        
-        Weapons weaponAttack2 = weapons;
+        Weapons weaponAttack2 = SimplePool.Spawn<Weapons>((PoolType)(weaponType+2));
+        weaponAttack2.gameObject.transform.localScale = GetWeaponInHand((int)WeaponType).transform.lossyScale;
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack2.transform.position.y, Target.transform.position.z);
-        Weapons.Remove(weapons);
         weaponAttack2.transform.position = WeaponRoot.transform.position;
         weaponAttack2._GameObject = gameObject;
+        weaponAttack2.character = gameObject.GetComponent<Character>();
         weaponAttack2.WeaponType = this.WeaponType;
         weaponAttack2.direction = _Direction;
         weaponAttack2.gameObject.SetActive(true);
@@ -179,39 +152,25 @@ public class Character : MonoBehaviour
         weaponAttack2.bulletSpeed = InGameAttackSpeed / 10.0f;
         weaponAttack2.isFire = true;
     }
-    private void moveWeaponWithDOMove(Character _character, Weapons _weapons)
-    {
-        _weapons.transform.DOMove(_weapons.target, (float)Math.Round(60 / _character.InGameAttackSpeed, 1))
-                        .SetEase(Ease.InSine)
-                        .SetLoops(0, LoopType.Restart)
-                        .OnComplete(() =>
-                        {
-                            _character.Weapons.Remove(_weapons);
-                            _character.ShowWeaponIndex((int)WeaponType);
-                            _character.IsAttacking = false;
-                            _weapons.gameObject.SetActive(false);
-                            _weapons.gameObject.GetComponent<PooledObject>().Release();
-                            _weapons.isFire = false;
-
-                        });
-    }
     protected void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersInsideZone = Physics.OverlapSphere(this.transform.position, InGameAttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersOutsideZone = CurrentCharacters.Except(CharactersInsideZone).ToArray();
     }
-    protected  void DetectionCharacter(Collider[] colliders)
+    public bool DetectionCharacter()
     {
-        for (int i = 0; i < colliders.Length; i++) 
+        //GenerateZone();
+        Collider[] colliders = CharactersInsideZone;
+        for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].GetComponent<Character>())
+            Character character = colliders[i].GetComponent<Character>();
+            if (character)
             {
-                Character character = colliders[i].GetComponent<Character>();
                 if (!character.IsDeath && colliders[i].gameObject != this.gameObject && colorType != character.colorType)
                 {
                     IsTargerInRange = true;
-                    Target = colliders[i].gameObject;
+                    Target = character.gameObject;
                     break;
                 }
                 else
@@ -219,22 +178,8 @@ public class Character : MonoBehaviour
                     IsTargerInRange = false;
                 }
             }
-            else if (colliders[i].GetComponent<AnimalAI>())
-            {
-                AnimalAI animalAI = colliders[i].GetComponent<AnimalAI>();
-                if (!animalAI.IsDeath && colliders[i].gameObject != this.gameObject)
-                {
-                    IsTargerInRange = true;
-                    Target = colliders[i].gameObject;
-                    break;
-                }
-                else
-                {
-                    IsTargerInRange = false;
-                }
-            }
-           
         }
+        return IsTargerInRange;
     }
     public bool InCamera(Camera camera)
     {
@@ -247,17 +192,15 @@ public class Character : MonoBehaviour
         }
         return check;
     }
-    public virtual void OnDespawn()
+    public override void OnDespawn()
     {
 
     }
     protected virtual void OnDeath()
     {
-        //ChangeAnim("Dead");
-        //Invoke(nameof(OnDespawn), 2f);
-        if (InCamera(_GameManager.MainCam))
+        if (InCamera(GameManager.Instance.GetCamera()))
         {
-            _GameManager.SoundManager.PlayDeadSoundEffect();
+            GameManager.Instance.SoundManager().PlayDeadSoundEffect();
         }
     }
     private void OnDrawGizmos()
@@ -280,6 +223,14 @@ public class Character : MonoBehaviour
             anim.SetTrigger(currentAnimName);
         }
     }
+    public ColorType GetColorType() 
+    { 
+        return colorType; 
+    }
+    /*public void SetColorType(ColorType colorType)
+    {
+       this.colorType = colorType;
+    }*/
     public void ChangeColor(GameObject a_obj, ColorType colorType)
     {
         this.colorType = colorType;
@@ -291,11 +242,10 @@ public class Character : MonoBehaviour
 
         if (!IsDeath)
         {
-            if (InCamera(_GameManager.MainCam))
+            if (InCamera(GameManager.Instance.GetCamera()))
             {
-                _GameManager.SoundManager.PlayWeaponHitSoundEffect();
+                GameManager.Instance.SoundManager().PlayWeaponHitSoundEffect();
             }
-
             hp -= damage;
             if (IsDeath)
             {
@@ -306,15 +256,19 @@ public class Character : MonoBehaviour
 
     }
     //=====================Weapons===================
-   
-    //Set Material for Prefabs 
-    public void SetWeaponSkinMat(Renderer renderer, WeaponData weaponData, int index)
+    public GameObject GetWeaponInHand(int index)
     {
+        return listWeaponsInHand[index].gameObject;
+    }
+    //Set Material for Prefabs 
+    public void SetWeaponSkinMat()
+    {
+        Renderer renderer = GetWeaponInHand((int)WeaponType).GetComponent<Renderer>();
         var newMaterials = new Material[renderer.materials.Count()];
 
         for (int i = 0; i < newMaterials.Count(); i++)
         {
-            newMaterials[i] = weaponData.Weapon[index].Mat;
+            newMaterials[i] = GameManager.Instance.GetWeaponData().Weapon[weaponIndex].Mat;
 
         }
         renderer.materials = newMaterials;
@@ -335,7 +289,7 @@ public class Character : MonoBehaviour
     }
     public void HideAllWeaponsInHand()
     {
-        for (int i = 0; i < ListWeaponsInHand.Count; i++)
+        for (int i = 0; i < listWeaponsInHand.Count; i++)
         {
             listWeaponsInHand[i].gameObject.SetActive(false);
         }
@@ -409,14 +363,23 @@ public class Character : MonoBehaviour
     }
 
     //Set EXP when killed other character
-    public void setExp(int exp)
+    public int GetLevel()
     {
-        InGamneExp += exp / CharacterLevel + 40;
+        return characterLevel;
+    }
+    public void SetExp(int exp)
+    {
+        InGamneExp += exp / characterLevel + 40;
         InGameGold += InGameGoldEarn;
         UpdateCharacterLvl();
     }
-    public void OnReset()
+    private void OnReset()
     {
+        IsAttacking = false;
+        IsTargerInRange = false;
+        hp = 1;
+        WeaponIndex = 0;
+        GetWeaponInHand(WeaponIndex).SetActive(true);
         InGameGold = 0;
         inGameSizeCharacter = baseSizeCharacter;
         inGameAttackRange = baseAttackRange;
@@ -427,7 +390,7 @@ public class Character : MonoBehaviour
     }
     public void UpdateCharacterLvl()
     {
-        CharacterLevel = InGamneExp / 100; //tinh level character
+        characterLevel = InGamneExp / 100; //tinh level character
         float offsetSize = 0.05f;
         float offsetAttackSpeed = 0.04f;
         float offsetMoveSpeed = 0.3f;
@@ -450,23 +413,24 @@ public class Character : MonoBehaviour
     }
     public void UpdateCharacterAcessories()
     {  //Weapons buff
-        if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
+        WeaponData weaponData = GameManager.Instance.GetWeaponData();
+        if (weaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
         {
-            InGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+            InGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * weaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
-        else if (_GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
+        else if (weaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
         {
-            inGameAttackRange = baseAttackRange + (baseAttackRange * _GameManager.WeaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+            inGameAttackRange = baseAttackRange + (baseAttackRange * weaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         //Acessories buff
-        int equippedIndexHatsData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[0]);
-        int equippedIndexPantsData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[1]);
-        int equippedIndexShieldData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[2]);
-        int equippedIndexSetfullData = GetAccessorisEquippedIndex(_GameManager.AccessoriesDatas[3]);
-        UpdateSkinBuffData(equippedIndexHatsData, _GameManager.AccessoriesDatas[0]);
-        UpdateSkinBuffData(equippedIndexPantsData, _GameManager.AccessoriesDatas[1]);
-        UpdateSkinBuffData(equippedIndexShieldData, _GameManager.AccessoriesDatas[2]);
-        UpdateSkinBuffData(equippedIndexSetfullData, _GameManager.AccessoriesDatas[3]);
+        int equippedIndexHatsData = GetAccessorisEquippedIndex(GameManager.Instance.GetAccessoriesDatas()[0]);
+        int equippedIndexPantsData = GetAccessorisEquippedIndex(GameManager.Instance.GetAccessoriesDatas()[1]);
+        int equippedIndexShieldData = GetAccessorisEquippedIndex(GameManager.Instance.GetAccessoriesDatas()[2]);
+        int equippedIndexSetfullData = GetAccessorisEquippedIndex(GameManager.Instance.GetAccessoriesDatas()[3]);
+        UpdateSkinBuffData(equippedIndexHatsData, GameManager.Instance.GetAccessoriesDatas()[0]);
+        UpdateSkinBuffData(equippedIndexPantsData, GameManager.Instance.GetAccessoriesDatas()[1]);
+        UpdateSkinBuffData(equippedIndexShieldData, GameManager.Instance.GetAccessoriesDatas()[2]);
+        UpdateSkinBuffData(equippedIndexSetfullData, GameManager.Instance.GetAccessoriesDatas()[3]);
     }
     private void UpdateSkinBuffData(int index, AccessoriesData accessoriesData)
     {
@@ -508,5 +472,75 @@ public class Character : MonoBehaviour
             //Debug.Log("You don't have any Skin");
         }
         return index;
+    }
+    public void SetHp(float hp)
+    { 
+        this.hp=hp; ;
+    }
+    public float Hp()
+    {
+        return hp;
+    }
+    public void SetInGameExp(int exp)
+    {
+        this.inGamneExp = exp; ;
+    }
+    public void SetLevel(int level)
+    {
+        this.characterLevel = level;
+    }
+    public void CharacterBufffCountDown(int randomBuff, List<BuffData> buffDataInGiftBox)
+    {
+        if (!IsBuffed)
+        {
+            if (InCamera(GameManager.Instance.GetCamera()))
+            {
+                GameManager.Instance.SoundManager().PlaySizeUpSoundEffect();
+            }
+            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.AttackSpeed)
+            {
+                StartCoroutine(Waiter(InGameAttackSpeed, buffDataInGiftBox[randomBuff]));
+                InGameAttackSpeed = InGameAttackSpeed + (InGameAttackSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+            }
+            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.MoveSpeed)
+            {
+                StartCoroutine(Waiter(InGameMoveSpeed, buffDataInGiftBox[randomBuff]));
+                InGameMoveSpeed = InGameMoveSpeed + (InGameMoveSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+            }
+            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.Range)
+            {
+                StartCoroutine(Waiter(InGameAttackRange, buffDataInGiftBox[randomBuff]));
+                InGameAttackRange = InGameAttackRange + (InGameAttackRange * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+            }
+        }
+
+    }
+    IEnumerator Waiter(float indexType, BuffData buffData)
+    {
+        int bufftype = (int)buffData.BuffType;
+        bufftype += (int)ParticleType.AuraBlue;
+        float backUp = indexType;
+        ParticleSystem newBuffVfx = Instantiate(ParticlePool.ParticleSystem((ParticleType) bufftype), gameObject.transform.position, gameObject.transform.rotation);
+        newBuffVfx.transform.parent = gameObject.transform;
+        newBuffVfx.Play();
+        IsBuffed = true;
+        yield return new WaitForSeconds(3f);
+        if (buffData.BuffType == BuffType.AttackSpeed)
+        {
+            InGameAttackSpeed = backUp;
+            Destroy(newBuffVfx.gameObject);
+
+        }
+        if (buffData.BuffType == BuffType.MoveSpeed)
+        {
+            InGameMoveSpeed = backUp;
+            Destroy(newBuffVfx.gameObject);
+        }
+        if (buffData.BuffType == BuffType.Range)
+        {
+            InGameAttackRange = backUp;
+            Destroy(newBuffVfx.gameObject);
+        }
+        IsBuffed = false;
     }
 }

@@ -19,8 +19,6 @@ public class BotAI : Character
     //public bool IsKilledPlayer=false;
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
     public Transform TargetTransform { get => targetTransform; set => targetTransform = value; }
-    public NavMeshAgent Agent { get => agent; set => agent = value; }
-
     public bool IsWall;
 
     public override void Awake()
@@ -41,13 +39,6 @@ public class BotAI : Character
             CircleAttack.SetActive(false);
         }
         ChangeState(new IdleState());
-        this.WeaponType = WeaponData.Weapon[WeaponIndex].WeaponType;
-        SetWeaponSkinMat(ListWeaponsInHand[(int)WeaponType].gameObject.GetComponent<Renderer>(), this.WeaponData, this.WeaponIndex);
-        ShowWeaponIndex((int)WeaponType);
-        PoolObject = _GameManager.PoolObject[(int)WeaponType];
-        PoolObject.GetComponent<ObjectPool>().ObjectToPool.gameObject.GetComponent<Renderer>().material = WeaponData.Weapon[WeaponIndex].Mat;
-        UpdateCharacterLvl();
-        UpdateCharacterAcessories();
     }
 
     // Update is called once per frame
@@ -59,10 +50,11 @@ public class BotAI : Character
             {
                 currentState.OnExecute(this);
             }
+            
         }
         else
         {
-            if (this._GameManager.GameState == GameState.InGame)
+            if (GameManager.Instance.IsState(GameState.InGame))
             {
                 if (currentState != null)
                 {
@@ -73,19 +65,15 @@ public class BotAI : Character
                     ChangeState(new IdleState());
                 }
             }
-            else
-            {
-                ChangeState(new IdleState());
-            }
         }
 
     }
     public override void FixedUpdate()
     {
-        DetectionCharacter(_GameManager.BotAIListEnable);
+        //DetectionCharacter(_GameManager.BotAIListEnable);
         base.FixedUpdate();
     }
-    protected void DetectionCharacter(List<BotAI> botAIListEnable)
+    /*protected void DetectionCharacter(List<BotAI> botAIListEnable)
     {
         Player player = _GameManager.Player;
         if (!player.IsDeath && ColorType != player.ColorType)
@@ -122,41 +110,19 @@ public class BotAI : Character
         }
         
         //Debug.Log("DetectionCharacter:"+ IsTargerInRange);
-    }
+    }*/
     public override void OnHit(float damage)
     {
         base.OnHit(damage);
     }
-    public void moveToTarget(Vector3 targetTransform)
+    public void SetDestination(Vector3 vector)
     {
+        agent.enabled = true;
         if (agent.isOnNavMesh)
         {
-            agent.SetDestination(targetTransform);
-        }
-        
-        //agent.destination = targetTransform;
-    }
-    public void isStopped(bool check)
-    {
-        if (this.gameObject.activeSelf)
-        {
-            agent.isStopped = check;
+            agent.SetDestination(vector);
         }
     }
-    /*public Vector3 generateTargetTransform()
-    {
-        Vector3 target = transform.position;
-        bool isCheck=false;
-        while (!isCheck)
-        {
-            float offset = 2.0f;
-            float posX = transform.position.x + UnityEngine.Random.Range(-InGameAttackRange *offset, InGameAttackRange * offset);
-            float posZ = transform.position.z + UnityEngine.Random.Range(-InGameAttackRange * offset, InGameAttackRange * offset);
-            target = new Vector3(posX, transform.position.y, posZ);
-            isCheck = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas ,new NavMeshPath());
-        }
-        return target;
-    }*/
     public Vector3 RandomNavmeshLocation(float radius)
     {
         
@@ -177,18 +143,6 @@ public class BotAI : Character
         }
         return finalPosition;
     }
-    public bool CheckWall()
-    {
-        RaycastHit hit;
-        bool isWall = false;
-        float range = Vector3.Distance(transform.position, Target.transform.position);
-        if (Physics.Raycast(gameObject.transform.position, gameObject.transform.TransformDirection(Vector3.forward), out hit, range, LayerMask.GetMask(Constant.LAYOUT_WALL)))
-        {
-            isWall = true;
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
-        }
-        return isWall;
-    }
     public override void Attack()
     {
 
@@ -208,15 +162,14 @@ public class BotAI : Character
             currentState.OnEnter(this);
         }
     }
-    public void UpdateBotAIInfo(int indexBotAI, GameManager gameManager)
+    public void UpdateInfo(BotAIInfo botAIInfo, List<AccessoriesData> accessoriesDatas)
     {
         int randomColor = UnityEngine.Random.Range(0, 5);
-        ColorType _colorType = (ColorType)randomColor;
-        ColorType = _colorType;
         InGamneExp = 100;
-        ChangeColor(gameObject, _colorType);
-        BotAIInfo botAIInfo = gameManager.SaveData.BotAIData.BotAIInfo[indexBotAI];
+        ChangeColor(gameObject, (ColorType)randomColor);
+
         WeaponIndex = botAIInfo.Weapon;
+        WeaponType = GameManager.Instance.GetWeaponData().Weapon[WeaponIndex].WeaponType;
         CharacterName = botAIInfo.BotAI_name;
         //SKin
         HideAllSetFullsSkin();
@@ -229,36 +182,32 @@ public class BotAI : Character
         else
         {
             ActiveHatsSkin(botAIInfo.CharacterSkin[(int)SkinType.Hat].Index);
-            SetAccessorisSkinMat(PantsSkin, gameManager.AccessoriesDatas[1], botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
+            SetAccessorisSkinMat(PantsSkin, accessoriesDatas[1], botAIInfo.CharacterSkin[(int)SkinType.Pant].Index);
             ShowPantsSkin();
             ActiveSheildsSkin(botAIInfo.CharacterSkin[(int)SkinType.Sheild].Index);
         }
+        SetWeaponSkinMat();
+        ShowWeaponIndex((int)WeaponType);
+        UpdateCharacterLvl();
+        UpdateCharacterAcessories();
     }
     public override void OnDespawn()
     {
         base.OnDespawn();
-        OnReset();
-        agent.ResetPath();
-        ChangeState(new IdleState());
-        gameObject.GetComponent<PooledObject>().Release();
-        OnInit();
-
+        
+        SimplePool.Despawn(this);
+        
     }
     protected override void OnDeath()
     {
         base.OnDeath();
-        if (_GameManager.BotAIListEnable.Count > 0)
-        {
-            _GameManager.BotAIListEnable.Remove(this.gameObject.GetComponent<BotAI>());
-            ChangeState(new DeadState());
-        } 
+        this.Indicator.Hide();
+        this.CharacterInfo.Hide();
+        GameManager.Instance.RemoveBotAIs(this);
+        ChangeState(new DeadState());
     }
-    /*private void OnTriggerEnter(Collider other)
+    internal void MoveStop()
     {
-        if (other.gameObject.GetComponent<TransparentObstacle>())
-        {
-            Debug.Log("is Wall");
-            ChangeState(new IdleState());
-        }
-    }*/
+        agent.enabled = false;
+    }
 }

@@ -13,7 +13,6 @@ public class DataManager : MonoBehaviour
     public string SaveFile { get => saveFile; set => saveFile = value; }
     public void ReadData()
     {
-        //saveFile = Application.dataPath + "/StreamingAssets/PlayerData.json";
         saveFile = Constant.GetStreamingAssetsPath("PlayerData.json");
         // Does the file exist?
         if (File.Exists(saveFile))
@@ -27,7 +26,6 @@ public class DataManager : MonoBehaviour
     }
     public void SaveData()
     {
-        //saveFile = Application.dataPath + "/StreamingAssets/PlayerData.json";
         saveFile = Constant.GetStreamingAssetsPath("PlayerData.json");
         string potion = JsonUtility.ToJson(playerData);
         File.WriteAllText(saveFile, potion);

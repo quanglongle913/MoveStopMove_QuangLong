@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GiftBox : MonoBehaviour
+public class GiftBox : GameUnit
 {
+    [SerializeField] private List<BuffData> buffDataInGiftBox;
     private GameManager _GameManager;
     private int randomBuff;
-    GameObject newbuffEffectVfx;
+    int bufftype;
+    ParticleSystem newbuffEffectVfx;
     float timer;
     public int RandomBuff { get => randomBuff; set => randomBuff = value; }
-    public GameObject NewbuffEffectVfx { get => newbuffEffectVfx; set => newbuffEffectVfx = value; }
+    //public GameObject NewbuffEffectVfx { get => newbuffEffectVfx; set => newbuffEffectVfx = value; }
     public float Timer { get => timer; set => timer = value; }
 
     public virtual void Start()
     {
         _GameManager = GameManager.Instance;
-        _GameManager.VfxManager.ShowEffectVfxInGiftBox(this);
+        ShowEffectVfxInGiftBox();
+        ParticlePool.Play(ParticleType.Hit, transform.position, Quaternion.identity);
     }
     private void Update()
     {
@@ -23,7 +26,7 @@ public class GiftBox : MonoBehaviour
         timer += Time.deltaTime;
         if (timer > 10f)
         {
-            _GameManager.VfxManager.ShowEffectVfxInGiftBox(this);
+            ShowEffectVfxInGiftBox();
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -33,9 +36,9 @@ public class GiftBox : MonoBehaviour
             Character character = other.GetComponent<Character>();
             if (!character.IsBuffed)
             {
-                _GameManager.VfxManager.CharacterBufffCountDown(character, randomBuff);
-                _GameManager.ListGiftBox.Remove(gameObject.GetComponent<GiftBox>());
-                gameObject.GetComponent<PooledObject>().Release();
+                character.CharacterBufffCountDown(RandomBuff, buffDataInGiftBox);
+                GameManager.Instance.LevelManager().GiftBoxs().Remove(this);
+                Destroy(gameObject);
             }
             
         }
@@ -46,5 +49,30 @@ public class GiftBox : MonoBehaviour
         { 
             Destroy(newbuffEffectVfx);
         }
+    }
+
+    public override void OnInit()
+    {
+        
+    }
+
+    public override void OnDespawn()
+    {
+       
+    }
+    public void ShowEffectVfxInGiftBox()
+    {
+        if (newbuffEffectVfx != null)
+        {
+            Destroy(newbuffEffectVfx.gameObject);
+        }
+        int randomNumber = Random.Range(0, buffDataInGiftBox.Count);
+        RandomBuff = randomNumber;
+        bufftype = (int)buffDataInGiftBox[randomNumber].BuffType;
+        bufftype+= (int)ParticleType.ChargeBlue;
+        newbuffEffectVfx = Instantiate(ParticlePool.ParticleSystem((ParticleType)bufftype), gameObject.transform.position, gameObject.transform.rotation);
+        newbuffEffectVfx.transform.parent = gameObject.transform;
+        newbuffEffectVfx.Play();
+        Timer = 0;
     }
 }

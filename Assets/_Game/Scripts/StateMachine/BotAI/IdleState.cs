@@ -9,7 +9,7 @@ public class IdleState : IState<BotAI>
     public void OnEnter(BotAI t)
     {
         //t.isStopped(true);
-        t.moveToTarget(t.gameObject.transform.position);
+        t.SetDestination(t.gameObject.transform.position);
         t.ChangeAnim("Idle");
         timer = 0;
         randomTime = Random.Range(1.0f,2.5f);
@@ -17,7 +17,7 @@ public class IdleState : IState<BotAI>
 
     public void OnExecute(BotAI t)
     {
-        if (t._GameManager.GameState == GameState.InGame)
+        if (GameManager.Instance.IsState(GameState.InGame))
         {
             timer += Time.deltaTime;
             if (t.IsTargerInRange)

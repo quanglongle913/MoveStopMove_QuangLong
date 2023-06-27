@@ -17,41 +17,39 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         audioSource = new List<AudioSource>();
-        addSoundEffect(weaponThrowSoundEffect);
-        addSoundEffect(weaponHitSoundEffect);
-        addSoundEffect(countDownSoundEffect);
-        addSoundEffect(deadSoundEffect);
-        addSoundEffect(sizeUpSoundEffect);
+        AddSoundEffect(weaponThrowSoundEffect);
+        AddSoundEffect(weaponHitSoundEffect);
+        AddSoundEffect(countDownSoundEffect);
+        AddSoundEffect(deadSoundEffect);
+        AddSoundEffect(sizeUpSoundEffect);
         audioSource.Add(endWinSoundEffect);
         audioSource.Add(btnClickSoundEffect);
+        if (PlayerPrefs.GetInt(Constant.SOUND_TOGGLE_STATE, 0) == 0) //default toggle is ON
+        {
+            SetSoundON();
+            //Debug.Log("SetHandleON");
+        }
+        else
+        {
+            SetSoundOFF();
+            //Debug.Log("SetHandleOFF");
+        }
     }
-    private void addSoundEffect(List<AudioSource> listSoundEffect)
+    private void AddSoundEffect(List<AudioSource> listSoundEffect)
     {
         for (int i = 0; i < listSoundEffect.Count; i++)
         {
             audioSource.Add(listSoundEffect[i]);
         }
     }
-    public void SetSoundOFF() 
+    public void SetSoundOFF()
     {
         AudioListener.volume = 0;
-        //for (int i = 0; i < audioSource.Count; i++)
-        //{
-        //    /*audioSource[i].volume = 0;
-        //    audioSource[i].mute = true;*/
-        //    AudioListener.volume=0;
-        //}
+
     }
     public void SetSoundON()
     {
         AudioListener.volume = 1;
-        //for (int i = 0; i < audioSource.Count; i++)
-        //{
-
-        //    /* audioSource[i].mute = false;
-        //     audioSource[i].volume = 1;*/
-        //    AudioListener.volume = 1;
-        //}
     }
     public void OffVolumeCountDownSoundEffect()
     {

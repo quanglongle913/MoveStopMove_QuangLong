@@ -4,40 +4,33 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
-public class Indicator : MonoBehaviour
+public class Indicator : GameUnit
 {
+    [SerializeField] private float screenBoundOffset = 0.9f;
     [SerializeField] private RawImage image, image2;
     [SerializeField] private TMPro.TextMeshProUGUI textLevel;
     [SerializeField] private ColorData colorData;
     [SerializeField] private ColorType colorType;
 
-    
-    private GameObject player;
-    private GameObject target;
-    private Camera mainCam;
-    private Camera radarCam;
     private int characterLevel;
-    public ColorData ColorData { get => colorData; set => colorData = value; }
-    public ColorType ColorType { get => colorType; set => colorType = value; }
-    public RawImage Image { get => image; set => image = value; }
-    public RawImage Image2 { get => image2; set => image2 = value; }
-    public TextMeshProUGUI TextLevel { get => textLevel; set => textLevel = value; }
-
-    public Camera MainCam { get => mainCam; set => mainCam = value; }
-    public Camera RadarCam { get => radarCam; set => radarCam = value; }
-    public int CharacterLevel { get => characterLevel; set => characterLevel = value; }
-    public GameObject Player { get => player; set => player = value; }
-    public GameObject Target { get => target; set => target = value; }
-
-    public void updateData(ColorType colorType,int _level)
+    
+    private Character character;
+    
+    public void SetCharacter(Character character)
     {
-        this.ColorType = colorType;
-        CharacterLevel = _level;
-        image.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
-        image2.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
-        textLevel.text = "" + _level;
-        if (this.ColorType == ColorType.Yellow)
+        this.character = character;
+    }
+    public void UpdateData(Vector3 vector3)
+    {
+        Camera camera = GameManager.Instance.GetCamera();
+        this.colorType = character.GetColorType();
+        characterLevel = character.GetLevel();
+        ChangeColor(image, colorType);
+        ChangeColor(image2, colorType);
+        textLevel.text = "" + characterLevel;
+        if (this.colorType == ColorType.Yellow)
         {
             textLevel.color = Color.black;
         }
@@ -45,18 +38,46 @@ public class Indicator : MonoBehaviour
         {
             textLevel.color = Color.white;
         }
+        //gameObject.transform.position = OffScreenIndicatorCore.GetScreenPosition(camera, character.gameObject, screenCentre, screenBounds);
+        gameObject.transform.position = vector3;
+        Vector3 viewPosPlayer = camera.WorldToViewportPoint(GameManager.Instance.PlayerTF().position);
+        Vector3 viewPos = camera.WorldToViewportPoint(character.gameObject.transform.position);
+        Vector2 A = new Vector2(viewPos.x, viewPos.y);
+        Vector2 B = new Vector2(viewPosPlayer.x, viewPosPlayer.y);
+
+        float angle1 = Constant.GetAngleTwoVector2(A, B, viewPos.z);
+        SetRotation(Quaternion.Euler(0, 0, angle1));
+        SetTextRotation(Quaternion.identity);
+        Show();
     }
-    public void ChangeColor(RawImage a_obj, ColorType colorType)
+    private void ChangeColor(RawImage a_obj, ColorType colorType)
     {
-        this.ColorType = colorType;
-        a_obj.GetComponent<RawImage>().color = colorData.GetMat(colorType).color;
+        this.colorType = colorType;
+        a_obj.color = colorData.GetMat(colorType).color;
     }
-    public void SetTextRotation(Quaternion rotation) 
+    private void SetTextRotation(Quaternion rotation) 
     {
-        TextLevel.transform.rotation = rotation;
+        textLevel.transform.rotation = rotation;
     }
-    public void SetRotation(Quaternion rotation)
+    private void SetRotation(Quaternion rotation)
     {
         gameObject.transform.rotation = rotation;
+    }
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+    public override void OnInit()
+    {
+        
+    }
+
+    public override void OnDespawn()
+    {
+     
     }
 }

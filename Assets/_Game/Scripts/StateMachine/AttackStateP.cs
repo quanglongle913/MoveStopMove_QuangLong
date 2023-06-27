@@ -11,7 +11,7 @@ public class AttackStateP : IState<Player>
     {
         //timer = 0;
         timerAttack = (float)Math.Round(60 / t.InGameAttackSpeed, 1);
-        timer = timerAttack + 1;
+        timer = timerAttack + 0.5f;
         //Debug.Log("AttackStateP......" + timerAttack);
         t.Anim.speed = (float)Math.Round(t.InGameAttackSpeed / 60, 1);
     }

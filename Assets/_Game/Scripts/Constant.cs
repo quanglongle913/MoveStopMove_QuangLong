@@ -5,31 +5,35 @@ using UnityEngine;
 
 public class Constant
 {
+    public const string LEVEL = "Level";
+    public const string SURVIVAL = "Survival";
 
     public const string PLAYER_DATA_STATE = "PlayerDataSate";
-    public static string PLAYER_MAP = "PlayerMap";
-    public static string ZOMBIEDAYS = "ZombieDays";
+    public const string PLAYER_MAP = "PlayerMap";
+    public const string ZOMBIEDAYS = "ZombieDays";
 
-    public static string BEST_RANK = "BestRank";
+    public const string BEST_RANK = "BestRank";
 
-    public static string POPUP_COUNTINUE_STATUS_LOSE = "Too bad, try again......";
-    public static string POPUP_COUNTINUE_STATUS_WIN = "Coming Soon!...";
+    public const string POPUP_COUNTINUE_STATUS_LOSE = "Too bad, try again......";
+    public const string POPUP_COUNTINUE_STATUS_WIN = "Coming Soon!...";
 
-    public static string PLAYER_COIN = "PlayerCoin";
-    public static string PLAYER_NAME = "PlayerName";
-    public static string PLAYER_ZOMBIEDAY = "PlayerZombieDay";
+    public const string PLAYER_COIN = "PlayerCoin";
+    public const string PLAYER_NAME = "PlayerName";
+    public const string PLAYER_ZONE_EXP = "PlayerZoneExp";
+    public const string PLAYER_ZONE_TYPE = "PlayerZoneType";
+    public const string PLAYER_ZOMBIEDAY = "PlayerZombieDay";
 
-    public static string GAME_STATE = "GameState";
-    public static string GAME_MODE = "GameMode";
-    public static string LAYOUT_WALL = "Wall";
-    public static string LAYOUT_CHARACTER = "Character";
+    public const string GAME_STATE = "GameState";
+    public const string GAME_MODE = "GameMode";
+    public const string LAYOUT_WALL = "Wall";
+    public const string LAYOUT_CHARACTER = "Character";
 
     //============UI=============
-    public static string SOUND_TOGGLE_STATE = "SoundToggleState";
-    public static string VIBRATION_TOGGLE_STATE = "VibrationToggleState";
+    public const string SOUND_TOGGLE_STATE = "SoundToggleState";
+    public const string VIBRATION_TOGGLE_STATE = "VibrationToggleState";
     //===========================
 
-    public static float RAYCAST_HIT_RANGE_WALL = 1.0f;
+    public const float RAYCAST_HIT_RANGE_WALL = 1.0f;
 
    
 
@@ -48,6 +52,19 @@ public class Constant
             return Vector2.Angle(Vector2.right, target - pos) * -1.0f - 90;
         else
             return Vector2.Angle(Vector2.right, target - pos) - 90;
+    }
+    public static float GetAngleTwoVector2(Vector2 A, Vector2 B, float asixZ)
+    {
+        float angle1 = 0;
+        if (asixZ > 0)
+        {
+            angle1 = Constant.AngleBetween2Vector2Up(B, A);
+        }
+        else
+        {
+            angle1 = Constant.AngleBetween2Vector2Up(A, B);
+        }
+        return angle1;
     }
     public static bool isWall(GameObject a, LayerMask _layerMask)
     {

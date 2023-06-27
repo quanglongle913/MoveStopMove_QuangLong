@@ -20,7 +20,7 @@ public class PatrolState : IState<BotAI>
     public void OnExecute(BotAI t)
     {
         timer += Time.deltaTime;
-        t.moveToTarget(newTarget);
+        t.SetDestination(newTarget);
         if (Constant.IsDes(t.transform.position, newTarget, 0.1f))
         {
             //Debug.Log("timer:" + timer);

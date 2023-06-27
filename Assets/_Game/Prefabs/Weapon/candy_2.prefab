@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1049708891741387500}
   - component: {fileID: 1049708891740387372}
   - component: {fileID: -6959027798836013085}
-  - component: {fileID: 224249625357132273}
   - component: {fileID: -620483272746140671}
   m_Layer: 0
   m_Name: candy_2
@@ -100,26 +99,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f1c4e3f04e2d04b8b8d8c3937303c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolType: 8
   weaponType: 6
-  FireVfx: {fileID: 271093378344025040, guid: b2d5504def568a645a2020ee089ee8c0, type: 3}
+  FireVfx: {fileID: 198600787540688232, guid: 93602c6e97b3fa34ea975b35592d9c90, type: 3}
   rotationSpeed: 1000
   bulletSpeed: 2
   isFire: 0
   target: {x: 0, y: 0, z: 0}
   startPoint: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
---- !u!114 &224249625357132273
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049708891742643948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  character: {fileID: 0}
 --- !u!65 &-620483272746140671
 BoxCollider:
   m_ObjectHideFlags: 0

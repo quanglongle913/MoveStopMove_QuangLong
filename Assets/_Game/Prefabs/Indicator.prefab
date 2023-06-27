@@ -292,7 +292,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7035106455181004782}
   - component: {fileID: 4936744540480743428}
-  - component: {fileID: 5770508606783101504}
   m_Layer: 5
   m_Name: Indicator
   m_TagString: Untagged
@@ -334,20 +333,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c2d348bbeee5804bb0a3fa93fb19ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolType: 14
   image: {fileID: 8299214383970047017}
   image2: {fileID: 9028506384029467560}
   textLevel: {fileID: 8891195610541452794}
   colorData: {fileID: 11400000, guid: 4a57f7919a0c91e4e8cf15d98607ad33, type: 2}
   colorType: 1
---- !u!114 &5770508606783101504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7035106455181004781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

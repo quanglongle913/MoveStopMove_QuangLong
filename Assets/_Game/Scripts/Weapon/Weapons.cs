@@ -6,11 +6,10 @@ using System;
 using DG.Tweening.Core.Easing;
 using UnityEngine.TextCore.Text;
 
-public class Weapons : MonoBehaviour
+public class Weapons : GameUnit
 {
     [SerializeField] private WeaponType weaponType;
-    [SerializeField] private GameObject FireVfx;
-    
+
     private GameObject _gameObject;
     public float rotationSpeed;
     public float bulletSpeed=2f;
@@ -18,32 +17,28 @@ public class Weapons : MonoBehaviour
     public Vector3 target;
     public Vector3 startPoint;
     public Vector3 direction;
-    GameManager _GameManager;
-    GameObject newFireVfx;
+    ParticleSystem VFX_Trail;
     float rotY;
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
-    public GameObject NewFireVfx { get => newFireVfx; set => newFireVfx = value; }
     public GameObject _GameObject { get => _gameObject; set => _gameObject = value; }
 
-    //private bool isCharacter =false;
-    Character character;
+    public Character character;
     // Update is called once per frame
     private void Start()
     {
-        _GameManager= GameManager.Instance;
-        _GameManager.VfxManager.GenerateFireVfx(this);
+        VFX_Trail = Instantiate(ParticlePool.ParticleSystem(ParticleType.Trail));
+        VFX_Trail.transform.position = Vector3.zero;
+        VFX_Trail.gameObject.SetActive(false);
     }
     void Update()
     {
-        if (!character)
-        {
-            character = _GameObject.GetComponent<Character>();
-        }
         if (isFire)
         {
+
+            VFX_Trail.transform.position= transform.position;
+            VFX_Trail.gameObject.SetActive(true);
             if (weaponType == WeaponType.Knife || weaponType == WeaponType.Arrow)/////
             {
-                newFireVfx.SetActive(true);
                 //Xoay Weapon to Enemy
                 if (direction.x <= 0)
                 {
@@ -57,7 +52,7 @@ public class Weapons : MonoBehaviour
             }
             else
             {
-                newFireVfx.SetActive(true);
+          
                 rotY += Time.deltaTime * rotationSpeed;
                 transform.rotation = Quaternion.Euler(90, rotY, 0);
             }
@@ -70,60 +65,48 @@ public class Weapons : MonoBehaviour
             }
             else
             {
-                //Debug.Log("sss");
+                DestroyImmediate(VFX_Trail);
                 ReleaseWeapon(character);
             }
             
         }
     }
-    public void OnDespawn()
-    {
-        Destroy(gameObject);
-    }
     private void OnTriggerEnter(Collider other)
     {
         Character enemy = other.GetComponent<Character>();
-        if (enemy && other.gameObject != _GameObject && enemy.ColorType != character.ColorType && !enemy.IsDeath)
+        //IHit hit = other.GetComponent<IHit>();
+        if (enemy && other.gameObject != _GameObject && enemy.GetColorType() != character.GetColorType() && !enemy.IsDeath)
         {
-            if (other.gameObject.GetComponent<Player>())
+            Player player1 = other.gameObject.GetComponent<Player>();
+            if (player1)
             {
-                enemy.OnHit(1f);
-                character.setExp(enemy.InGamneExp);
-                other.gameObject.GetComponent<Player>().KilledByName = character.CharacterName;
-                other.gameObject.GetComponent<Player>().KillerColorType = character.ColorType;
-                other.gameObject.GetComponent<Player>().SetEndGame();
+                enemy.OnHit(0f);
+                character.SetExp(enemy.InGamneExp);
+                player1.KilledByName = character.CharacterName;
+                player1.KillerColorType = character.GetColorType();
+             
             }
             else
             {
-                enemy.OnHit(1f);
-                character.setExp(enemy.InGamneExp);
+                enemy.OnHit(0f);
+                character.SetExp(enemy.InGamneExp);
                 if (_GameObject.GetComponent<Player>())
                 {
                     Player player = _GameObject.GetComponent<Player>();
                     player.KilledCount++;
                 }
             }
-            _GameManager.VfxManager.ShowBloodVfx(this);
-  
+         
+            ParticlePool.Play(ParticleType.Hit, transform.position, Quaternion.identity);
             ReleaseWeapon(character);
         }
         if (other.GetComponent<TransparentObstacle>())
         {
             //Debug.Log("Obstacle");
             this.isFire = false;
-            character.Weapons.Remove(this);
             character.ShowWeaponIndex((int)WeaponType);
             character.IsAttacking = false;
             StartCoroutine(Waiter());
-        }
-        if (other.GetComponent<AnimalAI>() && !other.GetComponent<AnimalAI>().IsDeath) 
-        {
-            other.GetComponent<AnimalAI>().OnHit(1f);
-            Player player = _GameObject.GetComponent<Player>();
-            player.SetSurvivalExp(other.GetComponent<AnimalAI>().InGamneExp);
-            player.KilledCount++;
-            _GameManager.VfxManager.ShowBloodVfx(this);
-            ReleaseWeapon(character);
         }
     }
     IEnumerator Waiter()
@@ -131,7 +114,6 @@ public class Weapons : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         this.gameObject.SetActive(false);
-        this.GetComponent<PooledObject>().Release();
     }
     private void ReleaseWeapon(Character character)
     {
@@ -140,14 +122,21 @@ public class Weapons : MonoBehaviour
         character.IsAttacking = false;
         this.gameObject.SetActive(false);
         this.isFire = false;
-        this.GetComponent<PooledObject>().Release();
     }
     private void SetRotation(Vector3 upwards)
     {
         Quaternion lookRotation = Quaternion.LookRotation(direction, upwards);
         transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-        newFireVfx.gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
         transform.eulerAngles += new Vector3(0, 90, 0);
-        newFireVfx.gameObject.transform.eulerAngles += new Vector3(0, 90, 0);
+    }
+
+    public override void OnInit()
+    { 
+      
+    }
+
+    public override void OnDespawn()
+    {
+        Destroy(gameObject);
     }
 }

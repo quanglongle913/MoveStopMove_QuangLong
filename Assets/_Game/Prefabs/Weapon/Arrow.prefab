@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2395184284620029863}
   - component: {fileID: 8215108887197778782}
   - component: {fileID: -274191848357511639}
-  - component: {fileID: 800744211300424579}
   - component: {fileID: 3869650702539397731}
   m_Layer: 0
   m_Name: Arrow
@@ -100,26 +99,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f1c4e3f04e2d04b8b8d8c3937303c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolType: 2
   weaponType: 0
-  FireVfx: {fileID: 271093378344025040, guid: b2d5504def568a645a2020ee089ee8c0, type: 3}
   rotationSpeed: 1000
   bulletSpeed: 2
   isFire: 0
   target: {x: 0, y: 0, z: 0}
   startPoint: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
---- !u!114 &800744211300424579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7655336571444803458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  character: {fileID: 0}
 --- !u!65 &3869650702539397731
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -131,5 +119,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.0049725757, y: 0.02522432, z: 0.0025105476}
+  m_Size: {x: 0.008, y: 0.025, z: 0.005}
   m_Center: {x: -0.00025516617, y: 0.0021604483, z: 0}

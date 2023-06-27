@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 700678914290601415}
   - component: {fileID: 700678914289274343}
   - component: {fileID: 700678914288176935}
-  - component: {fileID: -7803928354963910589}
   - component: {fileID: 1547337989}
   - component: {fileID: 1547337993}
   - component: {fileID: 3835136688965194178}
@@ -87,18 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-7803928354963910589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 700678914290373095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a767b029a75d46544963054c975ab516, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &1547337989
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -127,14 +114,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f1c4e3f04e2d04b8b8d8c3937303c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolType: 5
   weaponType: 3
-  FireVfx: {fileID: 271093378344025040, guid: b2d5504def568a645a2020ee089ee8c0, type: 3}
+  FireVfx: {fileID: 198600787540688232, guid: 93602c6e97b3fa34ea975b35592d9c90, type: 3}
   rotationSpeed: 1000
   bulletSpeed: 2
   isFire: 0
   target: {x: 0, y: 0, z: 0}
   startPoint: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
+  character: {fileID: 0}
 --- !u!65 &3835136688965194178
 BoxCollider:
   m_ObjectHideFlags: 0
