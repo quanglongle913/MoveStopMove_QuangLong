@@ -283,7 +283,7 @@ public static class SimplePool
         if (gameUnitResources == null || gameUnitResources.Length == 0)
         {
             gameUnitResources = Resources.LoadAll<GameUnit>("Pool");
-            Debug.Log("Pool");
+            //Debug.Log("Pool");
         }
 
         if (!poolTypes.ContainsKey(poolType) || poolTypes[poolType] == null)

@@ -136,6 +136,18 @@ public class Character : GameUnit,IHit
             GenerateWeapon(weapons[2], transform.TransformDirection(-0.5f, 0, 1).normalized);
         }*/
     }
+    public void AnimalAttack()
+    {
+        ChangeAnim("Attack");
+        IsAttacking = true;
+        Vector3 _DirectionCharacter = new Vector3(Target.transform.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.transform.position.z - gameObject.transform.position.z).normalized;
+        RotateTowards(this.gameObject, _DirectionCharacter);
+        Invoke(nameof(AnimalIsAttacking),0.5f);
+    }
+    public void AnimalIsAttacking()
+    {
+        IsAttacking = false;
+    }
     private void GenerateWeapon(Vector3 _Direction)
     {
         Weapons weaponAttack2 = SimplePool.Spawn<Weapons>((PoolType)(weaponType+2));
@@ -171,6 +183,29 @@ public class Character : GameUnit,IHit
                 {
                     IsTargerInRange = true;
                     Target = character.gameObject;
+                    break;
+                }
+                else
+                {
+                    IsTargerInRange = false;
+                }
+            }
+        }
+        return IsTargerInRange;
+    }
+    public bool DetectionPlayer()
+    {
+        //GenerateZone();
+        Collider[] colliders = CharactersInsideZone;
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Player player = colliders[i].GetComponent<Player>();
+            if (player)
+            {
+                if (!player.IsDeath)
+                {
+                    IsTargerInRange = true;
+                    Target = player.gameObject;
                     break;
                 }
                 else
@@ -367,6 +402,14 @@ public class Character : GameUnit,IHit
     {
         return characterLevel;
     }
+    public void SetLevel(int characterLevel)
+    {
+         this.characterLevel= characterLevel;
+    }
+    public void LevelUp()
+    {
+        this.characterLevel++;
+    }
     public void SetExp(int exp)
     {
         InGamneExp += exp / characterLevel + 40;
@@ -387,6 +430,19 @@ public class Character : GameUnit,IHit
         inGameMoveSpeed = baseMoveSpeed;
         inGameGoldEarn = baseGoldEarn;
         UpdateCharacterLvl();
+    }
+    public void OnResetAnimal()
+    {
+        IsAttacking = false;
+        IsTargerInRange = false;
+        hp = 1;
+        InGameGold = 0;
+        InGamneExp = 10;
+        inGameSizeCharacter = baseSizeCharacter;
+        inGameAttackRange = baseAttackRange;
+        inGameAttackSpeed = baseAttackSpeed;
+        inGameMoveSpeed = baseMoveSpeed;
+        inGameGoldEarn = baseGoldEarn;
     }
     public void UpdateCharacterLvl()
     {
@@ -484,10 +540,6 @@ public class Character : GameUnit,IHit
     public void SetInGameExp(int exp)
     {
         this.inGamneExp = exp; ;
-    }
-    public void SetLevel(int level)
-    {
-        this.characterLevel = level;
     }
     public void CharacterBufffCountDown(int randomBuff, List<BuffData> buffDataInGiftBox)
     {

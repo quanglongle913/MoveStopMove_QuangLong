@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Player player;
     [Header("Survival:")]
     [SerializeField] private List<Level> survivalPrefabs;
+   
     //-----------------
     private Level currentLevel;
     //Normal
@@ -30,6 +31,8 @@ public class LevelManager : MonoBehaviour
     //----------------
     //Survival
     private int survivalIndex;
+    private List<Transform> startPoints;
+    private List<Animal> animals = new List<Animal>();
     //---------------
     private float screenBoundOffset = 0.9f;
     private Vector3 screenCentre;
@@ -38,6 +41,7 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         levelIndex = PlayerPrefs.GetInt(Constant.LEVEL, 0);
+        survivalIndex = PlayerPrefs.GetInt(Constant.SURVIVAL, 0);
     }
 
     private void Start()
@@ -82,8 +86,11 @@ public class LevelManager : MonoBehaviour
                 }
             }
         } else if (GameManager.Instance.IsMode(GameMode.Survival))
-        { 
-            
+        {
+            if (animals.Count < botAmount)
+            {
+                GenerateSurvivalAnimal();
+            }
         }
         
     }
@@ -225,10 +232,6 @@ public class LevelManager : MonoBehaviour
     {
         GameManager.Instance.ChangeMode(GameMode.Normal);
         GameManager.Instance.ChangeState(GameState.InGame);
-        /*for (int i = 0; i < bots.Count; i++)
-        {
-            bots[i].ChangeState(new PatrolState());
-        }*/
     }
 
     public void OnFinishGame()
@@ -273,7 +276,6 @@ public class LevelManager : MonoBehaviour
         OnInit();
         GameManager.Instance.ChangeState(GameState.GameMenu);
         UIManager.Instance.OpenUI<GameMenu>();
-        //UIManager.Instance.GetUI<GameMenu>().UpdateData();
     }
 
     internal void OnNextLevel()
@@ -285,7 +287,6 @@ public class LevelManager : MonoBehaviour
         LoadLevel(levelIndex);
         OnInit();
         UIManager.Instance.OpenUI<GameMenu>();
-        //UIManager.Instance.GetUI<GameMenu>().UpdateData();
     }
     public int GetBotCount()
     { 
@@ -300,31 +301,20 @@ public class LevelManager : MonoBehaviour
         return botsInGame;
     }
     //================================================Survival Mode=============================================
-
+    private void GenerateSurvivalAnimal()
+    {
+        int randomIndex = Random.Range(0, startPoints.Count);
+        Animal animal = SimplePool.Spawn<Animal>(PoolType.Animal, startPoints[randomIndex].position, Quaternion.identity);
+        animal.OnInit();
+        animals.Add(animal);
+    }
     public void OnStartSurvivalGame()
     {
+        LoadSurvival(survivalIndex);
+        OnInitSurvival();
         GameManager.Instance.ChangeMode(GameMode.Survival);
         GameManager.Instance.ChangeState(GameState.InGame);
-        OnInitSurvival();
-        /*for (int i = 0; i < bots.Count; i++)
-        {
-            bots[i].ChangeState(new PatrolState());
-        }*/
-    }
-    public void OnInitSurvival()
-    {
-
-        /*  botAmount = levelPrefabs[levelIndex].GetBotAmount();
-          botInGame = levelPrefabs[levelIndex].GetBotInGame();
-          botInStack = botAmount;*/
-        //update navmesh data
-        NavMesh.RemoveAllNavMeshData();
-        NavMesh.AddNavMeshData(currentLevel.GetNavMeshData());
-
-        //GenerateBotAI(botAmount, GeneratePoolObjectPosition(transform.position, botAmount));
-        player.OnInitSurvival();
-        player.transform.position = survivalPrefabs[survivalIndex].GetStartPoint().position;
-
+      
     }
     public void LoadSurvival(int survival)
     {
@@ -336,18 +326,33 @@ public class LevelManager : MonoBehaviour
         if (survival < survivalPrefabs.Count)
         {
             currentLevel = Instantiate(survivalPrefabs[survival]);
-            //currentLevel.OnInit();
+      
         }
         else
         {
             //TODO: level vuot qua limit
         }
     }
+    public void OnInitSurvival()
+    {
+
+        botAmount = survivalPrefabs[survivalIndex].GetBotAmount();
+        startPoints = survivalPrefabs[survivalIndex].GetStartPoints();
+
+        //update navmesh data
+        NavMesh.RemoveAllNavMeshData();
+        NavMesh.AddNavMeshData(currentLevel.GetNavMeshData());
+
+        player.OnInitSurvival();
+        player.transform.position = survivalPrefabs[survivalIndex].GetStartPoint().position;
+
+    }
+    
     public void OnResetSurvival()
     {
         SimplePool.CollectAll();
-        //bots.Clear();
-        //botsInGame.Clear();
+        animals.Clear();
+
     }
 
     internal void OnRetrySurvival()
@@ -368,5 +373,9 @@ public class LevelManager : MonoBehaviour
         LoadSurvival(survivalIndex);
         OnInitSurvival();
         UIManager.Instance.OpenUI<GameMenu>();
+    }
+    public List<Animal> GetAnimals()
+    {
+        return animals;
     }
 }

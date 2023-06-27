@@ -69,6 +69,7 @@ public enum PoolType
     Indicator,
     CharacterInfo,
     GiftBox,
+    Animal
 }
 
 

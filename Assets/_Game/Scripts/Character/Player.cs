@@ -70,6 +70,20 @@ public class Player : Character
         UpdateAccessoriesEquippedAll();
         SetLevel(1);
     }
+    public void SetSurvivalExp(int exp)
+    {
+        InGamneExp += exp;
+
+        if (InGamneExp >= GetLevel() * 50)
+        {
+            LevelUp();
+            if (GetLevel() % 5 == 0)
+            {
+                //UIManager.Show_Popup_LevelUp();
+            }
+            InGamneExp = 0;
+        }
+    }
     void Update()
     {
         if (GameManager.Instance.IsState(GameState.InGame))
@@ -167,6 +181,7 @@ public class Player : Character
     public override void OnHit(float damage)
     {
         base.OnHit(damage);
+        Debug.Log(Hp());
     }
     public void SetTransformPosition(Transform transform)
     {

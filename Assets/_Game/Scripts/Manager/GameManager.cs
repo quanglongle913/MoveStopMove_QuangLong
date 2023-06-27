@@ -118,6 +118,10 @@ public class GameManager : Singleton<GameManager>
     {
         levelManager.GetBotAIs().Remove(botAI);
     }
+    public void RemoveAnimals(Animal animal)
+    {
+        levelManager.GetAnimals().Remove(animal);
+    }
     public LevelManager LevelManager()
     {
         return levelManager;

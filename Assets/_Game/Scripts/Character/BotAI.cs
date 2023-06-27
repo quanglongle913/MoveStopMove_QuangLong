@@ -18,7 +18,6 @@ public class BotAI : Character
     private Transform targetTransform;
     //public bool IsKilledPlayer=false;
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
-    public Transform TargetTransform { get => targetTransform; set => targetTransform = value; }
     public bool IsWall;
 
     public override void Awake()
@@ -145,7 +144,6 @@ public class BotAI : Character
     }
     public override void Attack()
     {
-
         base.Attack();
     }
     public void ChangeState(IState<BotAI> state)

@@ -5,14 +5,14 @@ using UnityEngine;
 public class DeadState : IState<BotAI>
 {
     float timer;
-    void IState<BotAI>.OnEnter(BotAI t)
+    public void OnEnter(BotAI t)
     {
         t.SetDestination(t.gameObject.transform.position);
         t.ChangeAnim("Dead");
         timer = 0;
     }
 
-    void IState<BotAI>.OnExecute(BotAI t)
+    public void OnExecute(BotAI t)
     {
         timer += Time.deltaTime;
         if (timer > 1.5f)
@@ -21,7 +21,7 @@ public class DeadState : IState<BotAI>
         }
     }
 
-    void IState<BotAI>.OnExit(BotAI t)
+    public void OnExit(BotAI t)
     {
        
     }

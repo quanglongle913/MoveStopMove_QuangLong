@@ -10,6 +10,8 @@ public class Level : MonoBehaviour
     [Header("BotAmount > BotInGame")]
     [SerializeField] private int botAmount;
     [SerializeField] private int botInGame;
+    [Header("Survival Mode")] 
+    [SerializeField] private List<Transform> startPoints;
     public int GetBotAmount()
     { 
         return botAmount;
@@ -25,5 +27,10 @@ public class Level : MonoBehaviour
     public NavMeshData GetNavMeshData()
     {
         return navMeshData;
+    }
+    public List<Transform> GetStartPoints()
+    {
+        //For Survival Mode
+        return startPoints;
     }
 }

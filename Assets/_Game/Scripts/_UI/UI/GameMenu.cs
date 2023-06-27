@@ -67,14 +67,12 @@ public class GameMenu : UICanvas
     public void SurvivalButton()
     {
         GameManager.Instance.LevelManager().OnStartSurvivalGame();
-        GameManager.Instance.LevelManager().LoadSurvival(PlayerPrefs.GetInt(Constant.SURVIVAL,0));
         UIManager.Instance.OpenUI<InGameSurvival>();
         Close();
     }
     public void WeaponsButton()
     {
         UIManager.Instance.OpenUI<WeaponShopUI>();
-        //UIManager.Instance.GetUI<WeaponShopUI>().Show();
         GameManager.Instance.HidePlayer();
         Close();
        

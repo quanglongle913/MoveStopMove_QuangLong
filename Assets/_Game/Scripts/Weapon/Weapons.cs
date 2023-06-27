@@ -89,14 +89,23 @@ public class Weapons : GameUnit
             else
             {
                 enemy.OnHit(1f);
-                character.SetExp(enemy.InGamneExp);
+                
                 if (_GameObject.GetComponent<Player>())
                 {
                     Player player = _GameObject.GetComponent<Player>();
                     player.KilledCount++;
+                    if (GameManager.Instance.IsMode(GameMode.Normal))
+                    {
+                        player.SetExp(enemy.InGamneExp);
+                    }
+                    else
+                    {
+                        player.SetSurvivalExp(enemy.InGamneExp);
+                    }
                 }
+               
+                
             }
-         
             ParticlePool.Play(ParticleType.Hit, transform.position, Quaternion.identity);
             ReleaseWeapon(character);
         }
