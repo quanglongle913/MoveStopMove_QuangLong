@@ -80,7 +80,7 @@ public class Weapons : GameUnit
             Player player1 = other.gameObject.GetComponent<Player>();
             if (player1)
             {
-                enemy.OnHit(0f);
+                enemy.OnHit(1f);
                 character.SetExp(enemy.InGamneExp);
                 player1.KilledByName = character.CharacterName;
                 player1.KillerColorType = character.GetColorType();
@@ -88,7 +88,7 @@ public class Weapons : GameUnit
             }
             else
             {
-                enemy.OnHit(0f);
+                enemy.OnHit(1f);
                 character.SetExp(enemy.InGamneExp);
                 if (_GameObject.GetComponent<Player>())
                 {

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2538107445546708414}
   - component: {fileID: 1458711390267049709}
   - component: {fileID: 8753088162549099325}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Lamp_6_prefab
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 6350547988318014052}
   - component: {fileID: 6361455147427909614}
   - component: {fileID: 6368863831181806148}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Lamp 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6350519612425623540}
   - component: {fileID: 6463168701695874384}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: BakedLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
