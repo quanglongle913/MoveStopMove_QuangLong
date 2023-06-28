@@ -10,10 +10,22 @@ public class LevelUp : UICanvas
     [SerializeField] List<Image> buttonImages;
     [SerializeField] List<TextMeshProUGUI> textLevelUpInfos;
     private List<int> randoms = new List<int>();
+    Player player;
     private void Start()
     {
-        int random1 = Random.Range(0, 2);
-        int random2 = Random.Range(2, 4);
+        player = GameManager.Instance.Player();
+        int random1;
+        int random2;
+        if (player.Bullets < 5)
+        {
+            random2 = Random.Range(2, 4);
+        }
+        else
+        {
+            random2 = 2;
+        }
+
+        random1 = Random.Range(0, 2);
         randoms.Add(random1);
         randoms.Add(random2);
         randoms.Add(4);
@@ -27,9 +39,9 @@ public class LevelUp : UICanvas
     public void LevelUpButton(int index)
     {
         Time.timeScale = 1.0f;
-        UIManager.Instance.OpenUI<InGame>();
+        UIManager.Instance.OpenUI<InGameSurvival>();
         Close();
-        Player player = GameManager.Instance.Player();
+ 
         if (levelUpDatas[randoms[index]].isLevelUpType(LevelUpType.AttackSpeed))
         {
             //player Attack Speed +10

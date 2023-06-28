@@ -10,10 +10,10 @@ public class LevelManager : MonoBehaviour
 {
     [Header("Normal:")]
     [SerializeField] private List<Level> levelPrefabs;
-    
-    [SerializeField] float offset;
-    [SerializeField] private float size_x;
-    [SerializeField] private float size_z;
+    [SerializeField] int node = 45;
+    [SerializeField] float offset=18;
+    [SerializeField] private float size_x=1;
+    [SerializeField] private float size_z=1;
     [SerializeField] private Player player;
     [Header("Survival:")]
     [SerializeField] private List<Level> survivalPrefabs;
@@ -81,31 +81,34 @@ public class LevelManager : MonoBehaviour
                     UIManager.Instance.OpenUI<Win>();
                     UIManager.Instance.CloseUI<InGame>();
                 }
-                if (giftBoxs.Count < 1)
+                if (giftBoxs.Count < 10)
                 {
-                    GenerateGiftBox(1, GeneratePoolObjectPosition(transform.position, botAmount));
+                    GenerateGiftBox(1, GeneratePoolObjectPosition(transform.position, node));
                 }
             }
         } else if (GameManager.Instance.IsMode(GameMode.Survival))
         {
-            if (animalsInGame.Count < botAmount)
-            { 
-                for (int i = 0; i < animals.Count; i++)
+            if (GameManager.Instance.IsState(GameState.InGame))
+            {
+                if (animalsInGame.Count < botAmount)
                 {
-                    if (!animals[i].gameObject.activeSelf && !animals[i].IsDeath)
+                    for (int i = 0; i < animals.Count; i++)
                     {
-                        animals[i].gameObject.SetActive(true);
-                        animals[i].ChangeState(new PatrolStateA());
-                        animalsInGame.Add(animals[i]);
-                        //TEST
-                        /*int randomIndex = Random.Range(0, startPoints.Count);
-                        Animal animal = SimplePool.Spawn<Animal>(PoolType.Animal, startPoints[randomIndex].position, Quaternion.identity);
-                        animal.OnInit();
-                        animal.gameObject.SetActive(false);
-                        animals.Add(animal);*/
+                        if (!animals[i].gameObject.activeSelf && !animals[i].IsDeath)
+                        {
+                            animals[i].gameObject.SetActive(true);
+                            animals[i].ChangeState(new PatrolStateA());
+                            animalsInGame.Add(animals[i]);
+                            animals.Remove(animals[i]);
+                        }
+                    }
+                    if (animals.Count == 0)
+                    {
+                        GenerateSurvivalAnimal();
                     }
                 }
             }
+            
         }
         
     }
@@ -122,7 +125,7 @@ public class LevelManager : MonoBehaviour
         NavMesh.RemoveAllNavMeshData();
         NavMesh.AddNavMeshData(currentLevel.GetNavMeshData());
 
-        GenerateBotAI(botAmount, GeneratePoolObjectPosition(transform.position, botAmount));
+        GenerateBotAI(botAmount, GeneratePoolObjectPosition(transform.position, node));
         player.transform.position = levelPrefabs[levelIndex].GetStartPoint().position;
         PlayerInit();
 
@@ -194,6 +197,10 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < index; i++)
         {
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+            while (IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
+            {
+                randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+            }
             BotAI bot = SimplePool.Spawn<BotAI>(PoolType.Bot, listPoolObjectPosition[randomIndex], Quaternion.identity);
             bot.OnInit();
             bot.UpdateInfo(GameManager.Instance.GetBotAIInfo(i), GameManager.Instance.GetAccessoriesDatas());
@@ -211,11 +218,50 @@ public class LevelManager : MonoBehaviour
             bots.Add(bot);
         }
     }
+    private bool IsDesAllCharacter(Vector3 vector3)
+    { 
+        bool isDesAllCharacter = false;
+        isDesAllCharacter = Constant.IsDes(GameManager.Instance.Player().transform.position, vector3, GameManager.Instance.Player().InGameAttackRange);
+        for (int i = 0; i < bots.Count; i++)
+        {
+            if (Constant.IsDes(bots[i].transform.position, vector3, bots[i].InGameAttackRange))
+            {
+                isDesAllCharacter = true;
+                break;
+            }
+            else { 
+            
+            }
+        }
+        return isDesAllCharacter;
+    }
+    private bool IsDesAllGiftBox(Vector3 vector3)
+    {
+        bool isDesAll = false;
+        for (int i = 0; i < giftBoxs.Count; i++)
+        {
+            if (Constant.IsDes(giftBoxs[i].transform.position, vector3, 3f))
+            {
+                isDesAll = true;
+                break;
+            }
+            else
+            {
+
+            }
+        }
+        return isDesAll;
+    }
     private void GenerateGiftBox(int index, List<Vector3> listPoolObjectPosition)
     {
         for (int i = 0; i < index; i++)
         {
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+            while (IsDesAllGiftBox(listPoolObjectPosition[randomIndex]))
+            {
+                randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+            }
+            
             GiftBox giftBox = SimplePool.Spawn<GiftBox>(PoolType.GiftBox, listPoolObjectPosition[randomIndex], Quaternion.identity);
             giftBoxs.Add(giftBox);
         }
@@ -245,6 +291,7 @@ public class LevelManager : MonoBehaviour
     }
     public void OnStartGame()
     {
+        OnRetry();
         GameManager.Instance.ChangeMode(GameMode.Normal);
         GameManager.Instance.ChangeState(GameState.InGame);
     }
@@ -252,21 +299,14 @@ public class LevelManager : MonoBehaviour
     public void OnFinishGame()
     {
         GameManager.Instance.ChangeState(GameState.EndGame);
-        for (int i = 0; i < bots.Count; i++)
-        {
-            bots[i].ChangeState(null);
-            bots[i].Indicator.Hide();
-            bots[i].CharacterInfo.Hide();
-            bots[i].MoveStop();
-        }
+        ResetListBotAI(bots);
+        ResetListBotAI(botsInGame);
         //Save Gold
         int coins = PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
         coins += (int)player.InGameGold;
         PlayerPrefs.SetInt(Constant.PLAYER_COIN, coins);
         PlayerPrefs.Save();
-        player.SetTransformPosition(levelPrefabs[levelIndex].GetStartPoint());
-        player.CharacterInfo.Hide();
-        player.OnInit();
+        
         int rank = 1 + botInStack + botsInGame.Count;
         player.Rank = rank;
         int bestRank = PlayerPrefs.GetInt(Constant.BEST_RANK, 99);
@@ -275,6 +315,7 @@ public class LevelManager : MonoBehaviour
             PlayerPrefs.SetInt(Constant.BEST_RANK, rank);
             PlayerPrefs.Save();
         }
+        OnReset();
     }
 
     public void OnReset()
@@ -282,6 +323,10 @@ public class LevelManager : MonoBehaviour
         SimplePool.CollectAll();
         bots.Clear();
         botsInGame.Clear();
+
+        player.SetTransformPosition(levelPrefabs[levelIndex].GetStartPoint());
+        player.CharacterInfo.Hide();
+        player.OnInit();
     }
 
     internal void OnRetry()
@@ -303,6 +348,16 @@ public class LevelManager : MonoBehaviour
         LoadLevel(levelIndex);
         OnInit();
         UIManager.Instance.OpenUI<GameMenu>();
+    }
+    public void ResetListBotAI(List<BotAI> lists)
+    {
+        for (int i = 0; i < lists.Count; i++)
+        {
+            lists[i].ChangeState(null);
+            lists[i].Indicator.Hide();
+            lists[i].CharacterInfo.Hide();
+            lists[i].MoveStop();
+        }
     }
     public int GetBotCount()
     { 
@@ -331,11 +386,31 @@ public class LevelManager : MonoBehaviour
     }
     public void OnStartSurvivalGame()
     {
-        LoadSurvival(survivalIndex);
-        OnInitSurvival();
+        OnRetrySurvival();
         GameManager.Instance.ChangeMode(GameMode.Survival);
         GameManager.Instance.ChangeState(GameState.InGame);
       
+    }
+    public void OnFinishSurvivalGame()
+    {
+        GameManager.Instance.ChangeState(GameState.EndGame);
+        ResetListAnimal(animals);
+        ResetListAnimal(animalsInGame);
+        //Save Gold
+        /*int coins = PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
+        coins += (int)player.InGameGold;
+        PlayerPrefs.SetInt(Constant.PLAYER_COIN, coins);
+        PlayerPrefs.Save();
+
+        int rank = 1 + botInStack + botsInGame.Count;
+        player.Rank = rank;
+        int bestRank = PlayerPrefs.GetInt(Constant.BEST_RANK, 99);
+        if (rank < bestRank)
+        {
+            PlayerPrefs.SetInt(Constant.BEST_RANK, rank);
+            PlayerPrefs.Save();
+        }*/
+        OnResetSurvival();
     }
     public void LoadSurvival(int survival)
     {
@@ -375,7 +450,10 @@ public class LevelManager : MonoBehaviour
     {
         SimplePool.CollectAll();
         animals.Clear();
-
+        animalsInGame.Clear();
+        player.SetTransformPosition(levelPrefabs[levelIndex].GetStartPoint());
+        player.CharacterInfo.Hide();
+        player.OnInit();
     }
 
     internal void OnRetrySurvival()
@@ -386,7 +464,6 @@ public class LevelManager : MonoBehaviour
         OnInitSurvival();
         GameManager.Instance.ChangeState(GameState.GameMenu);
         UIManager.Instance.OpenUI<GameMenu>();
-
     }
 
     internal void OnNextLevelSurvival()
@@ -402,5 +479,46 @@ public class LevelManager : MonoBehaviour
     public List<Animal> GetAnimalsInGame()
     {
         return animalsInGame;
+    }
+    public void ResetListAnimal(List<Animal> lists)
+    {
+        for (int i = 0; i < lists.Count; i++)
+        {
+            lists[i].ChangeState(null);
+            lists[i].MoveStop();
+        }
+    }
+    //=====================================================
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        int Row = Mathf.CeilToInt(Mathf.Sqrt(node));
+        int Column = Row;
+        for (int i = 0; i < Row; i++)
+        {
+            for (int j = 0; j < Column; j++)
+            {
+                int index = Row * j + i;
+                Vector3 objectPosition = new Vector3((j - (Row / 2)) + offset * j + transform.position.x, 0.05f + transform.position.y, ((Column / 2) - i) - offset * i + transform.position.z);
+                drawRectangle(objectPosition);
+            }
+        }
+
+    }
+    private void drawRectangle(Vector3 point)
+    {
+        //Top Left
+        Vector3 topL = new Vector3(point.x - size_x, point.y, point.z + size_z);
+        //Top Right
+        Vector3 topR = new Vector3(point.x + size_x, point.y, point.z + size_z);
+        //Bot Right
+        Vector3 botR = new Vector3(point.x + size_x, point.y, point.z - size_z);
+        //Bot Left
+        Vector3 botL = new Vector3(point.x - size_x, point.y, point.z - size_z);
+
+        Gizmos.DrawLine(topL, topR);
+        Gizmos.DrawLine(topR, botR);
+        Gizmos.DrawLine(botR, botL);
+        Gizmos.DrawLine(botL, topL);
     }
 }

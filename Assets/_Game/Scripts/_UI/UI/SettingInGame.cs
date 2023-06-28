@@ -15,7 +15,7 @@ public class SettingInGame : UICanvas
         {
             GameManager.Instance.LevelManager().OnRetrySurvival();
         }
-       // UIManager.Instance.OpenUI<Loading>();
+        //UIManager.Instance.OpenUI<Loading>();
         Close();
     }
     public void ContinueButton()

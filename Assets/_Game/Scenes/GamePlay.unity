@@ -1021,7 +1021,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770442423}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -54, y: 0, z: 54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1043,9 +1043,10 @@ MonoBehaviour:
   levelPrefabs:
   - {fileID: 5437788589572215230, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
   - {fileID: 5437788589572215230, guid: deab0dc29bf88434c98a7183a5d62911, type: 3}
-  offset: 20
-  size_x: 0
-  size_z: 0
+  node: 45
+  offset: 18
+  size_x: 1
+  size_z: 1
   player: {fileID: 1678857055}
   survivalPrefabs:
   - {fileID: 5437788589572215230, guid: cd75647fb1c7f124fafc83c6c4c34bc8, type: 3}

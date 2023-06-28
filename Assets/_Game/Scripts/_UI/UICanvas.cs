@@ -70,6 +70,6 @@ public class UICanvas : MonoBehaviour
     public void PlaySoundBtnClick()
     {
         GameManager.Instance.SoundManager().PlaySoundBtnClick();
-        Debug.Log("Sounds");
+        //Debug.Log("Sounds");
     }
 }

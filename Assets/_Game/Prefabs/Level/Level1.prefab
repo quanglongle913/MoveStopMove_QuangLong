@@ -258,8 +258,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshData: {fileID: 23800000, guid: 569c180b7bb772a408b0c4af32552177, type: 2}
   startPoint: {fileID: 5902897291923923597}
-  botAmount: 2
-  botInGame: 1
+  botAmount: 30
+  botInGame: 15
+  startPoints: []
 --- !u!1001 &1231576514911299637
 PrefabInstance:
   m_ObjectHideFlags: 0

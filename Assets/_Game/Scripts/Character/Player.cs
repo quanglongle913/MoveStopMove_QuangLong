@@ -25,7 +25,7 @@ public class Player : Character
     public int KilledCount=0;
 
     //So luong dam ban ra
-    private int bullets= 1;
+    private int bullets= 0;
     private int SpeedBuff = 1;
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
@@ -178,10 +178,10 @@ public class Player : Character
         if (InGamneExp >= GetLevel() * 50)
         {
             LevelUp();
-            if (GetLevel() % 1 == 0)
+            if (GetLevel() % 2 == 0)
             {
                 //UIManager.Show_Popup_LevelUp();
-                UIManager.Instance.CloseUI<InGame>();
+                UIManager.Instance.CloseUI<InGameSurvival>();
                 UIManager.Instance.OpenUI<LevelUp>();
             }
             InGamneExp = 0;
