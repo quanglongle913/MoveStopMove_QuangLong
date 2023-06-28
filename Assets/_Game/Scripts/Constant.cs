@@ -135,4 +135,64 @@ public class Constant
 
         return dbPath;
     }
+    public class Cache
+    {
+        static Dictionary<Collider, Character> m_Characters = new Dictionary<Collider, Character>();
+        public static Character GetCharacter(Collider collider)
+        {
+            if (!m_Characters.ContainsKey(collider))
+            {
+                m_Characters.Add(collider, collider.GetComponent<Character>());
+            }
+            return m_Characters[collider];
+        }
+        static Dictionary<GameObject, Character> m_CharactersObj = new Dictionary<GameObject, Character>();
+        public static Character GetCharacter(GameObject gameObject)
+        {
+            if (!m_CharactersObj.ContainsKey(gameObject))
+            {
+                m_CharactersObj.Add(gameObject, gameObject.GetComponent<Character>());
+            }
+            return m_CharactersObj[gameObject];
+        }
+        static Dictionary<Collider, Player> m_Players = new Dictionary<Collider, Player>();
+        public static Player GetPlayer(Collider collider)
+        {
+            if (!m_Players.ContainsKey(collider))
+            {
+                m_Players.Add(collider, collider.GetComponent<Player>());
+            }
+            return m_Players[collider];
+        }
+        static Dictionary<GameObject, Player> m_PlayersObj = new Dictionary<GameObject, Player>();
+        public static Player GetPlayer(GameObject gameObject)
+        {
+            if (!m_PlayersObj.ContainsKey(gameObject))
+            {
+                m_PlayersObj.Add(gameObject, gameObject.GetComponent<Player>());
+            }
+            return m_PlayersObj[gameObject];
+        }
+
+        static Dictionary<Collider, BotAI> m_BotAIs = new Dictionary<Collider, BotAI>();
+        public static BotAI GetBotAI(Collider collider)
+        {
+            if (!m_BotAIs.ContainsKey(collider))
+            {
+                m_BotAIs.Add(collider, collider.GetComponent<BotAI>());
+            }
+            return m_BotAIs[collider];
+        }
+
+        static Dictionary<Collider, TransparentObstacle> m_TransparentObstacle = new Dictionary<Collider, TransparentObstacle>();
+        public static TransparentObstacle GetTransparentObstacle(Collider collider)
+        {
+            if (!m_TransparentObstacle.ContainsKey(collider))
+            {
+                m_TransparentObstacle.Add(collider, collider.GetComponent<TransparentObstacle>());
+            }
+            return m_TransparentObstacle[collider];
+        }
+    }
 }
+

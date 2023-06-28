@@ -21,10 +21,6 @@ public class Indicator : GameUnit
     public void SetCharacter(Character character)
     {
         this.character = character;
-    }
-    public void UpdateData(Vector3 vector3)
-    {
-        Camera camera = GameManager.Instance.GetCamera();
         this.colorType = character.GetColorType();
         characterLevel = character.GetLevel();
         ChangeColor(image, colorType);
@@ -38,6 +34,11 @@ public class Indicator : GameUnit
         {
             textLevel.color = Color.white;
         }
+    }
+    public void UpdateData(Vector3 vector3)
+    {
+        Camera camera = GameManager.Instance.GetCamera();
+        
         //gameObject.transform.position = OffScreenIndicatorCore.GetScreenPosition(camera, character.gameObject, screenCentre, screenBounds);
         gameObject.transform.position = vector3;
         Vector3 viewPosPlayer = camera.WorldToViewportPoint(GameManager.Instance.PlayerTF().position);

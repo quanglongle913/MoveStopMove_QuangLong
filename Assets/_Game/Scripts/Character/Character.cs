@@ -18,7 +18,7 @@ public class Character : GameUnit,IHit
     [SerializeField] private ColorType colorType;
     [SerializeField] private List<Weapons> listWeaponsInHand;
     [Header("---------------BASE------------ ")]
-    [SerializeField] private int inGamneExp = 100;
+    [SerializeField] private int inGameExp = 100;
     [SerializeField] private float baseSizeCharacter = 1f;
     [SerializeField] private float baseAttackRange = 7f;
     [SerializeField] private float baseAttackSpeed = 60f;
@@ -72,7 +72,7 @@ public class Character : GameUnit,IHit
     public ColorData ColorData { get => colorData; set => colorData = value; }
     //public ColorType ColorType { get => colorType; set => colorType = value; }
 
-    public int InGamneExp { get => inGamneExp; set => inGamneExp = value; }
+    public int InGamneExp { get => inGameExp; set => inGameExp = value; }
     public float InGameSizeCharacter { get => inGameSizeCharacter; set => inGameSizeCharacter = value; }
     public float InGameAttackRange { get => inGameAttackRange; set => inGameAttackRange = value; }
     public float InGameAttackSpeed { get => inGameAttackSpeed; set => inGameAttackSpeed = value; }
@@ -116,6 +116,7 @@ public class Character : GameUnit,IHit
         GenerateZone();
         DetectionCharacter();
     }
+    
     public virtual void Attack() 
     {
         if (InCamera(GameManager.Instance.GetCamera()))
@@ -168,7 +169,7 @@ public class Character : GameUnit,IHit
         Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack2.transform.position.y, Target.transform.position.z);
         weaponAttack2.transform.position = WeaponRoot.transform.position;
         weaponAttack2._GameObject = gameObject;
-        weaponAttack2.character = gameObject.GetComponent<Character>();
+        weaponAttack2.character = Constant.Cache.GetCharacter(gameObject);
         weaponAttack2.WeaponType = this.WeaponType;
         weaponAttack2.direction = _Direction;
         weaponAttack2.gameObject.SetActive(true);
@@ -189,7 +190,8 @@ public class Character : GameUnit,IHit
         Collider[] colliders = CharactersInsideZone;
         for (int i = 0; i < colliders.Length; i++)
         {
-            Character character = colliders[i].GetComponent<Character>();
+            //Character character = colliders[i].GetComponent<Character>();
+            Character character = Constant.Cache.GetCharacter(colliders[i]);
             if (character)
             {
                 if (!character.IsDeath && colliders[i].gameObject != this.gameObject && colorType != character.colorType)
@@ -220,7 +222,7 @@ public class Character : GameUnit,IHit
         Collider[] colliders = CharactersInsideZone;
         for (int i = 0; i < colliders.Length; i++)
         {
-            Player player = colliders[i].GetComponent<Player>();
+            Player player = Constant.Cache.GetPlayer(colliders[i]);
             if (player)
             {
                 if (!player.IsDeath)
@@ -297,7 +299,7 @@ public class Character : GameUnit,IHit
     public void ChangeColor(GameObject a_obj, ColorType colorType)
     {
         this.colorType = colorType;
-        a_obj.GetComponent<Character>().mesh.material = colorData.GetMat(colorType);
+        Constant.Cache.GetCharacter(a_obj).mesh.material = colorData.GetMat(colorType);
     }
 
     public virtual void OnHit(float damage)
@@ -450,6 +452,8 @@ public class Character : GameUnit,IHit
         IsTargerInRange = false;
         hp = 1;
         WeaponIndex = 0;
+        //SetInGameExp(100);
+        inGameExp = 100;
         GetWeaponInHand(WeaponIndex).SetActive(true);
         InGameGold = 0;
         
@@ -568,7 +572,7 @@ public class Character : GameUnit,IHit
     }
     public void SetInGameExp(int exp)
     {
-        this.inGamneExp = exp; ;
+        this.inGameExp = exp; ;
     }
     public void CharacterBufffCountDown(int randomBuff, List<BuffData> buffDataInGiftBox)
     {

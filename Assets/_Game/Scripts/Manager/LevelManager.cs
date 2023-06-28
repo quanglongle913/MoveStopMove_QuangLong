@@ -206,12 +206,12 @@ public class LevelManager : MonoBehaviour
             bot.UpdateInfo(GameManager.Instance.GetBotAIInfo(i), GameManager.Instance.GetAccessoriesDatas());
 
             Indicator indicator = SimplePool.Spawn<Indicator>(PoolType.Indicator);
-            indicator.SetCharacter(bot.GetComponent<Character>());
+            indicator.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
             indicator.gameObject.SetActive(false);
             bot.Indicator = indicator;
 
             CharacterInfo characterInfo = SimplePool.Spawn<CharacterInfo>(PoolType.CharacterInfo);
-            characterInfo.SetCharacter(bot.GetComponent<Character>());
+            characterInfo.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
             characterInfo.gameObject.SetActive(false);
             bot.CharacterInfo = characterInfo;
             bot.gameObject.SetActive(false);
@@ -269,7 +269,7 @@ public class LevelManager : MonoBehaviour
     private void PlayerInit()
     {
         CharacterInfo characterInfo = SimplePool.Spawn<CharacterInfo>(PoolType.CharacterInfo);
-        characterInfo.SetCharacter(player.GetComponent<Character>());
+        characterInfo.SetCharacter(Constant.Cache.GetCharacter(player.gameObject));
         characterInfo.gameObject.SetActive(false);
         player.CharacterInfo = characterInfo;
     }

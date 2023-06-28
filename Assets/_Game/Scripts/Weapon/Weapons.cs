@@ -27,7 +27,8 @@ public class Weapons : GameUnit
     private void Start()
     {
         VFX_Trail = Instantiate(ParticlePool.ParticleSystem(ParticleType.Trail));
-        VFX_Trail.transform.position = Vector3.zero;
+        VFX_Trail.transform.localPosition = Vector3.zero;
+        VFX_Trail.transform.localScale = VFX_Trail.transform.localScale * 2;
         VFX_Trail.gameObject.SetActive(false);
     }
     void Update()
@@ -65,7 +66,6 @@ public class Weapons : GameUnit
             }
             else
             {
-                DestroyImmediate(VFX_Trail);
                 ReleaseWeapon(character);
             }
             
@@ -73,34 +73,34 @@ public class Weapons : GameUnit
     }
     private void OnTriggerEnter(Collider other)
     {
-        Character enemy = other.GetComponent<Character>();
+        Character enemy = Constant.Cache.GetCharacter(other);
         //IHit hit = other.GetComponent<IHit>();
         if (enemy && other.gameObject != _GameObject && enemy.GetColorType() != character.GetColorType() && !enemy.IsDeath)
         {
-            Player player1 = other.gameObject.GetComponent<Player>();
-            if (player1)
+            Player player = Constant.Cache.GetPlayer(other);
+            if (player)
             {
                 enemy.OnHit(1f);
                 character.SetExp(enemy.InGamneExp);
-                player1.KilledByName = character.CharacterName;
-                player1.KillerColorType = character.GetColorType();
+                player.KilledByName = character.CharacterName;
+                player.KillerColorType = character.GetColorType();
              
             }
             else
             {
                 enemy.OnHit(1f);
                 
-                if (_GameObject.GetComponent<Player>())
+                if (Constant.Cache.GetPlayer(_GameObject))
                 {
-                    Player player = _GameObject.GetComponent<Player>();
-                    player.KilledCount++;
+                    Player player1 = Constant.Cache.GetPlayer(_GameObject);
+                    player1.KilledCount++;
                     if (GameManager.Instance.IsMode(GameMode.Normal))
                     {
-                        player.SetExp(enemy.InGamneExp);
+                        player1.SetExp(enemy.InGamneExp);
                     }
                     else
                     {
-                        player.SetSurvivalExp(enemy.InGamneExp);
+                        player1.SetSurvivalExp(enemy.InGamneExp);
                     }
                 }
                
@@ -127,6 +127,9 @@ public class Weapons : GameUnit
     private void ReleaseWeapon(Character character)
     {
         //character.Weapons.Remove(this);
+        VFX_Trail.gameObject.SetActive(false);
+        Destroy(VFX_Trail.gameObject);
+
         character.ShowWeaponIndex((int)WeaponType);
         character.IsAttacking = false;
         this.gameObject.SetActive(false);

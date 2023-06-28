@@ -17,14 +17,15 @@ public class CharacterInfo : GameUnit
     public void SetCharacter(Character character)
     {
         this.character = character;
+        CharacterName.text = character.CharacterName;
+        CharacterLevel.text = "" + character.GetLevel();
+        ChangeColor(character.GetColorType());
     }
     public void UpdateData()
     {
         Vector3 viewPosCharacterInfo = GameManager.Instance.GetCamera().WorldToScreenPoint(character.gameObject.transform.position);
         
-        CharacterName.text = character.CharacterName;
-        CharacterLevel.text = ""+ character.GetLevel();
-        ChangeColor(character.GetColorType());
+        
         gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
         Show();
     }

@@ -33,7 +33,7 @@ public class GiftBox : GameUnit
     {
         if (other.GetComponent<Character>())
         {
-            Character character = other.GetComponent<Character>();
+            Character character = Constant.Cache.GetCharacter(other);
             if (!character.IsBuffed)
             {
                 character.CharacterBufffCountDown(RandomBuff, buffDataInGiftBox);

@@ -49,6 +49,7 @@ public class Player : Character
         ChangeState(new IdleStateP());
         WeaponIndex = 0;
         KilledCount = 0;
+        bullets = 0;
         this.WeaponIndex = GetWeaponsEquippedIndex(GameManager.Instance.GetWeaponData());
         this.WeaponType = GameManager.Instance.GetWeaponData().Weapon[WeaponIndex].WeaponType;
         SetWeaponSkinMat();
@@ -136,9 +137,9 @@ public class Player : Character
     {
         foreach (Collider hitcollider in colliders)
         {
-            if (hitcollider.GetComponent<BotAI>())
+            if (Constant.Cache.GetBotAI(hitcollider))
             {
-                hitcollider.GetComponent<BotAI>().CircleAttack.SetActive(enable);
+                Constant.Cache.GetBotAI(hitcollider).CircleAttack.SetActive(enable);
                 //target = hitcollider.gameObject;
             }
         }
