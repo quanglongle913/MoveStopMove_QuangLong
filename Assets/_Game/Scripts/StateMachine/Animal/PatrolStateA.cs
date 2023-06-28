@@ -15,7 +15,7 @@ public class PatrolStateA : IState<Animal>
     {
         target = GameManager.Instance.Player().transform.position;
         t.SetDestination(target);
-        if (Constant.IsDes(t.transform.position, target, 0.2f))
+        if (Constant.IsDes(t.transform.position, target, t.InGameAttackRange))
         {
             t.ChangeState(new IdleStateA());
         }

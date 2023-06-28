@@ -130,21 +130,34 @@ public class Character : GameUnit,IHit
         RotateTowards(this.gameObject, _DirectionCharacter);
         
         GenerateWeapon(_DirectionWeapon);
-        /*if (_GameManager.GameMode == GameMode.Survival)
+        if (GameManager.Instance.IsMode(GameMode.Survival))
         {
-            GenerateWeapon(weapons[1], transform.TransformDirection(0.5f, 0, 1).normalized);
-            GenerateWeapon(weapons[2], transform.TransformDirection(-0.5f, 0, 1).normalized);
-        }*/
+            for (int i = 0; i < GameManager.Instance.Player().Bullets; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    GenerateWeapon(transform.TransformDirection(0.5f + i*0.5f, 0, 1).normalized);
+                }
+                else {
+                    GenerateWeapon(transform.TransformDirection(0.5f - i*1.0f, 0, 1).normalized);
+                }
+                
+                
+            }
+            
+        }
     }
     public void AnimalAttack()
     {
-        ChangeAnim("Attack");
-        IsAttacking = true;
+        
         Vector3 _DirectionCharacter = new Vector3(Target.transform.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.transform.position.z - gameObject.transform.position.z).normalized;
         RotateTowards(this.gameObject, _DirectionCharacter);
-        Invoke(nameof(AnimalIsAttacking),0.5f);
+        ChangeAnim("Attack");
+        //IsAttacking = true;
+        
+        //Invoke(nameof(AnimalAtackWaiter),1.0f);
     }
-    public void AnimalIsAttacking()
+    public void AnimalAtackWaiter()
     {
         IsAttacking = false;
     }
@@ -181,9 +194,17 @@ public class Character : GameUnit,IHit
             {
                 if (!character.IsDeath && colliders[i].gameObject != this.gameObject && colorType != character.colorType)
                 {
-                    IsTargerInRange = true;
-                    Target = character.gameObject;
-                    break;
+                    if (Constant.IsDes(gameObject.transform.position, character.gameObject.transform.position, InGameAttackRange))
+                    {
+                        IsTargerInRange = true;
+                        Target = character.gameObject;
+                        break;
+                    }
+                    else
+                    {
+                        IsTargerInRange = false;
+                    }
+
                 }
                 else
                 {
@@ -204,9 +225,16 @@ public class Character : GameUnit,IHit
             {
                 if (!player.IsDeath)
                 {
-                    IsTargerInRange = true;
-                    Target = player.gameObject;
-                    break;
+                    if (Constant.IsDes(gameObject.transform.position, player.gameObject.transform.position, InGameAttackRange))
+                    {
+                        IsTargerInRange = true;
+                        Target = player.gameObject;
+                        break;
+                    }
+                    else
+                    {
+                        IsTargerInRange = false;
+                    }
                 }
                 else
                 {
@@ -424,6 +452,7 @@ public class Character : GameUnit,IHit
         WeaponIndex = 0;
         GetWeaponInHand(WeaponIndex).SetActive(true);
         InGameGold = 0;
+        
         inGameSizeCharacter = baseSizeCharacter;
         inGameAttackRange = baseAttackRange;
         inGameAttackSpeed = baseAttackSpeed;

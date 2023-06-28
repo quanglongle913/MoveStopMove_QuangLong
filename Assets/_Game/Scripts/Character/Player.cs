@@ -23,12 +23,16 @@ public class Player : Character
     public string KilledByName;
     public int Rank;
     public int KilledCount=0;
-   
+
+    //So luong dam ban ra
+    private int bullets= 1;
+    private int SpeedBuff = 1;
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
+    public int Bullets { get => bullets; set => bullets = value; }
 
-    private int maxHP;
-    public int MaxHp() { return maxHP; }
+    private float maxHP;
+    
     public override void Awake()
     {
         base.Awake();
@@ -44,6 +48,7 @@ public class Player : Character
         base.OnInit();
         ChangeState(new IdleStateP());
         WeaponIndex = 0;
+        KilledCount = 0;
         this.WeaponIndex = GetWeaponsEquippedIndex(GameManager.Instance.GetWeaponData());
         this.WeaponType = GameManager.Instance.GetWeaponData().Weapon[WeaponIndex].WeaponType;
         SetWeaponSkinMat();
@@ -57,6 +62,8 @@ public class Player : Character
     {
         base.OnInit();
         SetHp(100);
+        maxHP = Hp();
+        KilledCount = 0;
         SetInGameExp(0);
         ChangeState(new IdleStateP());
         WeaponIndex = 0;
@@ -70,20 +77,7 @@ public class Player : Character
         UpdateAccessoriesEquippedAll();
         SetLevel(1);
     }
-    public void SetSurvivalExp(int exp)
-    {
-        InGamneExp += exp;
 
-        if (InGamneExp >= GetLevel() * 50)
-        {
-            LevelUp();
-            if (GetLevel() % 5 == 0)
-            {
-                //UIManager.Show_Popup_LevelUp();
-            }
-            InGamneExp = 0;
-        }
-    }
     void Update()
     {
         if (GameManager.Instance.IsState(GameState.InGame))
@@ -102,8 +96,6 @@ public class Player : Character
     }
     public override void FixedUpdate()
     {
-        
-        //DetectionCharacter(CharactersInsideZone);
         base.FixedUpdate();
         if (cylinder != null)
         {
@@ -173,11 +165,37 @@ public class Player : Character
     protected override void OnDeath()
     {
         base.OnDeath();
-        UIManager.Instance.GetUI<InGame>().Close();
+        UIManager.Instance.CloseUI<InGame>();
         UIManager.Instance.OpenUI<TryAgain>();
         UIManager.Instance.OpenUI<TryAgain>().Show_Popup_Tryagain();
         ChangeState(new DeadStateP());
     }
+    //==================Survival================
+    public void SetSurvivalExp(int exp)
+    {
+        InGamneExp += exp;
+
+        if (InGamneExp >= GetLevel() * 50)
+        {
+            LevelUp();
+            if (GetLevel() % 1 == 0)
+            {
+                //UIManager.Show_Popup_LevelUp();
+                UIManager.Instance.CloseUI<InGame>();
+                UIManager.Instance.OpenUI<LevelUp>();
+            }
+            InGamneExp = 0;
+        }
+    }
+    public float MaxHp()
+    {
+        return maxHP;
+    }
+    public void SetMaxHp(int maxHp) 
+    { 
+        this.maxHP = maxHp;
+    }
+    //==================End Survival================
     public override void OnHit(float damage)
     {
         base.OnHit(damage);

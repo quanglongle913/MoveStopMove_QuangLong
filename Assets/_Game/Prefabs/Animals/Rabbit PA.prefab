@@ -1030,12 +1030,12 @@ MonoBehaviour:
   listWeaponsInHand: []
   inGamneExp: 100
   baseSizeCharacter: 1
-  baseAttackRange: 7
+  baseAttackRange: 3
   baseAttackSpeed: 60
   baseMoveSpeed: 5
   baseGoldEarn: 50
   inGameSizeCharacter: 1
-  inGameAttackRange: 7
+  inGameAttackRange: 3
   inGameAttackSpeed: 60
   inGameMoveSpeed: 5
   inGameGold: 50

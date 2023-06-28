@@ -33,6 +33,7 @@ public class LevelManager : MonoBehaviour
     private int survivalIndex;
     private List<Transform> startPoints;
     private List<Animal> animals = new List<Animal>();
+    private List<Animal> animalsInGame = new List<Animal>();
     //---------------
     private float screenBoundOffset = 0.9f;
     private Vector3 screenCentre;
@@ -87,9 +88,23 @@ public class LevelManager : MonoBehaviour
             }
         } else if (GameManager.Instance.IsMode(GameMode.Survival))
         {
-            if (animals.Count < botAmount)
-            {
-                GenerateSurvivalAnimal();
+            if (animalsInGame.Count < botAmount)
+            { 
+                for (int i = 0; i < animals.Count; i++)
+                {
+                    if (!animals[i].gameObject.activeSelf && !animals[i].IsDeath)
+                    {
+                        animals[i].gameObject.SetActive(true);
+                        animals[i].ChangeState(new PatrolStateA());
+                        animalsInGame.Add(animals[i]);
+                        //TEST
+                        /*int randomIndex = Random.Range(0, startPoints.Count);
+                        Animal animal = SimplePool.Spawn<Animal>(PoolType.Animal, startPoints[randomIndex].position, Quaternion.identity);
+                        animal.OnInit();
+                        animal.gameObject.SetActive(false);
+                        animals.Add(animal);*/
+                    }
+                }
             }
         }
         
@@ -272,6 +287,7 @@ public class LevelManager : MonoBehaviour
     internal void OnRetry()
     {
         OnReset();
+        OnResetSurvival();
         LoadLevel(levelIndex);
         OnInit();
         GameManager.Instance.ChangeState(GameState.GameMenu);
@@ -303,10 +319,15 @@ public class LevelManager : MonoBehaviour
     //================================================Survival Mode=============================================
     private void GenerateSurvivalAnimal()
     {
-        int randomIndex = Random.Range(0, startPoints.Count);
-        Animal animal = SimplePool.Spawn<Animal>(PoolType.Animal, startPoints[randomIndex].position, Quaternion.identity);
-        animal.OnInit();
-        animals.Add(animal);
+        for (int i = 0; i < botAmount; i++)
+        {
+            int randomIndex = Random.Range(0, startPoints.Count);
+            Animal animal = SimplePool.Spawn<Animal>(PoolType.Animal, startPoints[randomIndex].position, Quaternion.identity);
+            animal.OnInit();
+            animal.gameObject.SetActive(false);
+            animals.Add(animal);
+        }
+
     }
     public void OnStartSurvivalGame()
     {
@@ -343,6 +364,8 @@ public class LevelManager : MonoBehaviour
         NavMesh.RemoveAllNavMeshData();
         NavMesh.AddNavMeshData(currentLevel.GetNavMeshData());
 
+        GenerateSurvivalAnimal();
+
         player.OnInitSurvival();
         player.transform.position = survivalPrefabs[survivalIndex].GetStartPoint().position;
 
@@ -357,11 +380,13 @@ public class LevelManager : MonoBehaviour
 
     internal void OnRetrySurvival()
     {
+        OnReset();
         OnResetSurvival();
         LoadSurvival(survivalIndex);
         OnInitSurvival();
         GameManager.Instance.ChangeState(GameState.GameMenu);
         UIManager.Instance.OpenUI<GameMenu>();
+
     }
 
     internal void OnNextLevelSurvival()
@@ -374,8 +399,8 @@ public class LevelManager : MonoBehaviour
         OnInitSurvival();
         UIManager.Instance.OpenUI<GameMenu>();
     }
-    public List<Animal> GetAnimals()
+    public List<Animal> GetAnimalsInGame()
     {
-        return animals;
+        return animalsInGame;
     }
 }

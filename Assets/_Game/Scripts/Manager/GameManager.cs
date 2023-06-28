@@ -120,7 +120,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void RemoveAnimals(Animal animal)
     {
-        levelManager.GetAnimals().Remove(animal);
+        levelManager.GetAnimalsInGame().Remove(animal);
     }
     public LevelManager LevelManager()
     {

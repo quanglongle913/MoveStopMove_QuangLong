@@ -7,7 +7,15 @@ public class SettingInGame : UICanvas
 
     public void HomeButton()
     {
-        GameManager.Instance.LevelManager().OnRetry();
+        if (GameManager.Instance.IsMode(GameMode.Normal))
+        {
+            GameManager.Instance.LevelManager().OnRetry();
+        }
+        else
+        {
+            GameManager.Instance.LevelManager().OnRetrySurvival();
+        }
+       // UIManager.Instance.OpenUI<Loading>();
         Close();
     }
     public void ContinueButton()

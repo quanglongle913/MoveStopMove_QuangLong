@@ -85,9 +85,7 @@ public class Animal : Character,IHit
     public override void OnDespawn()
     {
         base.OnDespawn();
-
         SimplePool.Despawn(this);
-
     }
     protected override void OnDeath()
     {

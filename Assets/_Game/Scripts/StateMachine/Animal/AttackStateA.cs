@@ -22,12 +22,13 @@ public class AttackStateA : IState<Animal>
 
         if (timer > timerAttack)
         {
-            if (t.IsTargerInRange)
+            if (t.IsTargerInRange && !t.IsAttacking)
             {
                 //t.Attack();
                 //Debug.Log("Attack");
                 GameManager.Instance.Player().OnHit(1f);
                 t.AnimalAttack();
+                //t.ChangeState(new IdleStateA());
             }
             else
             {
