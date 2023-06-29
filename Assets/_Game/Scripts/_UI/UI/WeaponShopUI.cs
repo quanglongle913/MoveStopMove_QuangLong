@@ -12,7 +12,7 @@ public class WeaponShopUI : UICanvas
     [SerializeField] private TMPro.TextMeshProUGUI textWeaponStatus;
     [SerializeField] private TMPro.TextMeshProUGUI textWeaponPriceBtnBuy;
     [SerializeField] private TMPro.TextMeshProUGUI textWeaponPriceBtnUnBuy;
-
+    
     ListWeapon Weapons;
     int itemSelelected;
     Player player;

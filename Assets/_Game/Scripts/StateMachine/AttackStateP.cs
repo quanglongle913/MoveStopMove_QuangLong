@@ -6,13 +6,10 @@ using UnityEngine;
 public class AttackStateP : IState<Player>
 {
     float timer;
-    float timerAttack;
     public void OnEnter(Player t)
     {
-        //timer = 0;
-        timerAttack = (float)Math.Round(60 / t.InGameAttackSpeed, 1);
-        timer = timerAttack + 0.5f;
-        //Debug.Log("AttackStateP......" + timerAttack);
+        t.timeAttack = (float)Math.Round(60 / t.InGameAttackSpeed, 1);
+        timer = t.timeAttack - 0.1f;
         t.Anim.speed = (float)Math.Round(t.InGameAttackSpeed / 60, 1);
     }
 
@@ -20,7 +17,7 @@ public class AttackStateP : IState<Player>
     {
         timer += Time.deltaTime;
         
-        if (timer > timerAttack)
+        if (timer > t.timeAttack)
         {
             if (t.IsTargerInRange && !t.IsAttacking)
             {
@@ -31,11 +28,13 @@ public class AttackStateP : IState<Player>
                 t.ChangeState(new IdleStateP());
             }
             timer = 0;
-            //Debug.Log("AttackStateP......");
         }
         if (Mathf.Abs(t.Horizontal) >= 0.03 || Mathf.Abs(t.Vertical) >= 0.03)
         {
-            t.ChangeState(new PatrolStateP());
+            if(t.IsMoving)
+            {
+                t.ChangeState(new PatrolStateP());
+            }
         }
     }
 

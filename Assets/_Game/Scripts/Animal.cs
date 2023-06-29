@@ -23,8 +23,9 @@ public class Animal : Character,IHit
         OnResetAnimal();
         ChangeState(new IdleStateA());
     }
-    void Update()
+    public override void  Update()
     {
+
         if (IsDeath)
         {
             if (currentState != null)
@@ -37,6 +38,8 @@ public class Animal : Character,IHit
         {
             if (GameManager.Instance.IsState(GameState.InGame))
             {
+                base.Update();
+                DetectionPlayer();
                 if (currentState != null)
                 {
                     currentState.OnExecute(this);
@@ -48,13 +51,6 @@ public class Animal : Character,IHit
             }
         }
 
-    }
-    public override void FixedUpdate()
-    {
-        //DetectionCharacter(_GameManager.BotAIListEnable);
-        //base.FixedUpdate();
-        GenerateZone();
-        DetectionPlayer();
     }
     public override void OnHit(float damage)
     {

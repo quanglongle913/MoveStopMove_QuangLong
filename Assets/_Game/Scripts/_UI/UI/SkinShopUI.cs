@@ -17,11 +17,12 @@ public class SkinShopUI : UICanvas
     [SerializeField] private TMPro.TextMeshProUGUI textSkinShopPriceBtnBuy;
     [SerializeField] private List<GameObject> Buttons;
     Player player;
+    
     private void Start()
     {
         GameManager.Instance.ChangeState(GameState.SkinShop);
         player = GameManager.Instance.Player();
-        if (player.PlayerSkinShopState == PlayerSkinShopState.SetFull)
+        if (player.IsPlayerSkinShopState(PlayerSkinShopState.SetFull))
         {
             OnSlelectedSetFullSkinShop();
         }
@@ -289,8 +290,7 @@ public class SkinShopUI : UICanvas
     {
         player.UpdateAccessoriesEquippedAll();
         UIManager.Instance.OpenUI<GameMenu>();
-        //UIManager.Instance.GetUI<GameMenu>().UpdateData();
-        GameManager.Instance.ChangeState(GameState.GameMenu);
+       
         Close();
     }
 }

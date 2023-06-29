@@ -17,7 +17,6 @@ public class Loading : UICanvas
         timer += Time.deltaTime;
         if (timer > 0.5f)
         {
-            GameManager.Instance.ChangeState(GameState.GameMenu);
             UIManager.Instance.OpenUI<GameMenu>();
             //UIManager.Instance.GetUI<GameMenu>().UpdateData();
             Close();

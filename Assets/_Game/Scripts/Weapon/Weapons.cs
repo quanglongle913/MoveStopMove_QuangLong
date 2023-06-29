@@ -11,18 +11,24 @@ public class Weapons : GameUnit
     [SerializeField] private WeaponType weaponType;
 
     private GameObject _gameObject;
-    public float rotationSpeed;
-    public float bulletSpeed=2f;
-    public bool isFire;
-    public Vector3 target;
-    public Vector3 startPoint;
-    public Vector3 direction;
-    ParticleSystem VFX_Trail;
-    float rotY;
+    private float rotationSpeed=800f;
+    private float bulletSpeed = 2f;
+    private bool isFire;
+    private Vector3 target;
+    private Vector3 startPoint;
+    private Vector3 direction;
+    private ParticleSystem VFX_Trail;
+    private float rotY;
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public GameObject _GameObject { get => _gameObject; set => _gameObject = value; }
+    public bool IsFire { get => isFire; set => isFire = value; }
+    public float BulletSpeed { get => bulletSpeed; set => bulletSpeed = value; }
+    public Vector3 Direction { get => direction; set => direction = value; }
+    public Vector3 StartPoint { get => startPoint; set => startPoint = value; }
+    public Vector3 Target { get => target; set => target = value; }
 
     public Character character;
+
     // Update is called once per frame
     private void Start()
     {
@@ -30,45 +36,47 @@ public class Weapons : GameUnit
         VFX_Trail.transform.localPosition = Vector3.zero;
         VFX_Trail.transform.localScale = VFX_Trail.transform.localScale * 2;
         VFX_Trail.gameObject.SetActive(false);
+       
     }
     void Update()
     {
         if (isFire)
         {
-
-            VFX_Trail.transform.position= transform.position;
-            VFX_Trail.gameObject.SetActive(true);
-            if (weaponType == WeaponType.Knife || weaponType == WeaponType.Arrow)/////
+            Throw();
+        }
+    }
+    private void Throw() {
+        VFX_Trail.transform.position = transform.position;
+        VFX_Trail.gameObject.SetActive(true);
+        if (weaponType == WeaponType.Knife || weaponType == WeaponType.Arrow)/////
+        {
+            //Xoay Weapon to Enemy
+            if (direction.x <= 0)
             {
-                //Xoay Weapon to Enemy
-                if (direction.x <= 0)
-                {
-                    SetRotation(Vector3.forward);
-                }
-                else
-                {
-                    SetRotation(Vector3.back);
-                }
-
+                SetRotation(Vector3.forward);
             }
             else
             {
-          
-                rotY += Time.deltaTime * rotationSpeed;
-                transform.rotation = Quaternion.Euler(90, rotY, 0);
+                SetRotation(Vector3.back);
             }
-        
-            //Move Weapon with transform.....
-            if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGameAttackRange))
-            {
-                Vector3 TargetPoint = new Vector3(transform.position.x + direction.x * bulletSpeed * Time.deltaTime, transform.position.y, transform.position.z + direction.z * bulletSpeed * Time.deltaTime);
-                transform.position = TargetPoint;
-            }
-            else
-            {
-                ReleaseWeapon(character);
-            }
-            
+
+        }
+        else
+        {
+
+            rotY += Time.deltaTime * rotationSpeed;
+            transform.rotation = Quaternion.Euler(90, rotY, 0);
+        }
+
+        //Move Weapon with transform.....
+        if (Constant.IsDes(startPoint, gameObject.transform.position, character.InGameAttackRange))
+        {
+            Vector3 TargetPoint = new Vector3(transform.position.x + direction.x * bulletSpeed * Time.deltaTime, transform.position.y, transform.position.z + direction.z * bulletSpeed * Time.deltaTime);
+            transform.position = TargetPoint;
+        }
+        else
+        {
+            ReleaseWeapon(character);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -82,8 +90,8 @@ public class Weapons : GameUnit
             {
                 enemy.OnHit(1f);
                 character.SetExp(enemy.InGamneExp);
-                player.KilledByName = character.CharacterName;
-                player.KillerColorType = character.GetColorType();
+                player.SetKilledByName(character.CharacterName);
+                player.SetKillerColorType(character.GetColorType());
              
             }
             else
@@ -93,7 +101,7 @@ public class Weapons : GameUnit
                 if (Constant.Cache.GetPlayer(_GameObject))
                 {
                     Player player1 = Constant.Cache.GetPlayer(_GameObject);
-                    player1.KilledCount++;
+                    player1.SetKilledCount(player1.KilledCount()+1);
                     if (GameManager.Instance.IsMode(GameMode.Normal))
                     {
                         player1.SetExp(enemy.InGamneExp);
@@ -112,17 +120,17 @@ public class Weapons : GameUnit
         if (other.GetComponent<TransparentObstacle>())
         {
             //Debug.Log("Obstacle");
-            this.isFire = false;
-            character.ShowWeaponIndex((int)WeaponType);
-            character.IsAttacking = false;
+            //this.isFire = false;
+            //character.ShowWeaponIndex((int)WeaponType);
+            //character.IsAttacking = false;
             StartCoroutine(Waiter());
         }
     }
     IEnumerator Waiter()
     {
         yield return new WaitForSeconds(1f);
-
-        this.gameObject.SetActive(false);
+        ReleaseWeapon(character);
+        //this.gameObject.SetActive(false);
     }
     private void ReleaseWeapon(Character character)
     {
@@ -131,7 +139,7 @@ public class Weapons : GameUnit
         Destroy(VFX_Trail.gameObject);
 
         character.ShowWeaponIndex((int)WeaponType);
-        character.IsAttacking = false;
+        //character.IsAttacking = false;
         this.gameObject.SetActive(false);
         this.isFire = false;
     }

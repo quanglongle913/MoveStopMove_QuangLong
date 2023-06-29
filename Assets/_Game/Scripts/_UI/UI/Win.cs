@@ -15,14 +15,21 @@ public class Win : UICanvas
     void Start()
     {
         GameManager.Instance.LevelManager().OnFinishGame();
+        Player player = GameManager.Instance.Player();
+
         textCoin.text = ""+PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
-        textStar.text = ""+GameManager.Instance.Player().KilledCount;
+        textStar.text = ""+player.KilledCount();
+
+
         int zoneType = PlayerPrefs.GetInt(Constant.PLAYER_ZONE_TYPE, 0);
-        text_ZoneType.text = GameManager.Instance.ZoneData().Zones[zoneType].ZoneName;
-        image_ZoneType.texture = GameManager.Instance.ZoneData().Zones[zoneType].Texture;
+        Zone zone = GameManager.Instance.ZoneData().Zones[zoneType];
+
+        text_ZoneType.text = zone.ZoneName;
+        image_ZoneType.texture = zone.Texture;
         zoneType++;
-        text_ZoneTypeNext.text = GameManager.Instance.ZoneData().Zones[zoneType].ZoneName;
-        image_ZoneTypeNext.texture = GameManager.Instance.ZoneData().Zones[zoneType].Texture;
+        text_ZoneTypeNext.text = zone.ZoneName;
+        image_ZoneTypeNext.texture = zone.Texture;
+
         GameManager.Instance.SoundManager().PlayEndWinSoundEffect();
     }
 

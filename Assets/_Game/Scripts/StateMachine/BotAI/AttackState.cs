@@ -6,12 +6,12 @@ using UnityEngine;
 public class AttackState : IState<BotAI>
 {
     float timer;
-    float timerAttack;
+    //float timerAttack;
     public void OnEnter(BotAI t)
     {
         //timer = 0;
-        timerAttack = (float)Math.Round(60 / t.InGameAttackSpeed, 1);
-        timer = timerAttack + 1;
+        t.timeAttack = (float)Math.Round(60 / t.InGameAttackSpeed, 1);
+        timer = t.timeAttack - 0.1f;
         //Debug.Log("AttackStateP......" + timerAttack);
         t.Anim.speed = (float)Math.Round(t.InGameAttackSpeed / 60, 1);
     }
@@ -20,7 +20,7 @@ public class AttackState : IState<BotAI>
     {
         timer += Time.deltaTime;
 
-        if (timer > timerAttack)
+        if (timer > t.timeAttack)
         {
             if (t.IsTargerInRange)
             {

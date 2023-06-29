@@ -17,12 +17,12 @@ public class Player : Character
     
     private float horizontal;
     private float vertical;
-    public PlayerSkinShopState PlayerSkinShopState;
+    private PlayerSkinShopState playerSkinShopState;
 
-    public ColorType KillerColorType;
-    public string KilledByName;
-    public int Rank;
-    public int KilledCount=0;
+    private ColorType killerColorType;
+    private string killedByName;
+    private int rank;
+    private int killedCount=0;
 
     //So luong dam ban ra
     private int bullets= 0;
@@ -30,9 +30,8 @@ public class Player : Character
     public float Horizontal { get => horizontal; set => horizontal = value; }
     public float Vertical { get => vertical; set => vertical = value; }
     public int Bullets { get => bullets; set => bullets = value; }
-
     private float maxHP;
-    
+
     public override void Awake()
     {
         base.Awake();
@@ -40,16 +39,14 @@ public class Player : Character
     // Start is called before the first frame update
     public override void Start()
     {
-        base.Start();
-        
+        base.Start(); 
     }
     public override void OnInit()
     {
         base.OnInit();
-        ChangeState(new IdleStateP());
-        WeaponIndex = 0;
-        KilledCount = 0;
         bullets = 0;
+        killedCount = 0;
+        ChangeState(new IdleStateP());
         this.WeaponIndex = GetWeaponsEquippedIndex(GameManager.Instance.GetWeaponData());
         this.WeaponType = GameManager.Instance.GetWeaponData().Weapon[WeaponIndex].WeaponType;
         SetWeaponSkinMat();
@@ -64,10 +61,10 @@ public class Player : Character
         base.OnInit();
         SetHp(100);
         maxHP = Hp();
-        KilledCount = 0;
+        bullets = 0;
+        killedCount = 0;
         SetInGameExp(0);
         ChangeState(new IdleStateP());
-        WeaponIndex = 0;
         this.WeaponIndex = GetWeaponsEquippedIndex(GameManager.Instance.GetWeaponData());
         this.WeaponType = GameManager.Instance.GetWeaponData().Weapon[WeaponIndex].WeaponType;
         SetWeaponSkinMat();
@@ -76,18 +73,32 @@ public class Player : Character
         UpdateCharacterLvl();
         UpdateCharacterAcessories();
         UpdateAccessoriesEquippedAll();
+        InGameAttackRange += 2;
+        InGameAttackSpeed += InGameAttackSpeed*0.5f;
+        InGameMoveSpeed += 1;
         SetLevel(1);
     }
 
-    void Update()
+    public override void Update()
     {
+        
         if (GameManager.Instance.IsState(GameState.InGame))
         {
+            base.Update();
+            EnableHideCircleAttack();
             if (currentState != null)
             {
                 currentState.OnExecute(this);
             }
-
+            if (IsAttacking)
+            {
+                timerAtacking += Time.deltaTime;
+                if (timerAtacking > timeAttack)
+                {
+                    IsAttacking = false;
+                    timerAtacking = 0;
+                }
+            }
         }
         else
         { 
@@ -95,16 +106,14 @@ public class Player : Character
         }
         
     }
-    public override void FixedUpdate()
+    public  void FixedUpdate()
     {
-        base.FixedUpdate();
         if (cylinder != null)
         {
             cylinder.transform.localScale = new Vector3(InGameAttackRange * 2 / InGameSizeCharacter, 0.001f, InGameAttackRange * 2 / InGameSizeCharacter);
         }
         Horizontal = JoystickControl.direct.x; 
-        Vertical = JoystickControl.direct.z;
-        EnableHideCircleAttack();
+        Vertical = JoystickControl.direct.z;;
     }
    
     private void EnableHideCircleAttack()
@@ -129,7 +138,6 @@ public class Player : Character
             if (!Constant.isWall(this.gameObject,LayerMask.GetMask(Constant.LAYOUT_WALL)))
             {
                 transform.position = TargetPoint;
-                //ChangeAnim("Run");
             }
         }
     }
@@ -140,7 +148,6 @@ public class Player : Character
             if (Constant.Cache.GetBotAI(hitcollider))
             {
                 Constant.Cache.GetBotAI(hitcollider).CircleAttack.SetActive(enable);
-                //target = hitcollider.gameObject;
             }
         }
     }
@@ -166,9 +173,7 @@ public class Player : Character
     protected override void OnDeath()
     {
         base.OnDeath();
-        UIManager.Instance.CloseUI<InGame>();
         UIManager.Instance.OpenUI<TryAgain>();
-        UIManager.Instance.OpenUI<TryAgain>().Show_Popup_Tryagain();
         ChangeState(new DeadStateP());
     }
     //==================Survival================
@@ -181,26 +186,60 @@ public class Player : Character
             LevelUp();
             if (GetLevel() % 2 == 0)
             {
-                //UIManager.Show_Popup_LevelUp();
-                UIManager.Instance.CloseUI<InGameSurvival>();
                 UIManager.Instance.OpenUI<LevelUp>();
             }
             InGamneExp = 0;
         }
     }
+    public bool IsPlayerSkinShopState(PlayerSkinShopState playerSkinShopState)
+    {
+        return this.playerSkinShopState == playerSkinShopState;
+    }
+    public void SetKillerColorType(ColorType killerColorType)
+    {
+        this.killerColorType = killerColorType;
+    }
+    public ColorType KillerColorType()
+    {
+        return killerColorType;
+    }
+    public void SetKilledByName(string killedByName)
+    {
+        this.killedByName = killedByName;
+    }
+    public string KilledByName()
+    {
+        return killedByName;
+    }
+    public int KilledCount()
+    {
+        return killedCount;
+    }
+    public void SetKilledCount(int killedCount)
+    {
+        this.killedCount = killedCount;
+    }
+    public int Rank()
+    {
+        return rank;
+    }
+    public void SetRank(int rank)
+    {
+        this.rank = rank;
+    }
     public float MaxHp()
     {
         return maxHP;
     }
-    public void SetMaxHp(int maxHp) 
+    /*public void SetMaxHp(int maxHp) 
     { 
         this.maxHP = maxHp;
-    }
+    }*/
     //==================End Survival================
     public override void OnHit(float damage)
     {
         base.OnHit(damage);
-        Debug.Log(Hp());
+        //Debug.Log(Hp());
     }
     public void SetTransformPosition(Transform transform)
     {
@@ -264,32 +303,32 @@ public class Player : Character
         if (GetAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[3]))
         {
             UpdateAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[3]);
-            PlayerSkinShopState = PlayerSkinShopState.SetFull;
+            playerSkinShopState = PlayerSkinShopState.SetFull;
         }
         else
         {
             if (!GetAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[0]) && !GetAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[1]) && !GetAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[2]))
             {
-                PlayerSkinShopState = PlayerSkinShopState.None;
+                playerSkinShopState = PlayerSkinShopState.None;
 
             }
             if (GetAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[0]))
             {
                 UpdateAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[0]);
 
-                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+                playerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
             if (GetAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[1]))
             {
                 UpdateAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[1]);
 
-                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+                playerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
             if (GetAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[2]))
             {
                 UpdateAccessoriesEquipped(GameManager.Instance.GetAccessoriesDatas()[2]);
 
-                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+                playerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
         }
     }
@@ -301,34 +340,34 @@ public class Player : Character
         {
             UpdateUIAccessoris(GameManager.Instance.GetAccessoriesDatas()[3]);
 
-            PlayerSkinShopState = PlayerSkinShopState.SetFull;
+            playerSkinShopState = PlayerSkinShopState.SetFull;
 
         }
         else
         {
             if (!GetAccessoriesSelected(GameManager.Instance.GetAccessoriesDatas()[0]) && !GetAccessoriesSelected(GameManager.Instance.GetAccessoriesDatas()[1]) && !GetAccessoriesSelected(GameManager.Instance.GetAccessoriesDatas()[2]))
             {
-                PlayerSkinShopState = PlayerSkinShopState.None;
+                playerSkinShopState = PlayerSkinShopState.None;
 
             }
             if (GetAccessoriesSelected(GameManager.Instance.GetAccessoriesDatas()[0]))
             {
                 UpdateUIAccessoris(GameManager.Instance.GetAccessoriesDatas()[0]);
 
-                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+                playerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
             if (GetAccessoriesSelected(GameManager.Instance.GetAccessoriesDatas()[1]))
             {
 
                 UpdateUIAccessoris(GameManager.Instance.GetAccessoriesDatas()[1]);
 
-                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+                playerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
             if (GetAccessoriesSelected(GameManager.Instance.GetAccessoriesDatas()[2]))
             {
                 UpdateUIAccessoris(GameManager.Instance.GetAccessoriesDatas()[2]);
 
-                PlayerSkinShopState = PlayerSkinShopState.UnSetFull;
+                playerSkinShopState = PlayerSkinShopState.UnSetFull;
             }
         }
     }

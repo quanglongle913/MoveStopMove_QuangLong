@@ -13,6 +13,8 @@ public class LevelUp : UICanvas
     Player player;
     private void Start()
     {
+        UIManager.Instance.CloseUI<InGameSurvival>();
+        //Init Data 
         player = GameManager.Instance.Player();
         int random1;
         int random2;

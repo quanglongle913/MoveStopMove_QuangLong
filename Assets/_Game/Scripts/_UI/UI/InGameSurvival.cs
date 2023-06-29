@@ -10,22 +10,27 @@ public class InGameSurvival : UICanvas
     [SerializeField] private TMPro.TextMeshProUGUI textPlayerExp;
     [SerializeField] private Slider sliderExpBar;
     [SerializeField] private Slider sliderHealthBar;
-    public void SettingButton()
+    Player player;
+    private void Start()
     {
-        UIManager.Instance.OpenUI<SettingInGame>();
-        Close();
+        player = GameManager.Instance.Player();
     }
     void Update()
     {
-        textKillCount.text = "" + GameManager.Instance.Player().KilledCount;
-        float _value = (float)GameManager.Instance.Player().InGamneExp / (float)(GameManager.Instance.Player().GetLevel() * 50);
+        textKillCount.text = "" + player.KilledCount();
+        float _value = (float)player.InGamneExp / (float)(player.GetLevel() * 50);
         sliderExpBar.value = _value;
-        textPlayerLevel.text = "" + GameManager.Instance.Player().GetLevel();
-        textPlayerExp.text = "" + GameManager.Instance.Player().InGamneExp + "/" + GameManager.Instance.Player().GetLevel() * 50;
-        ShowHealthBarPlayer(GameManager.Instance.Player());
+        textPlayerLevel.text = "" + player.GetLevel();
+        textPlayerExp.text = "" + player.InGamneExp + "/" + player.GetLevel() * 50;
+        ShowHealthBarPlayer(player);
     }
     private void ShowHealthBarPlayer(Player player)
     {
         sliderHealthBar.value = (float)player.Hp() / (float)player.MaxHp();
+    }
+    public void SettingButton()
+    {
+        UIManager.Instance.OpenUI<SettingInGame>();
+        Close();
     }
 }

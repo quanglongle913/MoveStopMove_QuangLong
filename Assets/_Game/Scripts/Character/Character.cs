@@ -24,21 +24,8 @@ public class Character : GameUnit,IHit
     [SerializeField] private float baseAttackSpeed = 60f;
     [SerializeField] private float baseMoveSpeed = 5.0f;
     [SerializeField] private float baseGoldEarn = 50f;
-    [Header("--------------INGANE------------- ")]
-    [SerializeField] private float inGameSizeCharacter = 1.0f;
-    [SerializeField] private float inGameAttackRange = 7.0f;
-    [SerializeField] private float inGameAttackSpeed = 60f;
-    [SerializeField] private float inGameMoveSpeed = 5.0f;
-    [SerializeField] private float inGameGold = 50f;
-    [SerializeField] private float inGameGoldEarn = 50f;
-    //[SerializeField] private int inGamneZoneExp = 0;
-
-    [SerializeField] private bool isTargerInRange;
-    [SerializeField] private bool isAttacking;
-    [Header("--------------------------- ")]
+    [Header("--------------Weapon------------- ")]
     [SerializeField] private GameObject weaponRoot;
-    [Header("-------------Weapon-------------- ")]
-    private WeaponType weaponType;
     [Header("-------------Skin-------------- ")]
     [SerializeField] private List<GameObject> listHats;
     [SerializeField] private List<GameObject> listSheilds;
@@ -47,31 +34,38 @@ public class Character : GameUnit,IHit
 
     [Header("--------------------------- ")]
     [SerializeField] private string characterName;
-    [SerializeField] private int characterLevel;
+    private int characterLevel;
+    private WeaponType weaponType;
+    //=================INGANE===================
+    private float inGameSizeCharacter = 1.0f;
+    private float inGameAttackRange = 7.0f;
+    private float inGameAttackSpeed = 60f;
+    private float inGameMoveSpeed = 5.0f;
+    private float inGameGold = 50f;
+    private float inGameGoldEarn = 50f;
+
+    private bool isTargerInRange;
+    private bool isAttacking;
 
     public Indicator Indicator;
     public CharacterInfo CharacterInfo;
     private float hp;
     private bool isBuffed;
     public bool IsDeath => hp <= 0;
-
+    public bool IsMoving;
+    public float timeAttack;
+    protected float timerAtacking;
     private Animator anim;
     private Rigidbody rb;
-    protected float rotationSpeed = 1000f;
+    protected float rotationSpeed = 500f;
     private string currentAnimName;
-    private GameObject target;
+    private Transform target;
     protected Collider[] CurrentCharacters;
     protected Collider[] CharactersInsideZone;
     protected Collider[] CharactersOutsideZone;
 
-
-    public bool IsHaveWeapon;
-
     private int weaponIndex;
     public Rigidbody _Rigidbody { get => rb; set => rb = value; }
-    public ColorData ColorData { get => colorData; set => colorData = value; }
-    //public ColorType ColorType { get => colorType; set => colorType = value; }
-
     public int InGamneExp { get => inGameExp; set => inGameExp = value; }
     public float InGameSizeCharacter { get => inGameSizeCharacter; set => inGameSizeCharacter = value; }
     public float InGameAttackRange { get => inGameAttackRange; set => inGameAttackRange = value; }
@@ -82,7 +76,7 @@ public class Character : GameUnit,IHit
     public bool IsTargerInRange { get => isTargerInRange; set => isTargerInRange = value; }
     public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
     public Animator Anim { get => anim; set => anim = value; }
-    public GameObject Target { get => target; set => target = value; }
+    public Transform Target { get => target; set => target = value; }
     public GameObject WeaponRoot { get => weaponRoot; set => weaponRoot = value; }
     public WeaponType WeaponType { get => weaponType; set => weaponType = value; }
     public string CharacterName { get => characterName; set => characterName = value; }
@@ -97,7 +91,6 @@ public class Character : GameUnit,IHit
     // Start is called before the first frame update
     public virtual void Awake()
     {
-       
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
     }
@@ -107,76 +100,80 @@ public class Character : GameUnit,IHit
     }
     public override void OnInit()
     {
+        timerAtacking = 0;
+        timeAttack = (float)Math.Round(60 / baseAttackSpeed, 1);
         OnReset();
         ChangeColor(gameObject, colorType);
     }
-    
-    public virtual void FixedUpdate()
+    public virtual void Update()
     {
         GenerateZone();
         DetectionCharacter();
+
     }
-    
+
     public virtual void Attack() 
     {
-        if (InCamera(GameManager.Instance.GetCamera()))
-        {
-            GameManager.Instance.SoundManager().PlayWeaponThrowSoundEffect();
-        }
+        Vector3 _DirectionCharacter = new Vector3(Target.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.position.z - gameObject.transform.position.z).normalized;
+        Vector3 _DirectionWeapon = new Vector3(Target.position.x - WeaponRoot.transform.position.x, _Rigidbody.velocity.y, Target.position.z - WeaponRoot.transform.position.z).normalized;
+        RotateTowards(this.gameObject, _DirectionCharacter);
         ChangeAnim("Attack");
         IsAttacking = true;
-        HideAllWeaponsInHand();
-        Vector3 _DirectionCharacter = new Vector3(Target.transform.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.transform.position.z - gameObject.transform.position.z).normalized;
-        Vector3 _DirectionWeapon = new Vector3(Target.transform.position.x - WeaponRoot.transform.position.x, _Rigidbody.velocity.y, Target.transform.position.z - WeaponRoot.transform.position.z).normalized;
-        RotateTowards(this.gameObject, _DirectionCharacter);
+        StartCoroutine(ThrowWaiter(_DirectionWeapon));
+    }
+    public void AnimalAttack()
+    {
         
-        GenerateWeapon(_DirectionWeapon);
+        Vector3 _DirectionCharacter = new Vector3(Target.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.position.z - gameObject.transform.position.z).normalized;
+        RotateTowards(this.gameObject, _DirectionCharacter);
+        ChangeAnim("Attack");
+    }
+    IEnumerator ThrowWaiter(Vector3 _Direction)
+    {
+        IsMoving = false;
+        yield return new WaitForSeconds(0.3f);
+        IsMoving = true;
+        GenerateWeapon(_Direction,true);
         if (GameManager.Instance.IsMode(GameMode.Survival))
         {
             for (int i = 0; i < GameManager.Instance.Player().Bullets; i++)
             {
                 if (i % 2 == 0)
                 {
-                    GenerateWeapon(transform.TransformDirection(0.5f + i*0.5f, 0, 1).normalized);
+                    GenerateWeapon(transform.TransformDirection(0.5f + i * 0.5f, 0, 1).normalized,false);
                 }
-                else {
-                    GenerateWeapon(transform.TransformDirection(0.5f - i*1.0f, 0, 1).normalized);
+                else
+                {
+                    GenerateWeapon(transform.TransformDirection(0.5f - i * 1.0f, 0, 1).normalized, false);
                 }
-                
-                
             }
-            
+
         }
     }
-    public void AnimalAttack()
+    private void GenerateWeapon(Vector3 _Direction,bool isFirst)
     {
-        
-        Vector3 _DirectionCharacter = new Vector3(Target.transform.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.transform.position.z - gameObject.transform.position.z).normalized;
-        RotateTowards(this.gameObject, _DirectionCharacter);
-        ChangeAnim("Attack");
-        //IsAttacking = true;
-        
-        //Invoke(nameof(AnimalAtackWaiter),1.0f);
-    }
-    public void AnimalAtackWaiter()
-    {
-        IsAttacking = false;
-    }
-    private void GenerateWeapon(Vector3 _Direction)
-    {
+        if (isFirst)
+        {
+            if (InCamera(GameManager.Instance.GetCamera()))
+            {
+                GameManager.Instance.SoundManager().PlayWeaponThrowSoundEffect();
+            }
+            HideAllWeaponsInHand();
+        }
+
         Weapons weaponAttack2 = SimplePool.Spawn<Weapons>((PoolType)(weaponType+2));
         weaponAttack2.gameObject.transform.localScale = GetWeaponInHand((int)WeaponType).transform.lossyScale;
-        Vector3 newTarget = new Vector3(Target.transform.position.x, weaponAttack2.transform.position.y, Target.transform.position.z);
+        Vector3 newTarget = new Vector3(Target.position.x, weaponAttack2.transform.position.y, Target.position.z);
         weaponAttack2.transform.position = WeaponRoot.transform.position;
         weaponAttack2._GameObject = gameObject;
         weaponAttack2.character = Constant.Cache.GetCharacter(gameObject);
         weaponAttack2.WeaponType = this.WeaponType;
-        weaponAttack2.direction = _Direction;
+        weaponAttack2.Direction = _Direction;
         weaponAttack2.gameObject.SetActive(true);
-        weaponAttack2.startPoint = gameObject.transform.position;
-        weaponAttack2.target = newTarget;
-        weaponAttack2.bulletSpeed = InGameAttackSpeed / 10.0f;
-        weaponAttack2.isFire = true;
+        weaponAttack2.StartPoint = gameObject.transform.position;
+        weaponAttack2.Target = newTarget;
+        weaponAttack2.BulletSpeed = InGameAttackSpeed / 10.0f;
+        weaponAttack2.IsFire = true;
     }
     protected void GenerateZone()
     {
@@ -186,11 +183,9 @@ public class Character : GameUnit,IHit
     }
     public bool DetectionCharacter()
     {
-        //GenerateZone();
         Collider[] colliders = CharactersInsideZone;
         for (int i = 0; i < colliders.Length; i++)
         {
-            //Character character = colliders[i].GetComponent<Character>();
             Character character = Constant.Cache.GetCharacter(colliders[i]);
             if (character)
             {
@@ -199,7 +194,7 @@ public class Character : GameUnit,IHit
                     if (Constant.IsDes(gameObject.transform.position, character.gameObject.transform.position, InGameAttackRange))
                     {
                         IsTargerInRange = true;
-                        Target = character.gameObject;
+                        Target = character.transform;
                         break;
                     }
                     else
@@ -218,7 +213,6 @@ public class Character : GameUnit,IHit
     }
     public bool DetectionPlayer()
     {
-        //GenerateZone();
         Collider[] colliders = CharactersInsideZone;
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -230,7 +224,7 @@ public class Character : GameUnit,IHit
                     if (Constant.IsDes(gameObject.transform.position, player.gameObject.transform.position, InGameAttackRange))
                     {
                         IsTargerInRange = true;
-                        Target = player.gameObject;
+                        Target = player.transform;
                         break;
                     }
                     else
@@ -292,10 +286,10 @@ public class Character : GameUnit,IHit
     { 
         return colorType; 
     }
-    /*public void SetColorType(ColorType colorType)
+    public Color GetColor(ColorType colorType)
     {
-       this.colorType = colorType;
-    }*/
+        return colorData.GetMat(colorType).color;
+    }
     public void ChangeColor(GameObject a_obj, ColorType colorType)
     {
         this.colorType = colorType;
@@ -452,7 +446,6 @@ public class Character : GameUnit,IHit
         IsTargerInRange = false;
         hp = 1;
         WeaponIndex = 0;
-        //SetInGameExp(100);
         inGameExp = 100;
         GetWeaponInHand(WeaponIndex).SetActive(true);
         InGameGold = 0;
@@ -505,7 +498,7 @@ public class Character : GameUnit,IHit
         WeaponData weaponData = GameManager.Instance.GetWeaponData();
         if (weaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
         {
-            InGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * weaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
+            inGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * weaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
         else if (weaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
         {
@@ -527,7 +520,7 @@ public class Character : GameUnit,IHit
         {
             if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.AttackSpeed)
             {
-                InGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
+                inGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
             }
             else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.MoveSpeed)
             {
@@ -535,11 +528,11 @@ public class Character : GameUnit,IHit
             }
             else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.Range)
             {
-                InGameAttackRange = baseAttackRange + (baseAttackRange * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
+                inGameAttackRange = baseAttackRange + (baseAttackRange * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
             }
             else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.Gold)
             {
-                InGameGoldEarn = baseGoldEarn + (baseGoldEarn * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
+                inGameGoldEarn = baseGoldEarn + (baseGoldEarn * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
             }
 
         }
@@ -584,27 +577,27 @@ public class Character : GameUnit,IHit
             }
             if (buffDataInGiftBox[randomBuff].BuffType == BuffType.AttackSpeed)
             {
-                StartCoroutine(Waiter(InGameAttackSpeed, buffDataInGiftBox[randomBuff]));
-                InGameAttackSpeed = InGameAttackSpeed + (InGameAttackSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+                StartCoroutine(Waiter(inGameAttackSpeed, buffDataInGiftBox[randomBuff]));
+                inGameAttackSpeed = inGameAttackSpeed + (inGameAttackSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
             }
             if (buffDataInGiftBox[randomBuff].BuffType == BuffType.MoveSpeed)
             {
-                StartCoroutine(Waiter(InGameMoveSpeed, buffDataInGiftBox[randomBuff]));
-                InGameMoveSpeed = InGameMoveSpeed + (InGameMoveSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+                StartCoroutine(Waiter(inGameMoveSpeed, buffDataInGiftBox[randomBuff]));
+                inGameMoveSpeed = inGameMoveSpeed + (inGameMoveSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
             }
             if (buffDataInGiftBox[randomBuff].BuffType == BuffType.Range)
             {
-                StartCoroutine(Waiter(InGameAttackRange, buffDataInGiftBox[randomBuff]));
-                InGameAttackRange = InGameAttackRange + (InGameAttackRange * buffDataInGiftBox[randomBuff].BuffIndex / 100);
+                StartCoroutine(Waiter(inGameAttackRange, buffDataInGiftBox[randomBuff]));
+                inGameAttackRange = inGameAttackRange + (inGameAttackRange * buffDataInGiftBox[randomBuff].BuffIndex / 100);
             }
         }
 
     }
-    IEnumerator Waiter(float indexType, BuffData buffData)
+    IEnumerator Waiter(float indexBackup, BuffData buffData)
     {
         int bufftype = (int)buffData.BuffType;
         bufftype += (int)ParticleType.AuraBlue;
-        float backUp = indexType;
+        float backUp = indexBackup;
         ParticleSystem newBuffVfx = Instantiate(ParticlePool.ParticleSystem((ParticleType) bufftype), gameObject.transform.position, gameObject.transform.rotation);
         newBuffVfx.transform.parent = gameObject.transform;
         newBuffVfx.Play();
@@ -612,18 +605,18 @@ public class Character : GameUnit,IHit
         yield return new WaitForSeconds(3f);
         if (buffData.BuffType == BuffType.AttackSpeed)
         {
-            InGameAttackSpeed = backUp;
+            inGameAttackSpeed = backUp;
             Destroy(newBuffVfx.gameObject);
 
         }
         if (buffData.BuffType == BuffType.MoveSpeed)
         {
-            InGameMoveSpeed = backUp;
+            inGameMoveSpeed = backUp;
             Destroy(newBuffVfx.gameObject);
         }
         if (buffData.BuffType == BuffType.Range)
         {
-            InGameAttackRange = backUp;
+            inGameAttackRange = backUp;
             Destroy(newBuffVfx.gameObject);
         }
         IsBuffed = false;

@@ -41,8 +41,9 @@ public class BotAI : Character
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+
         if (IsDeath)
         {
             if (currentState != null)
@@ -55,6 +56,7 @@ public class BotAI : Character
         {
             if (GameManager.Instance.IsState(GameState.InGame))
             {
+                base.Update();
                 if (currentState != null)
                 {
                     currentState.OnExecute(this);
@@ -66,11 +68,6 @@ public class BotAI : Character
             }
         }
 
-    }
-    public override void FixedUpdate()
-    {
-        //DetectionCharacter(_GameManager.BotAIListEnable);
-        base.FixedUpdate();
     }
     /*protected void DetectionCharacter(List<BotAI> botAIListEnable)
     {

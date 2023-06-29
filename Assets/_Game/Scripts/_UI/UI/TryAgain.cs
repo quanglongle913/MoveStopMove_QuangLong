@@ -10,6 +10,9 @@ public class TryAgain : UICanvas
     void Start()
     {
         player = GameManager.Instance.Player();
+        UIManager.Instance.CloseUI<InGame>();
+        Show_Popup_Tryagain();
+
     }
 
     public void Show_Popup_Tryagain()

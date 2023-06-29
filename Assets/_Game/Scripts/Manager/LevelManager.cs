@@ -70,7 +70,7 @@ public class LevelManager : MonoBehaviour
                         if (!bots[i].gameObject.activeSelf && !bots[i].IsDeath && botsInGame.Count < botInGame)
                         {
                             bots[i].gameObject.SetActive(true);
-                            bots[i].ChangeState(new PatrolState());
+                            bots[i].ChangeState(new IdleState());
                             botsInGame.Add(bots[i]);
                             botInStack--;
                         }
@@ -308,7 +308,7 @@ public class LevelManager : MonoBehaviour
         PlayerPrefs.Save();
         
         int rank = 1 + botInStack + botsInGame.Count;
-        player.Rank = rank;
+        player.SetRank(rank);
         int bestRank = PlayerPrefs.GetInt(Constant.BEST_RANK, 99);
         if (rank < bestRank)
         {
