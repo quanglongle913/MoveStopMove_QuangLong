@@ -196,32 +196,44 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < index; i++)
         {
+            bool check=false;
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
-            while (IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
+            for (int j = 0; j < listPoolObjectPosition.Count; j++)
             {
-                randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+                if (IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
+                {
+                    randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+                }
+                else
+                {
+                    check = true;
+                    break;
+                }
             }
-            BotAI bot = SimplePool.Spawn<BotAI>(PoolType.Bot, listPoolObjectPosition[randomIndex], Quaternion.identity);
-            bot.OnInit();
-            bot.UpdateInfo(GameManager.Instance.GetBotAIInfo(i), GameManager.Instance.GetAccessoriesDatas());
+            if (check)
+            {
+                BotAI bot = SimplePool.Spawn<BotAI>(PoolType.Bot, listPoolObjectPosition[randomIndex], Quaternion.identity);
+                bot.OnInit();
+                bot.UpdateInfo(GameManager.Instance.GetBotAIInfo(i), GameManager.Instance.GetAccessoriesDatas());
 
-            Indicator indicator = SimplePool.Spawn<Indicator>(PoolType.Indicator);
-            indicator.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
-            indicator.gameObject.SetActive(false);
-            bot.Indicator = indicator;
+                Indicator indicator = SimplePool.Spawn<Indicator>(PoolType.Indicator);
+                indicator.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
+                indicator.gameObject.SetActive(false);
+                bot.Indicator = indicator;
 
-            CharacterInfo characterInfo = SimplePool.Spawn<CharacterInfo>(PoolType.CharacterInfo);
-            characterInfo.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
-            characterInfo.gameObject.SetActive(false);
-            bot.CharacterInfo = characterInfo;
-            bot.gameObject.SetActive(false);
-            bots.Add(bot);
+                CharacterInfo characterInfo = SimplePool.Spawn<CharacterInfo>(PoolType.CharacterInfo);
+                characterInfo.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
+                characterInfo.gameObject.SetActive(false);
+                bot.CharacterInfo = characterInfo;
+                bot.gameObject.SetActive(false);
+                bots.Add(bot);
+            }
+            
         }
     }
     private bool IsDesAllCharacter(Vector3 vector3)
     { 
         bool isDesAllCharacter = false;
-        isDesAllCharacter = Constant.IsDes(GameManager.Instance.Player().transform.position, vector3, GameManager.Instance.Player().InGameAttackRange);
         for (int i = 0; i < bots.Count; i++)
         {
             if (Constant.IsDes(bots[i].transform.position, vector3, bots[i].InGameAttackRange))
@@ -233,6 +245,7 @@ public class LevelManager : MonoBehaviour
             
             }
         }
+        isDesAllCharacter = Constant.IsDes(GameManager.Instance.Player().transform.position, vector3, GameManager.Instance.Player().InGameAttackRange);
         return isDesAllCharacter;
     }
     private bool IsDesAllGiftBox(Vector3 vector3)
@@ -256,13 +269,25 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < index; i++)
         {
+            bool check = false;
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
-            while (IsDesAllGiftBox(listPoolObjectPosition[randomIndex])&& IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
+            for (int j = 0; j < listPoolObjectPosition.Count; j++)
             {
-                randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+                if (IsDesAllGiftBox(listPoolObjectPosition[randomIndex]) || IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
+                {
+                    randomIndex = Random.Range(0, listPoolObjectPosition.Count);
+                }
+                else
+                {
+                    check = true;
+                    break;
+                }
             }
-            GiftBox giftBox = SimplePool.Spawn<GiftBox>(PoolType.GiftBox, listPoolObjectPosition[randomIndex], Quaternion.identity);
-            giftBoxs.Add(giftBox);
+            if (check)
+            {
+                GiftBox giftBox = SimplePool.Spawn<GiftBox>(PoolType.GiftBox, listPoolObjectPosition[randomIndex], Quaternion.identity);
+                giftBoxs.Add(giftBox);
+            }
         }
     }
     private void PlayerInit()

@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424435990f8f4de49a896942149474cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navMeshData: {fileID: 23800000, guid: 569c180b7bb772a408b0c4af32552177, type: 2}
+  navMeshData: {fileID: 23800000, guid: 01b66ac236997324f856e419e8f7438b, type: 2}
   startPoint: {fileID: 5902897291923923597}
   botAmount: 30
   botInGame: 15

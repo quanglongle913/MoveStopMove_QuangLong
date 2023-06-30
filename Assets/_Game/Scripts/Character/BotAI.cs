@@ -129,7 +129,8 @@ public class BotAI : Character
         bool isCheck = false;
         while (!isCheck)
         {
-            if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+            /// 3 is nav mesh Areas ID
+            if (NavMesh.SamplePosition(randomDirection, out hit, radius, 3))
             {
                 finalPosition = new Vector3(hit.position.x, transform.position.y, hit.position.z);
                 //Debug.Log(""+ finalPosition);
@@ -138,6 +139,13 @@ public class BotAI : Character
             }
         }
         return finalPosition;
+    }
+    public Vector3 RandomNavmeshLocationToPlayer(float radius)
+    {
+        Vector3 _DirectionCharacter = new Vector3(GameManager.Instance.Player().transform.position.x - transform.position.x, _Rigidbody.velocity.y, GameManager.Instance.Player().transform.position.z - transform.position.z).normalized;
+        Vector3 randomDirection = _DirectionCharacter * radius;
+        randomDirection += transform.position;
+        return randomDirection;
     }
     public override void Attack()
     {

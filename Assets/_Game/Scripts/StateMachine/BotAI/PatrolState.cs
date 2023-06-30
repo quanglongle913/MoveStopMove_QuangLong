@@ -15,6 +15,7 @@ public class PatrolState : IState<BotAI>
         //newTarget = t.generateTargetTransform();
         newTarget = t.RandomNavmeshLocation(t.InGameAttackRange*2);
         timer = 0;
+        //t.SetDestination(t.RandomNavmeshLocation(t.InGameAttackRange * 2));
     }
 
     public void OnExecute(BotAI t)
@@ -29,6 +30,9 @@ public class PatrolState : IState<BotAI>
         else if (timer > 4f)
         {
             timer = 0;
+            /* t.ChangeState(new IdleState());
+             t.MoveStop();*/
+            //newTarget= t.RandomNavmeshLocationToPlayer(t.InGameAttackRange*2);
             Debug.Log("Error Wall: " + t.gameObject.name);
         }
     }

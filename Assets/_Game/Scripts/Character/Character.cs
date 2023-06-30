@@ -291,8 +291,12 @@ public class Character : GameUnit,IHit
     }
     public void RotateTowards(GameObject gameObject, Vector3 direction)
     {
-        Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
-        gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
+            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        }
+        
     }
 
     public void ChangeAnim(string animName)
