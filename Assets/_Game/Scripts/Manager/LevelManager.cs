@@ -257,11 +257,10 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < index; i++)
         {
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
-            while (IsDesAllGiftBox(listPoolObjectPosition[randomIndex]))
+            while (IsDesAllGiftBox(listPoolObjectPosition[randomIndex])&& IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
             {
                 randomIndex = Random.Range(0, listPoolObjectPosition.Count);
             }
-            
             GiftBox giftBox = SimplePool.Spawn<GiftBox>(PoolType.GiftBox, listPoolObjectPosition[randomIndex], Quaternion.identity);
             giftBoxs.Add(giftBox);
         }

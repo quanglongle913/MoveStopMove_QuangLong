@@ -56,7 +56,7 @@ public class GameMenu : UICanvas
         textZoneExp.text = playerZoneExp + "/" + maxExpZone;
         sliderZoneExp.value = (float)playerZoneExp / (float)maxExpZone;
 
-        textZoneBTN.text = ("ZONE: " + ZoneNumber);
+        textZoneBTN.text = ("ZONE: " + (ZoneNumber + 1));
         textBestBTN.text = ("BEST: #" + PlayerPrefs.GetInt(Constant.BEST_RANK, 99));
     }
     public void PlayButton()

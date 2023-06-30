@@ -24,9 +24,8 @@ public class CharacterInfo : GameUnit
     public void UpdateData()
     {
         Vector3 viewPosCharacterInfo = GameManager.Instance.GetCamera().WorldToScreenPoint(character.gameObject.transform.position);
-        
-        
-        gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.4f * Screen.height / 10);
+        CharacterLevel.text = "" + character.GetLevel();
+        gameObject.transform.position = new Vector2(viewPosCharacterInfo.x, viewPosCharacterInfo.y + 1.2f * Screen.height / 10);
         Show();
     }
     private void ChangeColor(ColorType colorType)

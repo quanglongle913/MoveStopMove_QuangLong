@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Character : GameUnit,IHit
@@ -131,8 +132,7 @@ public class Character : GameUnit,IHit
     IEnumerator ThrowWaiter(Vector3 _Direction)
     {
         IsMoving = false;
-        yield return new WaitForSeconds(0.3f);
-        IsMoving = true;
+        yield return new WaitForSeconds(timeAttack*0.4f);
         GenerateWeapon(_Direction,true);
         if (GameManager.Instance.IsMode(GameMode.Survival))
         {
@@ -149,6 +149,8 @@ public class Character : GameUnit,IHit
             }
 
         }
+        yield return new WaitForSeconds(timeAttack * 0.1f);
+        IsMoving = true;
     }
     private void GenerateWeapon(Vector3 _Direction,bool isFirst)
     {
@@ -184,6 +186,8 @@ public class Character : GameUnit,IHit
     public bool DetectionCharacter()
     {
         Collider[] colliders = CharactersInsideZone;
+        SortCollider(colliders);
+        List<Transform> transforms = new List<Transform>();
         for (int i = 0; i < colliders.Length; i++)
         {
             Character character = Constant.Cache.GetCharacter(colliders[i]);
@@ -195,6 +199,7 @@ public class Character : GameUnit,IHit
                     {
                         IsTargerInRange = true;
                         Target = character.transform;
+                        transforms.Add(transform);
                         break;
                     }
                     else
@@ -210,6 +215,23 @@ public class Character : GameUnit,IHit
             }
         }
         return IsTargerInRange;
+    }
+    private void SortCollider(Collider[] colliders)
+    {
+        //Sắp xếp Mảng theo khoảng cách tới Nhân Vật
+        Collider tg;
+        for (int i = 0; i < colliders.Length-1; i++)
+        {
+            for (int j = i + 1; j < colliders.Length; j++)
+            {
+                if (Vector3.Distance(transform.position, colliders[i].transform.position) > Vector3.Distance(transform.position, colliders[j].transform.position))
+                {
+                    tg= colliders[i];
+                    colliders[i] = colliders[j];
+                    colliders[j] = tg;
+                }
+            }
+        }
     }
     public bool DetectionPlayer()
     {

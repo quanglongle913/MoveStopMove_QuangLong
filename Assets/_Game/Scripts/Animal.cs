@@ -38,7 +38,8 @@ public class Animal : Character,IHit
         {
             if (GameManager.Instance.IsState(GameState.InGame))
             {
-                base.Update();
+                //base.Update();
+                GenerateZone();
                 DetectionPlayer();
                 if (currentState != null)
                 {

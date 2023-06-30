@@ -119,27 +119,24 @@ public class Weapons : GameUnit
         }
         if (other.GetComponent<TransparentObstacle>())
         {
-            //Debug.Log("Obstacle");
-            //this.isFire = false;
-            //character.ShowWeaponIndex((int)WeaponType);
-            //character.IsAttacking = false;
+            VFX_Trail.gameObject.SetActive(false);
+            Destroy(VFX_Trail.gameObject);
+            this.isFire = false;
+            character.ShowWeaponIndex((int)WeaponType);
             StartCoroutine(Waiter());
         }
     }
     IEnumerator Waiter()
     {
         yield return new WaitForSeconds(1f);
-        ReleaseWeapon(character);
-        //this.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
     }
     private void ReleaseWeapon(Character character)
     {
-        //character.Weapons.Remove(this);
         VFX_Trail.gameObject.SetActive(false);
         Destroy(VFX_Trail.gameObject);
 
         character.ShowWeaponIndex((int)WeaponType);
-        //character.IsAttacking = false;
         this.gameObject.SetActive(false);
         this.isFire = false;
     }
