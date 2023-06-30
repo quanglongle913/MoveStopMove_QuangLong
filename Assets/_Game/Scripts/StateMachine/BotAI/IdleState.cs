@@ -8,11 +8,11 @@ public class IdleState : IState<BotAI>
     float randomTime;
     public void OnEnter(BotAI t)
     {
-        //t.isStopped(true);
-        t.SetDestination(t.gameObject.transform.position);
+        t.MoveStop();
         t.ChangeAnim("Idle");
         timer = 0;
         randomTime = Random.Range(1.0f,2.5f);
+        t.MoveTargetPoint = t.RandomNavmeshLocation(t.InGameAttackRange);
     }
 
     public void OnExecute(BotAI t)

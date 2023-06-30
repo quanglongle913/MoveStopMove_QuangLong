@@ -9,15 +9,20 @@ public class PatrolStateA : IState<Animal>
     {
         target = GameManager.Instance.Player().transform.position;
         t.ChangeAnim("Run");
+        t.SetDestination(target);
     }
 
     public void OnExecute(Animal t)
     {
         target = GameManager.Instance.Player().transform.position;
-        t.SetDestination(target);
+
         if (Constant.IsDes(t.transform.position, target, t.InGameAttackRange))
         {
             t.ChangeState(new IdleStateA());
+        }
+        else
+        {
+            t.SetDestination(target);
         }
     }
 

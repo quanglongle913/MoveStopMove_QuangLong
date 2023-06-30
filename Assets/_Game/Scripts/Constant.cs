@@ -193,6 +193,7 @@ public class Constant
             }
             return m_TransparentObstacle[collider];
         }
+       
     }
 }
 

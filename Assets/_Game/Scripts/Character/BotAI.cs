@@ -19,7 +19,8 @@ public class BotAI : Character
     //public bool IsKilledPlayer=false;
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
     public bool IsWall;
-
+    private Vector3 moveTargetPoint;
+    public Vector3 MoveTargetPoint { get => moveTargetPoint; set => moveTargetPoint = value; }
     public override void Awake()
     {
         base.Awake();
@@ -28,6 +29,7 @@ public class BotAI : Character
     public override void Start()
     {
         base.Start();
+        moveTargetPoint = transform.position;
     }
     public override void OnInit()
     {
@@ -56,7 +58,7 @@ public class BotAI : Character
         {
             if (GameManager.Instance.IsState(GameState.InGame))
             {
-                base.Update();
+                //base.Update();
                 if (currentState != null)
                 {
                     currentState.OnExecute(this);
@@ -69,44 +71,27 @@ public class BotAI : Character
         }
 
     }
-    /*protected void DetectionCharacter(List<BotAI> botAIListEnable)
+    public void DetectionCharacter(List<GameObject> objCharacters)
     {
-        Player player = _GameManager.Player;
-        if (!player.IsDeath && ColorType != player.ColorType)
+        for (int i = 0; i < objCharacters.Count; i++)
         {
-            if (Constant.IsDes(gameObject.transform.position, player.gameObject.transform.position, InGameAttackRange))
+            Character character = Constant.Cache.GetCharacter(objCharacters[i]);
+            if (!character.IsDeath && objCharacters[i] != this.gameObject && this.GetColorType() != character.GetColorType())
             {
-                IsTargerInRange = true;
-                Target = player.gameObject;
+                if (Constant.IsDes(transform.position, objCharacters[i].transform.position, InGameAttackRange))
+                {
+                    IsTargerInRange = true;
+                    Target = objCharacters[i].transform;
+                    break;
+                }
             }
             else
             {
                 IsTargerInRange = false;
             }
-        }
-        if (!IsTargerInRange)
-        {
-            for (int i = 0; i < botAIListEnable.Count; i++)
-            {
 
-                if (!botAIListEnable[i].IsDeath && botAIListEnable[i].gameObject != this.gameObject && ColorType != botAIListEnable[i].ColorType)
-                {
-                    if (Constant.IsDes(gameObject.transform.position, botAIListEnable[i].gameObject.transform.position, InGameAttackRange))
-                    {
-                        IsTargerInRange = true;
-                        Target = botAIListEnable[i].gameObject;
-                        break;
-                    }
-                }
-                else
-                {
-                    IsTargerInRange = false;
-                }
-            }
         }
-        
-        //Debug.Log("DetectionCharacter:"+ IsTargerInRange);
-    }*/
+    }
     public override void OnHit(float damage)
     {
         base.OnHit(damage);
@@ -118,35 +103,27 @@ public class BotAI : Character
         {
             agent.SetDestination(vector);
         }
+        //agent.SetDestination(vector);
     }
     public Vector3 RandomNavmeshLocation(float radius)
     {
-        
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-        randomDirection += transform.position;
+        Vector2 randomDirection = UnityEngine.Random.insideUnitCircle.normalized;
+        Vector3 moveDirection = new Vector3(randomDirection.x,0, randomDirection.y);
+        moveDirection *= radius;
         NavMeshHit hit;
         Vector3 finalPosition = Vector3.zero;
-        bool isCheck = false;
-        while (!isCheck)
+        if (NavMesh.SamplePosition(transform.position+ moveDirection, out hit, radius, NavMesh.AllAreas))
         {
-            /// 3 is nav mesh Areas ID
-            if (NavMesh.SamplePosition(randomDirection, out hit, radius, 3))
-            {
-                finalPosition = new Vector3(hit.position.x, transform.position.y, hit.position.z);
-                //Debug.Log(""+ finalPosition);
-                isCheck = true;
-                //isCheck = NavMesh.CalculatePath(transform.position, finalPosition, NavMesh.AllAreas, new NavMeshPath());
-            }
+            finalPosition = new Vector3(hit.position.x, transform.position.y, hit.position.z);
+            
+        }
+        else
+        {
+            return RandomNavmeshLocation(radius);
         }
         return finalPosition;
     }
-    public Vector3 RandomNavmeshLocationToPlayer(float radius)
-    {
-        Vector3 _DirectionCharacter = new Vector3(GameManager.Instance.Player().transform.position.x - transform.position.x, _Rigidbody.velocity.y, GameManager.Instance.Player().transform.position.z - transform.position.z).normalized;
-        Vector3 randomDirection = _DirectionCharacter * radius;
-        randomDirection += transform.position;
-        return randomDirection;
-    }
+    
     public override void Attack()
     {
         base.Attack();

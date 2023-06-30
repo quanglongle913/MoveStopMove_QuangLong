@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     //-----------------
     private Level currentLevel;
     //Normal
+    private List<GameObject> objCharacters = new List<GameObject>();
     private List<BotAI> bots = new List<BotAI>();
     private List<BotAI> botsInGame = new List<BotAI>();
     private List<GiftBox> giftBoxs = new List<GiftBox>();
@@ -53,7 +54,7 @@ public class LevelManager : MonoBehaviour
         OnInit();
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
-
+        objCharacters.Add(GameManager.Instance.Player().gameObject);
     }
     private void FixedUpdate()
     {
@@ -72,6 +73,7 @@ public class LevelManager : MonoBehaviour
                             bots[i].gameObject.SetActive(true);
                             bots[i].ChangeState(new IdleState());
                             botsInGame.Add(bots[i]);
+                            objCharacters.Add(bots[i].gameObject);
                             botInStack--;
                         }
                     }
@@ -165,13 +167,14 @@ public class LevelManager : MonoBehaviour
             player.CharacterInfo.Hide();
         }
     }
-    private void BotUpdate(List<BotAI> botsAI) 
+    private void BotUpdate(List<BotAI> botsAI)
     {
         for (int i = 0; i < botsAI.Count; i++)
         {
             BotAI bot = botsAI[i];
             if (!bot.IsDeath && bot.gameObject.activeSelf)
             {
+                bot.DetectionCharacter(objCharacters);
                 if (bot.InCamera(GameManager.Instance.GetCamera()))
                 {
                     bot.Indicator.Hide();
@@ -183,6 +186,7 @@ public class LevelManager : MonoBehaviour
                     bot.Indicator.UpdateData(OffScreenIndicatorCore.GetScreenPosition(GameManager.Instance.GetCamera(), bot.gameObject, screenCentre, screenBounds));
 
                 }
+
             }
             else
             {
@@ -198,7 +202,7 @@ public class LevelManager : MonoBehaviour
         {
             bool check=false;
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
-            for (int j = 0; j < listPoolObjectPosition.Count; j++)
+            for (int j = 0; j < 100; j++)
             {
                 if (IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
                 {
@@ -212,40 +216,42 @@ public class LevelManager : MonoBehaviour
             }
             if (check)
             {
-                BotAI bot = SimplePool.Spawn<BotAI>(PoolType.Bot, listPoolObjectPosition[randomIndex], Quaternion.identity);
-                bot.OnInit();
-                bot.UpdateInfo(GameManager.Instance.GetBotAIInfo(i), GameManager.Instance.GetAccessoriesDatas());
-
-                Indicator indicator = SimplePool.Spawn<Indicator>(PoolType.Indicator);
-                indicator.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
-                indicator.gameObject.SetActive(false);
-                bot.Indicator = indicator;
-
-                CharacterInfo characterInfo = SimplePool.Spawn<CharacterInfo>(PoolType.CharacterInfo);
-                characterInfo.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
-                characterInfo.gameObject.SetActive(false);
-                bot.CharacterInfo = characterInfo;
-                bot.gameObject.SetActive(false);
-                bots.Add(bot);
+                AddBot(GameManager.Instance.GetBotAIInfo(i), listPoolObjectPosition[randomIndex]);
             }
-            
+
         }
+    }
+    private void AddBot(BotAIInfo botAIInfo, Vector3 vector3)
+    {
+        BotAI bot = SimplePool.Spawn<BotAI>(PoolType.Bot, vector3, Quaternion.identity);
+        bot.OnInit();
+        bot.UpdateInfo(botAIInfo, GameManager.Instance.GetAccessoriesDatas());
+
+        Indicator indicator = SimplePool.Spawn<Indicator>(PoolType.Indicator);
+        indicator.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
+        indicator.gameObject.SetActive(false);
+        bot.Indicator = indicator;
+
+        CharacterInfo characterInfo = SimplePool.Spawn<CharacterInfo>(PoolType.CharacterInfo);
+        characterInfo.SetCharacter(Constant.Cache.GetCharacter(bot.gameObject));
+        characterInfo.gameObject.SetActive(false);
+        bot.CharacterInfo = characterInfo;
+
+        bot.gameObject.SetActive(false);
+        bots.Add(bot);
     }
     private bool IsDesAllCharacter(Vector3 vector3)
     { 
         bool isDesAllCharacter = false;
-        for (int i = 0; i < bots.Count; i++)
+        
+        for (int i = 0; i < objCharacters.Count; i++)
         {
-            if (Constant.IsDes(bots[i].transform.position, vector3, bots[i].InGameAttackRange))
+            if (Constant.IsDes(objCharacters[i].transform.position, vector3, GameManager.Instance.Player().InGameAttackRange)&& objCharacters[i].activeSelf)
             {
                 isDesAllCharacter = true;
                 break;
             }
-            else { 
-            
-            }
         }
-        isDesAllCharacter = Constant.IsDes(GameManager.Instance.Player().transform.position, vector3, GameManager.Instance.Player().InGameAttackRange);
         return isDesAllCharacter;
     }
     private bool IsDesAllGiftBox(Vector3 vector3)
@@ -258,10 +264,6 @@ public class LevelManager : MonoBehaviour
                 isDesAll = true;
                 break;
             }
-            else
-            {
-
-            }
         }
         return isDesAll;
     }
@@ -273,7 +275,7 @@ public class LevelManager : MonoBehaviour
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
             for (int j = 0; j < listPoolObjectPosition.Count; j++)
             {
-                if (IsDesAllGiftBox(listPoolObjectPosition[randomIndex]) || IsDesAllCharacter(listPoolObjectPosition[randomIndex]))
+                if (IsDesAllGiftBox(listPoolObjectPosition[randomIndex]))
                 {
                     randomIndex = Random.Range(0, listPoolObjectPosition.Count);
                 }

@@ -110,7 +110,6 @@ public class Character : GameUnit,IHit
     {
         GenerateZone();
         DetectionCharacter();
-
     }
 
     public virtual void Attack() 
@@ -180,6 +179,7 @@ public class Character : GameUnit,IHit
     protected void GenerateZone()
     {
         CurrentCharacters = Physics.OverlapSphere(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
+        //CurrentCharacters = Physics.OverlapBoxNonAlloc(this.transform.position, 1000f, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersInsideZone = Physics.OverlapSphere(this.transform.position, InGameAttackRange, LayerMask.GetMask(Constant.LAYOUT_CHARACTER));
         CharactersOutsideZone = CurrentCharacters.Except(CharactersInsideZone).ToArray();
     }
@@ -187,7 +187,6 @@ public class Character : GameUnit,IHit
     {
         Collider[] colliders = CharactersInsideZone;
         SortCollider(colliders);
-        List<Transform> transforms = new List<Transform>();
         for (int i = 0; i < colliders.Length; i++)
         {
             Character character = Constant.Cache.GetCharacter(colliders[i]);
@@ -199,7 +198,6 @@ public class Character : GameUnit,IHit
                     {
                         IsTargerInRange = true;
                         Target = character.transform;
-                        transforms.Add(transform);
                         break;
                     }
                     else

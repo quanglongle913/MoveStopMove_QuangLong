@@ -1034,24 +1034,16 @@ MonoBehaviour:
   baseAttackSpeed: 40
   baseMoveSpeed: 5
   baseGoldEarn: 50
-  inGameSizeCharacter: 1
-  inGameAttackRange: 2
-  inGameAttackSpeed: 40
-  inGameMoveSpeed: 5
-  inGameGold: 50
-  inGameGoldEarn: 50
-  isTargerInRange: 0
-  isAttacking: 0
   weaponRoot: {fileID: 0}
   listHats: []
   listSheilds: []
   listSetFull: []
   Pants: {fileID: 0}
   characterName: 
-  characterLevel: 0
   Indicator: {fileID: 0}
   CharacterInfo: {fileID: 0}
-  IsHaveWeapon: 0
+  IsMoving: 0
+  timeAttack: 0
 --- !u!195 &-4962263039649441076
 NavMeshAgent:
   m_ObjectHideFlags: 0
