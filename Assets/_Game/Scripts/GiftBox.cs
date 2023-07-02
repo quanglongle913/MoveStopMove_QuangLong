@@ -7,11 +7,10 @@ public class GiftBox : GameUnit
     [SerializeField] private List<BuffData> buffDataInGiftBox;
     private GameManager _GameManager;
     private int randomBuff;
-    int bufftype;
-    ParticleSystem newbuffEffectVfx;
-    float timer;
+    private int bufftype;
+    private ParticleSystem newbuffEffectVfx;
+    private float timer;
     public int RandomBuff { get => randomBuff; set => randomBuff = value; }
-    //public GameObject NewbuffEffectVfx { get => newbuffEffectVfx; set => newbuffEffectVfx = value; }
     public float Timer { get => timer; set => timer = value; }
 
     public virtual void Start()

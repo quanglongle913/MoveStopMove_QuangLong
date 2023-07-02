@@ -29,6 +29,7 @@ public class Weapons : GameUnit
 
     public Character character;
 
+    
     // Update is called once per frame
     private void Start()
     {
@@ -48,7 +49,7 @@ public class Weapons : GameUnit
     private void Throw() {
         VFX_Trail.transform.position = transform.position;
         VFX_Trail.gameObject.SetActive(true);
-        if (weaponType == WeaponType.Knife || weaponType == WeaponType.Arrow)/////
+        if (IsWeaponType(WeaponType.Knife) || IsWeaponType(WeaponType.Arrow))
         {
             //Xoay Weapon to Enemy
             if (direction.x <= 0)
@@ -119,8 +120,12 @@ public class Weapons : GameUnit
         }
         if (other.GetComponent<TransparentObstacle>())
         {
-            VFX_Trail.gameObject.SetActive(false);
-            Destroy(VFX_Trail.gameObject);
+            if (VFX_Trail) {
+                VFX_Trail.gameObject.SetActive(false);
+                Destroy(VFX_Trail.gameObject);
+            }
+           
+            
             this.isFire = false;
             character.ShowWeaponIndex((int)WeaponType);
             StartCoroutine(Waiter());
@@ -155,5 +160,9 @@ public class Weapons : GameUnit
     public override void OnDespawn()
     {
         Destroy(gameObject);
+    }
+    private bool IsWeaponType(WeaponType weaponType) 
+    { 
+        return this.weaponType == weaponType; 
     }
 }

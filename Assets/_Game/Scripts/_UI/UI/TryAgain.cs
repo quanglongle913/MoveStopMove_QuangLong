@@ -22,11 +22,9 @@ public class TryAgain : UICanvas
 
     public void RevieNowButton()
     {
-        //IsRevive = true;
         player.OnInit();
         UIManager.Instance.OpenUI<InGame>();
         Close();
-        //GameManager.Instance.ChangeState(GameState.InGame);
     }
     IEnumerator Waiter(TMPro.TextMeshProUGUI text_CountDown)
     {

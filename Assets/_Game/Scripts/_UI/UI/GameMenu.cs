@@ -29,7 +29,7 @@ public class GameMenu : UICanvas
             PlayerPrefs.Save();
         }
         int coins = PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
-        string.Format("Score: {0:#,#}", coins);
+        string.Format(Constant.STRING_SCORE+": {0:#,#}", coins);
         coins.ToString("#,#");
         textCoin.text = (coins.ToString("#,#"));
         textName.text = PlayerPrefs.GetString(Constant.PLAYER_NAME, "You");
@@ -56,8 +56,8 @@ public class GameMenu : UICanvas
         textZoneExp.text = playerZoneExp + "/" + maxExpZone;
         sliderZoneExp.value = (float)playerZoneExp / (float)maxExpZone;
 
-        textZoneBTN.text = ("ZONE: " + (ZoneNumber + 1));
-        textBestBTN.text = ("BEST: #" + PlayerPrefs.GetInt(Constant.BEST_RANK, 99));
+        textZoneBTN.text = (Constant.STRING_ZONE+": " + (ZoneNumber + 1));
+        textBestBTN.text = (Constant.STRING_BEST+": #" + PlayerPrefs.GetInt(Constant.BEST_RANK, 99));
     }
     public void PlayButton()
     {
@@ -67,7 +67,7 @@ public class GameMenu : UICanvas
     }
     public void SurvivalButton()
     {
-        GameManager.Instance.LevelManager().OnStartSurvivalGame();
+        GameManager.Instance.SurvivalManager().OnStartGame();
         UIManager.Instance.OpenUI<InGameSurvival>();
         Close();
     }

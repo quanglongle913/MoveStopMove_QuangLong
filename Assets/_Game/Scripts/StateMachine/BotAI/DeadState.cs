@@ -8,7 +8,7 @@ public class DeadState : IState<BotAI>
     public void OnEnter(BotAI t)
     {
         t.SetDestination(t.gameObject.transform.position);
-        t.ChangeAnim("Dead");
+        t.ChangeAnim(nameof(AnimType.Dead));
         timer = 0;
     }
 

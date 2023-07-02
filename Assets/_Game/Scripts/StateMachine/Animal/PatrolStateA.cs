@@ -8,7 +8,7 @@ public class PatrolStateA : IState<Animal>
     public void OnEnter(Animal t)
     {
         target = GameManager.Instance.Player().transform.position;
-        t.ChangeAnim("Run");
+        t.ChangeAnim(nameof(AnimType.Run));
         t.SetDestination(target);
     }
 

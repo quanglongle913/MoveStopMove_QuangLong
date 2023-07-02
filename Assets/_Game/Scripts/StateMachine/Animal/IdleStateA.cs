@@ -9,7 +9,7 @@ public class IdleStateA : IState<Animal>
     public void OnEnter(Animal t)
     {
         t.SetDestination(t.gameObject.transform.position);
-        t.ChangeAnim("Idle");
+        t.ChangeAnim(nameof(AnimType.Idle));
         timer = 0;
         randomTime = Random.Range(0.5f, 1.0f);
     }

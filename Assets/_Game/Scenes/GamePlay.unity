@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17279756, g: 0.21590558, b: 0.29787502, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276813, g: 0.21589185, b: 0.29782563, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -201,6 +201,7 @@ MonoBehaviour:
   mainCam: {fileID: 303999681}
   player: {fileID: 1678857055}
   levelManager: {fileID: 770442425}
+  survivalManager: {fileID: 770442426}
   soundManager: {fileID: 978742490}
   botData: {fileID: 865156258327313838}
   dataManager: {fileID: 1867473396}
@@ -618,6 +619,7 @@ GameObject:
   m_Component:
   - component: {fileID: 770442424}
   - component: {fileID: 770442425}
+  - component: {fileID: 770442426}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -660,8 +662,21 @@ MonoBehaviour:
   size_x: 1
   size_z: 1
   player: {fileID: 1678857055}
+--- !u!114 &770442426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770442423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e683f10747745948a95931beca7788c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1678857055}
   survivalPrefabs:
-  - {fileID: 5437788589572215230, guid: cd75647fb1c7f124fafc83c6c4c34bc8, type: 3}
+  - {fileID: 927885135979231172, guid: cd75647fb1c7f124fafc83c6c4c34bc8, type: 3}
 --- !u!1 &883072876
 GameObject:
   m_ObjectHideFlags: 0

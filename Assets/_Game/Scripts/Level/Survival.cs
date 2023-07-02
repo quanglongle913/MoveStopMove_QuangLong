@@ -3,22 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Level : MonoBehaviour
+public class Survival : MonoBehaviour
 {
     [SerializeField] private NavMeshData navMeshData;
     [SerializeField] private Transform startPoint;
-    [Header("BotAmount > BotInGame")]
     [SerializeField] private int botAmount;
-    [SerializeField] private int botInGame;
-    [Header("Survival Mode")] 
     [SerializeField] private List<Transform> startPoints;
     public int GetBotAmount()
-    { 
-        return botAmount;
-    }
-    public int GetBotInGame()
     {
-        return botInGame;
+        return botAmount;
     }
     public Transform GetStartPoint()
     {
@@ -27,5 +20,9 @@ public class Level : MonoBehaviour
     public NavMeshData GetNavMeshData()
     {
         return navMeshData;
+    }
+    public List<Transform> GetStartPoints()
+    {
+        return startPoints;
     }
 }

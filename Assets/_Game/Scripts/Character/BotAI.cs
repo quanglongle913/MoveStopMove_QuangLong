@@ -15,8 +15,7 @@ public class BotAI : Character
     [SerializeField] private GameObject circleAttack;
     [SerializeField] private IState<BotAI> currentState;
     private NavMeshAgent agent;
-    private Transform targetTransform;
-    //public bool IsKilledPlayer=false;
+
     public GameObject CircleAttack { get => circleAttack; set => circleAttack = value; }
     public bool IsWall;
     private Vector3 moveTargetPoint;
@@ -103,7 +102,6 @@ public class BotAI : Character
         {
             agent.SetDestination(vector);
         }
-        //agent.SetDestination(vector);
     }
     public Vector3 RandomNavmeshLocation(float radius)
     {

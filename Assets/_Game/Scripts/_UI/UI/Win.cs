@@ -14,12 +14,11 @@ public class Win : UICanvas
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.LevelManager().OnFinishGame();
         Player player = GameManager.Instance.Player();
-
-        textCoin.text = ""+PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
+        textCoin.text = "" + player.InGameGold;
         textStar.text = ""+player.KilledCount();
 
+        GameManager.Instance.LevelManager().OnFinishGame();
 
         int zoneType = PlayerPrefs.GetInt(Constant.PLAYER_ZONE_TYPE, 0);
         Zone zone = GameManager.Instance.ZoneData().Zones[zoneType];
@@ -40,7 +39,6 @@ public class Win : UICanvas
         playerZoneExp += 10;
         PlayerPrefs.SetInt(Constant.PLAYER_ZONE_EXP, playerZoneExp);
         PlayerPrefs.Save();
-       
         UIManager.Instance.OpenUI<Loading>();
         Close();
     }

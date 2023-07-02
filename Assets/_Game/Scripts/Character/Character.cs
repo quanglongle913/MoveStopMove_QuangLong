@@ -117,7 +117,7 @@ public class Character : GameUnit,IHit
         Vector3 _DirectionCharacter = new Vector3(Target.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.position.z - gameObject.transform.position.z).normalized;
         Vector3 _DirectionWeapon = new Vector3(Target.position.x - WeaponRoot.transform.position.x, _Rigidbody.velocity.y, Target.position.z - WeaponRoot.transform.position.z).normalized;
         RotateTowards(this.gameObject, _DirectionCharacter);
-        ChangeAnim("Attack");
+        ChangeAnim(nameof(AnimType.Attack));
         IsAttacking = true;
         StartCoroutine(ThrowWaiter(_DirectionWeapon));
     }
@@ -126,7 +126,7 @@ public class Character : GameUnit,IHit
         
         Vector3 _DirectionCharacter = new Vector3(Target.position.x - gameObject.transform.position.x, _Rigidbody.velocity.y, Target.position.z - gameObject.transform.position.z).normalized;
         RotateTowards(this.gameObject, _DirectionCharacter);
-        ChangeAnim("Attack");
+        ChangeAnim(nameof(AnimType.Attack));
     }
     IEnumerator ThrowWaiter(Vector3 _Direction)
     {
@@ -186,7 +186,7 @@ public class Character : GameUnit,IHit
     public bool DetectionCharacter()
     {
         Collider[] colliders = CharactersInsideZone;
-        SortCollider(colliders);
+        Constant.SortCollider(ref colliders, gameObject);
         for (int i = 0; i < colliders.Length; i++)
         {
             Character character = Constant.Cache.GetCharacter(colliders[i]);
@@ -213,23 +213,6 @@ public class Character : GameUnit,IHit
             }
         }
         return IsTargerInRange;
-    }
-    private void SortCollider(Collider[] colliders)
-    {
-        //Sắp xếp Mảng theo khoảng cách tới Nhân Vật
-        Collider tg;
-        for (int i = 0; i < colliders.Length-1; i++)
-        {
-            for (int j = i + 1; j < colliders.Length; j++)
-            {
-                if (Vector3.Distance(transform.position, colliders[i].transform.position) > Vector3.Distance(transform.position, colliders[j].transform.position))
-                {
-                    tg= colliders[i];
-                    colliders[i] = colliders[j];
-                    colliders[j] = tg;
-                }
-            }
-        }
     }
     public bool DetectionPlayer()
     {
@@ -346,7 +329,7 @@ public class Character : GameUnit,IHit
     //Set Material for Prefabs 
     public void SetWeaponSkinMat()
     {
-        Renderer renderer = GetWeaponInHand((int)WeaponType).GetComponent<Renderer>();
+        Renderer renderer = GetWeaponInHand((int)weaponType).GetComponent<Renderer>();
         var newMaterials = new Material[renderer.materials.Count()];
 
         for (int i = 0; i < newMaterials.Count(); i++)
@@ -520,11 +503,11 @@ public class Character : GameUnit,IHit
     public void UpdateCharacterAcessories()
     {  //Weapons buff
         WeaponData weaponData = GameManager.Instance.GetWeaponData();
-        if (weaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.AttackSpeed)
+        if (weaponData.Weapon[weaponIndex].BuffData.IsBuffType(BuffType.AttackSpeed))
         {
             inGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * weaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
-        else if (weaponData.Weapon[weaponIndex].BuffData.BuffType == BuffType.Range)
+        else if (weaponData.Weapon[weaponIndex].BuffData.IsBuffType(BuffType.Range))
         {
             inGameAttackRange = baseAttackRange + (baseAttackRange * weaponData.Weapon[weaponIndex].BuffData.BuffIndex / 100);
         }
@@ -542,19 +525,19 @@ public class Character : GameUnit,IHit
     {
         if (index != 99)
         {
-            if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.AttackSpeed)
+            if (accessoriesData.Accessories[index].BuffData.IsBuffType(BuffType.AttackSpeed))
             {
                 inGameAttackSpeed = baseAttackSpeed + (baseAttackSpeed * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
             }
-            else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.MoveSpeed)
+            else if (accessoriesData.Accessories[index].BuffData.IsBuffType(BuffType.MoveSpeed))
             {
                 InGameMoveSpeed = baseMoveSpeed + (baseMoveSpeed * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
             }
-            else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.Range)
+            else if (accessoriesData.Accessories[index].BuffData.IsBuffType(BuffType.Range))
             {
                 inGameAttackRange = baseAttackRange + (baseAttackRange * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
             }
-            else if (accessoriesData.Accessories[index].BuffData.BuffType == BuffType.Gold)
+            else if (accessoriesData.Accessories[index].BuffData.IsBuffType(BuffType.Gold))
             {
                 inGameGoldEarn = baseGoldEarn + (baseGoldEarn * accessoriesData.Accessories[index].BuffData.BuffIndex / 100);
             }
@@ -599,17 +582,17 @@ public class Character : GameUnit,IHit
             {
                 GameManager.Instance.SoundManager().PlaySizeUpSoundEffect();
             }
-            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.AttackSpeed)
+            if (buffDataInGiftBox[randomBuff].IsBuffType(BuffType.AttackSpeed))
             {
                 StartCoroutine(Waiter(inGameAttackSpeed, buffDataInGiftBox[randomBuff]));
                 inGameAttackSpeed = inGameAttackSpeed + (inGameAttackSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
             }
-            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.MoveSpeed)
+            if (buffDataInGiftBox[randomBuff].IsBuffType(BuffType.MoveSpeed))
             {
                 StartCoroutine(Waiter(inGameMoveSpeed, buffDataInGiftBox[randomBuff]));
                 inGameMoveSpeed = inGameMoveSpeed + (inGameMoveSpeed * buffDataInGiftBox[randomBuff].BuffIndex / 100);
             }
-            if (buffDataInGiftBox[randomBuff].BuffType == BuffType.Range)
+            if (buffDataInGiftBox[randomBuff].IsBuffType(BuffType.Range))
             {
                 StartCoroutine(Waiter(inGameAttackRange, buffDataInGiftBox[randomBuff]));
                 inGameAttackRange = inGameAttackRange + (inGameAttackRange * buffDataInGiftBox[randomBuff].BuffIndex / 100);
@@ -627,18 +610,18 @@ public class Character : GameUnit,IHit
         newBuffVfx.Play();
         IsBuffed = true;
         yield return new WaitForSeconds(3f);
-        if (buffData.BuffType == BuffType.AttackSpeed)
+        if (buffData.IsBuffType(BuffType.AttackSpeed))
         {
             inGameAttackSpeed = backUp;
             Destroy(newBuffVfx.gameObject);
 
         }
-        if (buffData.BuffType == BuffType.MoveSpeed)
+        if (buffData.IsBuffType(BuffType.MoveSpeed))
         {
             inGameMoveSpeed = backUp;
             Destroy(newBuffVfx.gameObject);
         }
-        if (buffData.BuffType == BuffType.Range)
+        if (buffData.IsBuffType(BuffType.Range))
         {
             inGameAttackRange = backUp;
             Destroy(newBuffVfx.gameObject);

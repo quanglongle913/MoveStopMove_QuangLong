@@ -39,7 +39,6 @@ public class Indicator : GameUnit
     {
         Camera camera = GameManager.Instance.GetCamera();
         
-        //gameObject.transform.position = OffScreenIndicatorCore.GetScreenPosition(camera, character.gameObject, screenCentre, screenBounds);
         gameObject.transform.position = vector3;
         Vector3 viewPosPlayer = camera.WorldToViewportPoint(GameManager.Instance.PlayerTF().position);
         Vector3 viewPos = camera.WorldToViewportPoint(character.gameObject.transform.position);

@@ -14,7 +14,6 @@ public class Setting : UICanvas
         if (GameManager.Instance.IsState(GameState.GameMenu))
         {
             UIManager.Instance.OpenUI<GameMenu>();
-            //UIManager.Instance.GetUI<GameMenu>().UpdateData();
             Close();
         }
     }

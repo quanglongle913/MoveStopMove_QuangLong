@@ -8,7 +8,7 @@ public class PatrolStateP : IState<Player>
     public void OnEnter(Player t)
     {
         //Debug.Log("PatrolStateP");
-        t.ChangeAnim("Run");
+        t.ChangeAnim(nameof(AnimType.Run));
         t.Anim.speed = (float)Math.Round(t.InGameMoveSpeed / 10, 1);
        
     }

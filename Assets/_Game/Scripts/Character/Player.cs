@@ -46,6 +46,8 @@ public class Player : Character
         base.OnInit();
         bullets = 0;
         killedCount = 0;
+        PlayerPrefs.SetInt(Constant.PLAYER_ENDGAME_GOLD, 0);
+        PlayerPrefs.Save();
         ChangeState(new IdleStateP());
         this.WeaponIndex = GetWeaponsEquippedIndex(GameManager.Instance.GetWeaponData());
         this.WeaponType = GameManager.Instance.GetWeaponData().Weapon[WeaponIndex].WeaponType;
@@ -168,7 +170,6 @@ public class Player : Character
     public override void OnDespawn()
     {
         base.OnDespawn();
-        // Open UI Revice
     }
     protected override void OnDeath()
     {
@@ -231,15 +232,11 @@ public class Player : Character
     {
         return maxHP;
     }
-    /*public void SetMaxHp(int maxHp) 
-    { 
-        this.maxHP = maxHp;
-    }*/
     //==================End Survival================
     public override void OnHit(float damage)
     {
         base.OnHit(damage);
-        //Debug.Log(Hp());
+        Debug.Log(Hp());
     }
     public void SetTransformPosition(Transform transform)
     {

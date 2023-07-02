@@ -9,7 +9,7 @@ public class PatrolState : IState<BotAI>
     public void OnEnter(BotAI t)
     {
         
-        t.ChangeAnim("Run");
+        t.ChangeAnim(nameof(AnimType.Run));
         //t.Anim.speed = (float)Math.Round(t.MoveSpeed / 10, 1);
      
         timer = 0;

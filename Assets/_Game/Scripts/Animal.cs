@@ -86,7 +86,7 @@ public class Animal : Character,IHit
     }
     protected override void OnDeath()
     {
-        base.OnDeath();
+        //base.OnDeath();
         ChangeState(new DeadStateA());
         GameManager.Instance.RemoveAnimals(this);
     }

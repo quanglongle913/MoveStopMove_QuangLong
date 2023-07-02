@@ -13,14 +13,21 @@ public class SettingInGame : UICanvas
         }
         else
         {
-            GameManager.Instance.LevelManager().OnRetrySurvival();
+            GameManager.Instance.SurvivalManager().OnRetry();
         }
-        //UIManager.Instance.OpenUI<Loading>();
         Close();
     }
     public void ContinueButton()
     {
-        UIManager.Instance.OpenUI<InGame>();
+        if (GameManager.Instance.IsMode(GameMode.Normal))
+        {
+            UIManager.Instance.OpenUI<InGame>();
+        }
+        else
+        {
+            UIManager.Instance.OpenUI<InGameSurvival>();
+        }
+        
         Close();
     }
 }

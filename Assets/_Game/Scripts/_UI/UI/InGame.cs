@@ -10,7 +10,7 @@ public class InGame : UICanvas
     {
         if (textAlive != null)
         {
-            textAlive.text = "Alive: "+ GameManager.Instance.GetBotCount();
+            textAlive.text = Constant.STRING_ALIVE+": "+ GameManager.Instance.GetBotCount();
         }
     }
     public void SettingButton()

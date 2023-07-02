@@ -8,7 +8,7 @@ public class DeadStateP : IState<Player>
     float timer;
     public void OnEnter(Player t)
     {
-        t.ChangeAnim("Dead");
+        t.ChangeAnim(nameof(AnimType.Dead));
         timer = 0;
     }
 

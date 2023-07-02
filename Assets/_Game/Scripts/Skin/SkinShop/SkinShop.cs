@@ -10,9 +10,11 @@ public class SkinShop : MonoBehaviour
     GameObject g;
     [SerializeField] Transform ShopScrollView;
     private List<ShopItem> items =new List<ShopItem>();
-    public bool IsUpdate=false;
+    private bool isUpdate=false;
     public AccessoriesData AccessoriesData { get => accessoriesData; set => accessoriesData = value; }
     public List<ShopItem> Items { get => items; set => items = value; }
+    public bool IsUpdate { get => isUpdate; set => isUpdate = value; }
+
     private void Start()
     {
        // items = new List<ShopItem>();
@@ -29,7 +31,6 @@ public class SkinShop : MonoBehaviour
                 shopItem.ItemID = i;
                 shopItem.FrameFocus.SetActive(accessoriesData.Accessories[i].Selected);
                 shopItem.SkinType = accessoriesData.SkinType;
-                //shopItem.ImageItem.GetComponent<Button>().AddEventListener(i, ItemsOnClicked);
                 items.Add(shopItem);
             }
             IsUpdate = false;

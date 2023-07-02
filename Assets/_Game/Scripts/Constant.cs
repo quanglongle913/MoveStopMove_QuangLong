@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -8,6 +8,15 @@ public class Constant
     public const string LEVEL = "Level";
     public const string SURVIVAL = "Survival";
 
+    public const string STRING_ALIVE = "Alive";
+    public const string STRING_SCORE = "Score";
+    public const string STRING_BEST = "BEST";
+    public const string STRING_ZONE = "ZONE";
+
+    public const string JSON_DATA_FILENAME_PLAYER = "PlayerData.json";
+    public const string JSON_DATA_FILENAME_BOT = "BotAIData.json";
+
+
     public const string PLAYER_DATA_STATE = "PlayerDataSate";
     public const string PLAYER_MAP = "PlayerMap";
     public const string ZOMBIEDAYS = "ZombieDays";
@@ -16,7 +25,8 @@ public class Constant
 
     public const string POPUP_COUNTINUE_STATUS_LOSE = "Too bad, try again......";
     public const string POPUP_COUNTINUE_STATUS_WIN = "Coming Soon!...";
-
+    
+    public const string PLAYER_ENDGAME_GOLD = "InGameGold";
     public const string PLAYER_COIN = "PlayerCoin";
     public const string PLAYER_NAME = "PlayerName";
     public const string PLAYER_ZONE_EXP = "PlayerZoneExp";
@@ -88,7 +98,23 @@ public class Constant
         float distance = Vector3.Distance(a, b);
         return distance < range;
     }
-
+    public static void SortCollider(ref Collider[] colliders, GameObject gameObject)
+    {
+        //Sắp xếp Mảng theo khoảng cách tới Nhân Vật
+        Collider tg;
+        for (int i = 0; i < colliders.Length - 1; i++)
+        {
+            for (int j = i + 1; j < colliders.Length; j++)
+            {
+                if (Vector3.Distance(gameObject.transform.position, colliders[i].transform.position) > Vector3.Distance(gameObject.transform.position, colliders[j].transform.position))
+                {
+                    tg = colliders[i];
+                    colliders[i] = colliders[j];
+                    colliders[j] = tg;
+                }
+            }
+        }
+    }
     public static string GetStreamingAssetsPath(string fileName)
     {
         string dbPath;
@@ -193,7 +219,6 @@ public class Constant
             }
             return m_TransparentObstacle[collider];
         }
-       
     }
 }
 

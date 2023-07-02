@@ -15,12 +15,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private float size_x=1;
     [SerializeField] private float size_z=1;
     [SerializeField] private Player player;
-    [Header("Survival:")]
-    [SerializeField] private List<Level> survivalPrefabs;
-   
+
     //-----------------
     private Level currentLevel;
-    //Normal
     private List<GameObject> objCharacters = new List<GameObject>();
     private List<BotAI> bots = new List<BotAI>();
     private List<BotAI> botsInGame = new List<BotAI>();
@@ -29,13 +26,7 @@ public class LevelManager : MonoBehaviour
     private int botAmount;
     private int botInGame;
     private int botInStack;
-    //----------------
-    //Survival
-    private int survivalIndex;
-    private List<Transform> startPoints;
-    private List<Animal> animals = new List<Animal>();
-    private List<Animal> animalsInGame = new List<Animal>();
-    //---------------
+
     private float screenBoundOffset = 0.9f;
     private Vector3 screenCentre;
     private Vector3 screenBounds;
@@ -43,7 +34,6 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         levelIndex = PlayerPrefs.GetInt(Constant.LEVEL, 0);
-        survivalIndex = PlayerPrefs.GetInt(Constant.SURVIVAL, 0);
     }
 
     private void Start()
@@ -80,6 +70,7 @@ public class LevelManager : MonoBehaviour
                 }
                 else if (botsInGame.Count == 0)
                 {
+                    //Player Win
                     UIManager.Instance.OpenUI<Win>();
                     UIManager.Instance.CloseUI<InGame>();
                 }
@@ -88,31 +79,7 @@ public class LevelManager : MonoBehaviour
                     GenerateGiftBox(1, GeneratePoolObjectPosition(transform.position, node));
                 }
             }
-        } else if (GameManager.Instance.IsMode(GameMode.Survival))
-        {
-            if (GameManager.Instance.IsState(GameState.InGame))
-            {
-                if (animalsInGame.Count < botAmount)
-                {
-                    for (int i = 0; i < animals.Count; i++)
-                    {
-                        if (!animals[i].gameObject.activeSelf && !animals[i].IsDeath)
-                        {
-                            animals[i].gameObject.SetActive(true);
-                            animals[i].ChangeState(new PatrolStateA());
-                            animalsInGame.Add(animals[i]);
-                            animals.Remove(animals[i]);
-                        }
-                    }
-                    if (animals.Count == 0)
-                    {
-                        GenerateSurvivalAnimal();
-                    }
-                }
-            }
-            
         }
-        
     }
 
     
@@ -142,7 +109,6 @@ public class LevelManager : MonoBehaviour
         if (level < levelPrefabs.Count)
         {
             currentLevel = Instantiate(levelPrefabs[level]);
-            //currentLevel.OnInit();
         }
         else
         {
@@ -273,7 +239,7 @@ public class LevelManager : MonoBehaviour
         {
             bool check = false;
             int randomIndex = Random.Range(0, listPoolObjectPosition.Count);
-            for (int j = 0; j < listPoolObjectPosition.Count; j++)
+            for (int j = 0; j < 50 ; j++)
             {
                 if (IsDesAllGiftBox(listPoolObjectPosition[randomIndex]))
                 {
@@ -358,7 +324,7 @@ public class LevelManager : MonoBehaviour
     internal void OnRetry()
     {
         OnReset();
-        OnResetSurvival();
+        //OnResetSurvival();
         LoadLevel(levelIndex);
         OnInit();
         GameManager.Instance.ChangeState(GameState.GameMenu);
@@ -397,124 +363,7 @@ public class LevelManager : MonoBehaviour
     {
         return botsInGame;
     }
-    //================================================Survival Mode=============================================
-    private void GenerateSurvivalAnimal()
-    {
-        for (int i = 0; i < botAmount; i++)
-        {
-            int randomIndex = Random.Range(0, startPoints.Count);
-            Animal animal = SimplePool.Spawn<Animal>(PoolType.Animal, startPoints[randomIndex].position, Quaternion.identity);
-            animal.OnInit();
-            animal.gameObject.SetActive(false);
-            animals.Add(animal);
-        }
-
-    }
-    public void OnStartSurvivalGame()
-    {
-        OnRetrySurvival();
-        GameManager.Instance.ChangeMode(GameMode.Survival);
-        GameManager.Instance.ChangeState(GameState.InGame);
-      
-    }
-    public void OnFinishSurvivalGame()
-    {
-        GameManager.Instance.ChangeState(GameState.EndGame);
-        ResetListAnimal(animals);
-        ResetListAnimal(animalsInGame);
-        //Save Gold
-        /*int coins = PlayerPrefs.GetInt(Constant.PLAYER_COIN, 0);
-        coins += (int)player.InGameGold;
-        PlayerPrefs.SetInt(Constant.PLAYER_COIN, coins);
-        PlayerPrefs.Save();
-
-        int rank = 1 + botInStack + botsInGame.Count;
-        player.Rank = rank;
-        int bestRank = PlayerPrefs.GetInt(Constant.BEST_RANK, 99);
-        if (rank < bestRank)
-        {
-            PlayerPrefs.SetInt(Constant.BEST_RANK, rank);
-            PlayerPrefs.Save();
-        }*/
-        OnResetSurvival();
-    }
-    public void LoadSurvival(int survival)
-    {
-        if (currentLevel != null)
-        {
-            Destroy(currentLevel.gameObject);
-        }
-
-        if (survival < survivalPrefabs.Count)
-        {
-            currentLevel = Instantiate(survivalPrefabs[survival]);
-      
-        }
-        else
-        {
-            //TODO: level vuot qua limit
-        }
-    }
-    public void OnInitSurvival()
-    {
-
-        botAmount = survivalPrefabs[survivalIndex].GetBotAmount();
-        startPoints = survivalPrefabs[survivalIndex].GetStartPoints();
-
-        //update navmesh data
-        NavMesh.RemoveAllNavMeshData();
-        NavMesh.AddNavMeshData(currentLevel.GetNavMeshData());
-
-        GenerateSurvivalAnimal();
-
-        player.OnInitSurvival();
-        player.transform.position = survivalPrefabs[survivalIndex].GetStartPoint().position;
-
-    }
     
-    public void OnResetSurvival()
-    {
-        SimplePool.CollectAll();
-        animals.Clear();
-        animalsInGame.Clear();
-        player.SetTransformPosition(levelPrefabs[levelIndex].GetStartPoint());
-        player.CharacterInfo.Hide();
-        player.OnInit();
-    }
-
-    internal void OnRetrySurvival()
-    {
-        OnReset();
-        OnResetSurvival();
-        LoadSurvival(survivalIndex);
-        OnInitSurvival();
-        GameManager.Instance.ChangeState(GameState.GameMenu);
-        UIManager.Instance.OpenUI<GameMenu>();
-    }
-
-    internal void OnNextLevelSurvival()
-    {
-        survivalIndex++;
-        PlayerPrefs.SetInt(Constant.SURVIVAL, survivalIndex);
-        PlayerPrefs.Save();
-        OnResetSurvival();
-        LoadSurvival(survivalIndex);
-        OnInitSurvival();
-        UIManager.Instance.OpenUI<GameMenu>();
-    }
-    public List<Animal> GetAnimalsInGame()
-    {
-        return animalsInGame;
-    }
-    public void ResetListAnimal(List<Animal> lists)
-    {
-        for (int i = 0; i < lists.Count; i++)
-        {
-            lists[i].ChangeState(null);
-            lists[i].MoveStop();
-        }
-    }
-    //=====================================================
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

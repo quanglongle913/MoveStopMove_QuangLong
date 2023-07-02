@@ -18,7 +18,6 @@ public class Loading : UICanvas
         if (timer > 0.5f)
         {
             UIManager.Instance.OpenUI<GameMenu>();
-            //UIManager.Instance.GetUI<GameMenu>().UpdateData();
             Close();
         }
     }

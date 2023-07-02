@@ -8,7 +8,7 @@ public class DeadStateA : IState<Animal>
     public void OnEnter(Animal t)
     {
         t.SetDestination(t.gameObject.transform.position);
-        t.ChangeAnim("Dead");
+        t.ChangeAnim(nameof(AnimType.Dead));
         timer = 0;
     }
 

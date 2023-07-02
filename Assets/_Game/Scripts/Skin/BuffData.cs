@@ -7,6 +7,10 @@ public class BuffData : ScriptableObject
 {
     [SerializeField] private BuffType buffType;
     [SerializeField] private int buffIndex;
-    public BuffType BuffType { get => buffType; set => buffType = value; }
+    public BuffType BuffType { get => buffType; }
     public int BuffIndex { get => buffIndex; set => buffIndex = value; }
+    public bool IsBuffType(BuffType buffType)
+    { 
+        return this.buffType == buffType;
+    }
 }

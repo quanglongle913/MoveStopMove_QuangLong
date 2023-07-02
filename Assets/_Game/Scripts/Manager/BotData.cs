@@ -23,7 +23,7 @@ public class BotData : MonoBehaviour
 
     public void ReadJsonFile()
     {
-        saveFile = Constant.GetStreamingAssetsPath("BotAIData.json");
+        saveFile = Constant.GetStreamingAssetsPath(Constant.JSON_DATA_FILENAME_BOT);
         // Does the file exist?
         if (File.Exists(saveFile))
         {
@@ -38,14 +38,14 @@ public class BotData : MonoBehaviour
     }
     public void SaveIntoJson()
     {
-        saveFile = Constant.GetStreamingAssetsPath("BotAIData.json");
+        saveFile = Constant.GetStreamingAssetsPath(Constant.JSON_DATA_FILENAME_BOT);
         GenerateData();
         string potion = JsonUtility.ToJson(botAIData);
         File.WriteAllText(saveFile, potion);
     }
     public void SaveIntoJson2()
     {
-        saveFile = Constant.GetStreamingAssetsPath("BotAIData.json");
+        saveFile = Constant.GetStreamingAssetsPath(Constant.JSON_DATA_FILENAME_BOT);
         GenerateDataSetIndex();
         string potion = JsonUtility.ToJson(botAIData);
         File.WriteAllText(saveFile, potion);

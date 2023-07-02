@@ -7,7 +7,7 @@ public class IdleStateP : IState<Player>
     public void OnEnter(Player t)
     {
         //Debug.Log("IdleStateP");
-        t.ChangeAnim("Idle");
+        t.ChangeAnim(nameof(AnimType.Idle));
     }
 
     public void OnExecute(Player t)

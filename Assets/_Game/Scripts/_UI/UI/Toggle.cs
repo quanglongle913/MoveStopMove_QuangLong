@@ -19,14 +19,10 @@ public class Toggle : MonoBehaviour
             if (PlayerPrefs.GetInt(Constant.SOUND_TOGGLE_STATE, 0) == 0) //default toggle is ON
             {
                 SetHandleON(0.01f);
-                //GameManager.Instance.SoundManager().SetSoundON();
-                //Debug.Log("SetHandleON");
             }
             else
             {
                 SetHandleOFF(0.01f);
-                //GameManager.Instance.SoundManager().SetSoundOFF();
-                //Debug.Log("SetHandleOFF");
             }
         }
         else

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Unity.VisualScripting;
@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Camera mainCam;
     [SerializeField] private Player player;
     [SerializeField] private LevelManager levelManager;
+    [SerializeField] private SurvivalManager survivalManager;
     [SerializeField] private SoundManager soundManager;
     [Header("Data Manager: ")]
     [SerializeField] private BotData botData;
@@ -24,37 +25,41 @@ public class GameManager : Singleton<GameManager>
     {
         botData.GenerateBotAIData();
         ChangeState(GameState.Loading);
-        //botData.GenerateBotAIData();
+      
         if (PlayerPrefs.GetInt(Constant.PLAYER_DATA_STATE, 0) == 0)
         {
+            //Lần đầu tiên mở game
             UpdateData();
             PlayerPrefs.SetInt(Constant.PLAYER_DATA_STATE, 1);
             PlayerPrefs.Save();
         }
         else
         {
-            //UNDONE
-            //Set ScriptableObject data ......
-            dataManager.ReadData();
-            for (int i = 0; i < dataManager._PlayerData.weapons.Count; i++)
+            //Lấy data từ file Json
+            UpdateDataJson();
+        }
+    }
+    private void UpdateDataJson()
+    {
+        dataManager.ReadData();
+        for (int i = 0; i < dataManager._PlayerData.weapons.Count; i++)
+        {
+            weaponData.Weapon[i].WeaponType = dataManager._PlayerData.weapons[i].WeaponType;
+            weaponData.Weapon[i].WeaponName = dataManager._PlayerData.weapons[i].WeaponName;
+            weaponData.Weapon[i].WeaponPrice = dataManager._PlayerData.weapons[i].WeaponPrice;
+            weaponData.Weapon[i].Buyed = dataManager._PlayerData.weapons[i].Buyed;
+            weaponData.Weapon[i].Equipped = dataManager._PlayerData.weapons[i].Equipped;
+        }
+        for (int i = 0; i < dataManager._PlayerData.ListAccessoriesData.Count; i++)
+        {
+            for (int j = 0; j < dataManager._PlayerData.ListAccessoriesData[i].Accessories.Count; j++)
             {
-                weaponData.Weapon[i].WeaponType = dataManager._PlayerData.weapons[i].WeaponType;
-                weaponData.Weapon[i].WeaponName = dataManager._PlayerData.weapons[i].WeaponName;
-                weaponData.Weapon[i].WeaponPrice = dataManager._PlayerData.weapons[i].WeaponPrice;
-                weaponData.Weapon[i].Buyed = dataManager._PlayerData.weapons[i].Buyed;
-                weaponData.Weapon[i].Equipped = dataManager._PlayerData.weapons[i].Equipped;
-            }
-            for (int i = 0; i < dataManager._PlayerData.ListAccessoriesData.Count; i++)
-            {
-                //Debug.Log(DataManager._PlayerData.ListAccessoriesData[i].Accessories.Count);
-                for (int j = 0; j < dataManager._PlayerData.ListAccessoriesData[i].Accessories.Count; j++)
-                {
-                    accessoriesDatas[i].Accessories[j].Buyed = dataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Buyed;
-                    accessoriesDatas[i].Accessories[j].Equipped = dataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Equipped;
-                    accessoriesDatas[i].Accessories[j].Selected = dataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Selected;
-                }
+                accessoriesDatas[i].Accessories[j].Buyed = dataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Buyed;
+                accessoriesDatas[i].Accessories[j].Equipped = dataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Equipped;
+                accessoriesDatas[i].Accessories[j].Selected = dataManager._PlayerData.ListAccessoriesData[i].Accessories[j].Selected;
             }
         }
+
     }
     public WeaponData GetWeaponData()
     {
@@ -70,7 +75,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void UpdateData()
     {
-        Debug.Log("UpdateData");
+        //Debug.Log("UpdateData");
         this.dataManager.GenerateData(this.weaponData, this.accessoriesDatas);
     }
     public void ChangeState(GameState gameState)
@@ -120,11 +125,15 @@ public class GameManager : Singleton<GameManager>
     }
     public void RemoveAnimals(Animal animal)
     {
-        levelManager.GetAnimalsInGame().Remove(animal);
+        survivalManager.GetAnimalsInGame().Remove(animal);
     }
     public LevelManager LevelManager()
     {
         return levelManager;
+    }
+    public SurvivalManager SurvivalManager()
+    {
+        return survivalManager;
     }
     public SoundManager SoundManager()
     {

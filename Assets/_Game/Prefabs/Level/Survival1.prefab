@@ -609,7 +609,7 @@ GameObject:
   - component: {fileID: 8056982522062447484}
   - component: {fileID: 865769509847500392}
   - component: {fileID: 1463526949}
-  - component: {fileID: 5437788589572215230}
+  - component: {fileID: 927885135979231172}
   m_Layer: 0
   m_Name: Survival1
   m_TagString: Untagged
@@ -668,7 +668,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5437788589572215230
+--- !u!114 &927885135979231172
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -677,13 +677,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8056982522062447459}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 424435990f8f4de49a896942149474cd, type: 3}
+  m_Script: {fileID: 11500000, guid: b69f78d036c020d4c889e618efffff8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshData: {fileID: 23800000, guid: 01b66ac236997324f856e419e8f7438b, type: 2}
   startPoint: {fileID: 5902897291923923597}
   botAmount: 30
-  botInGame: 30
   startPoints:
   - {fileID: 6674225445388545923}
   - {fileID: 8996633590664753910}
