@@ -61,12 +61,14 @@ public class GameMenu : UICanvas
     }
     public void PlayButton()
     {
+        GameManager.Instance.SurvivalManager().OnDestroy();
         GameManager.Instance.LevelManager().OnStartGame();
         UIManager.Instance.OpenUI<InGame>();
         Close();
     }
     public void SurvivalButton()
     {
+        GameManager.Instance.LevelManager().OnDestroy();
         GameManager.Instance.SurvivalManager().OnStartGame();
         UIManager.Instance.OpenUI<InGameSurvival>();
         Close();

@@ -10,6 +10,7 @@ public class TransparentObstacle : MonoBehaviour
     [SerializeField] private Renderer rend;
     Color[] newMaterialColor;
     private bool transparent = false;
+
     private void Start()
     {
         //Get the material color
@@ -17,9 +18,8 @@ public class TransparentObstacle : MonoBehaviour
         for (int i = 0; i < newMaterialColor.Count(); i++)
         {
             newMaterialColor[i] = rend.materials[i].color;
-        
         }
-      
+
     }
 
     public void ChangeTransparency(bool transparent)
@@ -37,7 +37,6 @@ public class TransparentObstacle : MonoBehaviour
             for (int i = 0; i < newMaterialColor.Count(); i++)
             {
                 newMaterialColor[i].a = 0.3f;
-            
             }
         }
         else
@@ -45,14 +44,14 @@ public class TransparentObstacle : MonoBehaviour
             //Change the alpha of the color
             for (int i = 0; i < newMaterialColor.Count(); i++)
             {
-                newMaterialColor[i].a =1.0f;
+                newMaterialColor[i].a = 1.0f;
             }
         }
-
         //Set the new Color
         for (int i = 0; i < rend.materials.Count(); i++)
         {
             rend.materials[i].color = newMaterialColor[i];
         }
+
     }
 }

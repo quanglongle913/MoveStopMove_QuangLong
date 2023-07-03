@@ -103,6 +103,17 @@ public class LevelManager : MonoBehaviour
         PlayerInit();
 
     }
+    //public Level GetLevel()
+    //{
+    //    return currentLevel;
+    //}
+    public void OnDestroy()
+    {
+        if (currentLevel != null)
+        {
+            Destroy(currentLevel.gameObject);
+        }
+    }
     public void LoadLevel(int level)
     {
         if (currentLevel != null)

@@ -135,17 +135,20 @@ public class Weapons : GameUnit
     IEnumerator Waiter()
     {
         yield return new WaitForSeconds(1f);
-        gameObject.SetActive(false);
-        //OnDespawn();
+        //gameObject.SetActive(false);
+        OnDespawn();
     }
     private void ReleaseWeapon(Character character)
     {
-        VFX_Trail.gameObject.SetActive(false);
-        Destroy(VFX_Trail.gameObject);
+        if (VFX_Trail)
+        {
+            VFX_Trail.gameObject.SetActive(false);
+            Destroy(VFX_Trail.gameObject);
+        }
 
         character.ShowWeaponIndex((int)WeaponType);
-        //OnDespawn();
-        gameObject.SetActive(false);
+        OnDespawn();
+        //gameObject.SetActive(false);
         this.isFire = false;
     }
     private void SetRotation(Vector3 upwards)
@@ -162,8 +165,8 @@ public class Weapons : GameUnit
 
     public override void OnDespawn()
     {
-        gameObject.SetActive(false);
-        //SimplePool.Despawn(this);
+        //gameObject.SetActive(false);
+        SimplePool.Despawn(this);
     }
     private bool IsWeaponType(WeaponType weaponType) 
     { 

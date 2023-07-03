@@ -23,9 +23,9 @@ public class SurvivalManager : MonoBehaviour
     private void Start()
     {
         //OnStart Game
-        LoadSurvival(survivalIndex);
-        UIManager.Instance.OpenUI<Loading>();
-        OnInit();
+        //LoadSurvival(survivalIndex);
+        //UIManager.Instance.OpenUI<Loading>();
+        //OnInit();
     }
     private void FixedUpdate()
     {
@@ -81,6 +81,13 @@ public class SurvivalManager : MonoBehaviour
         //Save Gold
         //UNDONE
         OnResetSurvival();
+    }
+    public void OnDestroy()
+    {
+        if (currentLevel != null)
+        {
+            Destroy(currentLevel.gameObject);
+        }
     }
     public void LoadSurvival(int survival)
     {
