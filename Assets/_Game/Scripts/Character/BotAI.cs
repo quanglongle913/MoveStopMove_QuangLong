@@ -166,6 +166,7 @@ public class BotAI : Character
         }
         SetWeaponSkinMat();
         ShowWeaponIndex((int)WeaponType);
+        SetLevel(1);
         UpdateCharacterLvl();
         UpdateCharacterAcessories();
     }

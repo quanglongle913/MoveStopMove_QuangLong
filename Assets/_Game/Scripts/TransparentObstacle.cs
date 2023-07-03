@@ -48,7 +48,11 @@ public class TransparentObstacle : MonoBehaviour
                 newMaterialColor[i].a =1.0f;
             }
         }
-        
-       
+
+        //Set the new Color
+        for (int i = 0; i < rend.materials.Count(); i++)
+        {
+            rend.materials[i].color = newMaterialColor[i];
+        }
     }
 }

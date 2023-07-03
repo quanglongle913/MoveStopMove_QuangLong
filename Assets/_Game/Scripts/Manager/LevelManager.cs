@@ -60,8 +60,12 @@ public class LevelManager : MonoBehaviour
                     {
                         if (!bots[i].gameObject.activeSelf && !bots[i].IsDeath && botsInGame.Count < botInGame)
                         {
-                            bots[i].gameObject.SetActive(true);
+                            
+
+                            bots[i].SetExp(player.InGamneExp);
+                            bots[i].SetLevel(player.GetLevel());
                             bots[i].ChangeState(new IdleState());
+                            bots[i].gameObject.SetActive(true);
                             botsInGame.Add(bots[i]);
                             objCharacters.Add(bots[i].gameObject);
                             botInStack--;

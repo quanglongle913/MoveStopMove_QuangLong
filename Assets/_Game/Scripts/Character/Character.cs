@@ -24,7 +24,7 @@ public class Character : GameUnit,IHit
     [SerializeField] private float baseAttackRange = 7f;
     [SerializeField] private float baseAttackSpeed = 60f;
     [SerializeField] private float baseMoveSpeed = 5.0f;
-    [SerializeField] private float baseGoldEarn = 50f;
+    [SerializeField] private int baseGoldEarn = 50;
     [Header("--------------Weapon------------- ")]
     [SerializeField] private GameObject weaponRoot;
     [Header("-------------Skin-------------- ")]
@@ -43,7 +43,7 @@ public class Character : GameUnit,IHit
     private float inGameAttackSpeed = 60f;
     private float inGameMoveSpeed = 5.0f;
     private float inGameGold = 50f;
-    private float inGameGoldEarn = 50f;
+    private int inGameGoldEarn = 50;
 
     private bool isTargerInRange;
     private bool isAttacking;
@@ -85,7 +85,7 @@ public class Character : GameUnit,IHit
     public SkinnedMeshRenderer PantsSkin { get => pantsSkin; set => pantsSkin = value; }
 
     public bool IsBuffed { get => isBuffed; set => isBuffed = value; }
-    public float InGameGoldEarn { get => inGameGoldEarn; set => inGameGoldEarn = value; }
+    public int InGameGoldEarn { get => inGameGoldEarn; set => inGameGoldEarn = value; }
 
 
 
@@ -118,7 +118,7 @@ public class Character : GameUnit,IHit
         Vector3 _DirectionWeapon = new Vector3(Target.position.x - WeaponRoot.transform.position.x, _Rigidbody.velocity.y, Target.position.z - WeaponRoot.transform.position.z).normalized;
         RotateTowards(this.gameObject, _DirectionCharacter);
         ChangeAnim(nameof(AnimType.Attack));
-        IsAttacking = true;
+        isAttacking = true;
         StartCoroutine(ThrowWaiter(_DirectionWeapon));
     }
     public void AnimalAttack()
@@ -443,17 +443,20 @@ public class Character : GameUnit,IHit
     }
     public void SetExp(int exp)
     {
-        InGamneExp += exp / characterLevel + 40;
-        InGameGold += InGameGoldEarn;
+        inGameExp += exp / characterLevel + 40;
+        inGameExp += inGameGoldEarn;
+        characterLevel = inGameExp / 100; //tinh level character
         UpdateCharacterLvl();
     }
+    
     private void OnReset()
     {
         IsAttacking = false;
         IsTargerInRange = false;
         hp = 1;
-        WeaponIndex = 0;
+        weaponIndex = 0;
         inGameExp = 100;
+        characterLevel = 1;
         GetWeaponInHand(WeaponIndex).SetActive(true);
         InGameGold = 0;
         
@@ -479,7 +482,7 @@ public class Character : GameUnit,IHit
     }
     public void UpdateCharacterLvl()
     {
-        characterLevel = InGamneExp / 100; //tinh level character
+        //characterLevel = InGamneExp / 100; //tinh level character
         float offsetSize = 0.05f;
         float offsetAttackSpeed = 0.04f;
         float offsetMoveSpeed = 0.3f;

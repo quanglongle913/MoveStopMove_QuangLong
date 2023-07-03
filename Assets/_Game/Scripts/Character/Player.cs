@@ -80,7 +80,11 @@ public class Player : Character
         InGameMoveSpeed += 1;
         SetLevel(1);
     }
-
+    public void OnRevive()
+    {
+        SetHp(1);
+        ChangeState(new IdleStateP());
+    }
     public override void Update()
     {
         

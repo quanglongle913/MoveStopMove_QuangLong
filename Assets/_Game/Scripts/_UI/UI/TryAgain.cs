@@ -22,7 +22,8 @@ public class TryAgain : UICanvas
 
     public void RevieNowButton()
     {
-        player.OnInit();
+        //UNDONE
+        player.OnRevive();
         UIManager.Instance.OpenUI<InGame>();
         Close();
     }
