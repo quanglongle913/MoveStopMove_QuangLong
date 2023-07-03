@@ -90,6 +90,7 @@ public class Weapons : GameUnit
             if (player)
             {
                 enemy.OnHit(1f);
+                //enemy.OnHit(0f);
                 character.SetExp(enemy.InGamneExp);
                 player.SetKilledByName(character.CharacterName);
                 player.SetKillerColorType(character.GetColorType());
@@ -98,7 +99,7 @@ public class Weapons : GameUnit
             else
             {
                 enemy.OnHit(1f);
-                
+                //enemy.OnHit(0f);
                 if (Constant.Cache.GetPlayer(_GameObject))
                 {
                     Player player1 = Constant.Cache.GetPlayer(_GameObject);
@@ -134,7 +135,7 @@ public class Weapons : GameUnit
     IEnumerator Waiter()
     {
         yield return new WaitForSeconds(1f);
-        this.gameObject.SetActive(false);
+        OnDespawn();
     }
     private void ReleaseWeapon(Character character)
     {
@@ -142,7 +143,7 @@ public class Weapons : GameUnit
         Destroy(VFX_Trail.gameObject);
 
         character.ShowWeaponIndex((int)WeaponType);
-        this.gameObject.SetActive(false);
+        OnDespawn();
         this.isFire = false;
     }
     private void SetRotation(Vector3 upwards)
@@ -159,7 +160,7 @@ public class Weapons : GameUnit
 
     public override void OnDespawn()
     {
-        Destroy(gameObject);
+        SimplePool.Despawn(this);
     }
     private bool IsWeaponType(WeaponType weaponType) 
     { 
