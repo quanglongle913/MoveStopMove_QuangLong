@@ -125,8 +125,6 @@ public class Weapons : GameUnit
                 VFX_Trail.gameObject.SetActive(false);
                 Destroy(VFX_Trail.gameObject);
             }
-           
-            
             this.isFire = false;
             character.ShowWeaponIndex((int)WeaponType);
             StartCoroutine(Waiter());
@@ -135,7 +133,6 @@ public class Weapons : GameUnit
     IEnumerator Waiter()
     {
         yield return new WaitForSeconds(1f);
-        //gameObject.SetActive(false);
         OnDespawn();
     }
     private void ReleaseWeapon(Character character)
@@ -148,7 +145,6 @@ public class Weapons : GameUnit
 
         character.ShowWeaponIndex((int)WeaponType);
         OnDespawn();
-        //gameObject.SetActive(false);
         this.isFire = false;
     }
     private void SetRotation(Vector3 upwards)
